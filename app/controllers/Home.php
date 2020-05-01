@@ -22,6 +22,8 @@ class Home extends Controller{
 
     }
 
+
+
     public function showCategory($id){
 
         $error = [];

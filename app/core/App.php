@@ -22,6 +22,7 @@ class App{
                 exit;
             }
         }
+
         
         
         require_once "./app/controllers/". $this->controller .".php";
