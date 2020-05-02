@@ -24,7 +24,7 @@
 
         	$password = md5($password);
 
-        	$qr = "INSERT INTO users(username, password, email, fullname, role_id) values ('$username', '$password', '$email', 'fullname', '$role_id')";
+        	$qr = "INSERT INTO users(username, password, email, fullname, role_id) values ('$username', '$password', '$email', '$fullname', '$role_id')";
 			
         	if(mysqli_query($this->con, $qr)){
         		return true;
