@@ -58,13 +58,12 @@
 		}
 
 		//update thong tin ca nhan
-		public function updateUserInformation($fullname, $username, $password, $role_id, $userId)
+		public function updateUserInformation($fullname, $username, $password, $userId)
 		{
 			$password = md5($password);
 			$qr = "UPDATE users SET fullname='$fullname',
 															username='$username',
-															password='$password',
-															role_id='$role_id',
+															password='$password'
 													WHERE id='$userId'";
 
 			if (mysqli_query($this->con, $qr)) {
