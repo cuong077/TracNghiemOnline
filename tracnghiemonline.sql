@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 01, 2020 at 06:49 PM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.11
+-- Host: localhost
+-- Generation Time: May 03, 2020 at 06:16 PM
+-- Server version: 5.7.29-0ubuntu0.18.04.1
+-- PHP Version: 7.2.24-0ubuntu0.18.04.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -159,19 +159,26 @@ CREATE TABLE `user_answers` (
 -- Indexes for table `answers`
 --
 ALTER TABLE `answers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_ANSWERS_QUESTIONS` (`question_id`);
 
 --
 -- Indexes for table `exams`
 --
 ALTER TABLE `exams`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_EXAMS_USER` (`user_id`),
+  ADD KEY `FK_EXAMS_SUBJECTS` (`subject_id`),
+  ADD KEY `FK_EXAMS_GRADES` (`grade_id`),
+  ADD KEY `FK_EXAMS_TIME` (`exam_time_id`);
 
 --
 -- Indexes for table `exam_results`
 --
 ALTER TABLE `exam_results`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_RESULT_USERS` (`user_id`),
+  ADD KEY `FK_results_exams` (`exam_id`);
 
 --
 -- Indexes for table `exam_time`
@@ -189,7 +196,8 @@ ALTER TABLE `grades`
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_QUESTIONS_EXAMS` (`exam_id`);
 
 --
 -- Indexes for table `roles`
@@ -207,13 +215,16 @@ ALTER TABLE `subjects`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_USERS_ROLES` (`role_id`);
 
 --
 -- Indexes for table `user_answers`
 --
 ALTER TABLE `user_answers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_userAnswer_user` (`user_id`),
+  ADD KEY `FK_userAnswer_ANSWER` (`answer_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -278,6 +289,51 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_answers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `answers`
+--
+ALTER TABLE `answers`
+  ADD CONSTRAINT `FK_ANSWERS_QUESTIONS` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`);
+
+--
+-- Constraints for table `exams`
+--
+ALTER TABLE `exams`
+  ADD CONSTRAINT `FK_EXAMS_GRADES` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`),
+  ADD CONSTRAINT `FK_EXAMS_SUBJECTS` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
+  ADD CONSTRAINT `FK_EXAMS_TIME` FOREIGN KEY (`exam_time_id`) REFERENCES `exam_time` (`id`),
+  ADD CONSTRAINT `FK_EXAMS_USER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `exam_results`
+--
+ALTER TABLE `exam_results`
+  ADD CONSTRAINT `FK_RESULT_USERS` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `FK_results_exams` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`);
+
+--
+-- Constraints for table `questions`
+--
+ALTER TABLE `questions`
+  ADD CONSTRAINT `FK_QUESTIONS_EXAMS` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `FK_USERS_ROLES` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
+
+--
+-- Constraints for table `user_answers`
+--
+ALTER TABLE `user_answers`
+  ADD CONSTRAINT `FK_userAnswer_ANSWER` FOREIGN KEY (`answer_id`) REFERENCES `answers` (`id`),
+  ADD CONSTRAINT `FK_userAnswer_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
