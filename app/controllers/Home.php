@@ -3,7 +3,12 @@
 class Home extends Controller{
 
     function index(){
-        echo "Hello";
+
+        $this->view("simple", [
+			"Page"  			=> "simple_home",
+			"title" 			=> "Thi trắc nghiệm trức tuyến"
+		]);
+
     }
 }
 ?>
