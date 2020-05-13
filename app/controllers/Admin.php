@@ -10,5 +10,11 @@ class Admin extends Controller{
 		]);
 
     }
+    function addExam(){
+		$this->view("admin", [
+			"Page"  			=> "admin_addexam",
+			"title" 			=> "Thi trắc nghiệm trức tuyến"
+		]);
+	}
 }
 ?>
