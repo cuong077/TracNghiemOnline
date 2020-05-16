@@ -102,7 +102,7 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
-          <a href="#">
+          <a href="admin/danhsachuser">
             <i class="fa fa-pie-chart"></i>
             <span>User</span>
           </a>
@@ -114,7 +114,7 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> Danh sách bài thi</a></li>
+            <li><a href="admin/danhsachbaithi"><i class="fa fa-circle-o"></i> Danh sách bài thi</a></li>
             <li><a href="Admin/addExam"><i class="fa fa-circle-o"></i> Thêm bài thi</a></li>
           </ul>
         </li>

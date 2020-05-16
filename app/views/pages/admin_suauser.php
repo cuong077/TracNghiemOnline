@@ -23,7 +23,7 @@
   <!-- Horizontal Form -->
   <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Horizontal Form</h3>
+           
             </div>
             <!-- /.box-header -->
             <!-- form start -->
