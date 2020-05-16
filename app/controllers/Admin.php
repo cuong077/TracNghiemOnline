@@ -45,13 +45,6 @@ class Admin extends Controller{
 		]);
 	}
 
-	function test(){
-		
-	}
-
-
-
-
 
 
 }
