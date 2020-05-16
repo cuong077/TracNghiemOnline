@@ -6,7 +6,7 @@ class Register extends Controller{
         echo "Hello đây là trang đăng ký";
 
         echo '<form action="Register/process" method="post">
-	
+
 			fullname :
 			<input type="text" name="fullname" />
 			<br>
@@ -27,7 +27,7 @@ class Register extends Controller{
 			<input type="text" name="repassword" />
 			<br>
 
-			
+
 			<input type="submit" name="register">
 			<br>
 		</form>';
@@ -40,19 +40,15 @@ class Register extends Controller{
     	if(!isset($_POST['register']))
     		$this->redirect("Register");
 
-
-        $loginmodel = $this->model("UserModel");
-
+      $loginmodel = $this->model("UserModel");
     	$error = [];
-		$success = "";
-
+		  $success = "";
 
     	$fullname = $this->clear((isset($_POST['fullname'])?$_POST['fullname']:""));
 
     	if($fullname == ""){
     		$error["fullname"] = "Tên đầy đủ không được để trống.";
     	}
-
 
     	$email = $this->clear((isset($_POST['email'])?$_POST['email']:""));
 
@@ -70,15 +66,14 @@ class Register extends Controller{
     	if($username == ""){
     		$error["username"] = "Tài khoản không được để trống.";
     	}else{
-            if (!preg_match('/^[0-9A-Za-z_]+$/', $username, $matches)){
-                $error["username"] = "Tài khoản không được chứa kí tự đặc biệt.";
-            }else{
-                if($loginmodel->checkExistedUser($username)){
-                    $error["username"] = "Tài khoản đã tồn tại.";
-                }
-            }
-            
+        if (!preg_match('/^[0-9A-Za-z_]+$/', $username, $matches)){
+            $error["username"] = "Tài khoản không được chứa kí tự đặc biệt.";
+        }else{
+          if($loginmodel->checkExistedUser($username)){
+              $error["username"] = "Tài khoản đã tồn tại.";
+          }
         }
+      }
 
     	$password = $this->clear((isset($_POST['password'])?$_POST['password']:""));
 
@@ -93,7 +88,7 @@ class Register extends Controller{
     	}
 
     	if(count($error)==0){
-			
+
     		$result = $loginmodel->addUser($username, $password, $email, $fullname);
 
     		if($result){
