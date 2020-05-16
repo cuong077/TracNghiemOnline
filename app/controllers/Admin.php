@@ -42,6 +42,8 @@ class Admin extends Controller{
 		]);
 	}
 
+	
+
 	function addSubject($subjectName){
 		$error = [];
 		$success = "";
