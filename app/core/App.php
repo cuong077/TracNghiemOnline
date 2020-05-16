@@ -8,7 +8,7 @@ class App{
     function __construct(){
  
         $arr = $this->UrlProcess();
- 
+    
         // Controller
         $is_default_controller = true;
         if(trim($arr[0]) != "" && isset($arr[0])){

@@ -4,7 +4,8 @@ class Logout extends Controller{
 
   function index(){
     session_destroy();
-    $this->redirect("home");
+    $this->redirect("Home");
+    exit;
   }
 }
 
