@@ -17,8 +17,8 @@
 			$password = md5($password);
 			$qr = "SELECT username, fullname, role_id FROM users WHERE email = '$email' AND password = '$password' LIMIT 1";
 			$result = mysqli_query($this->con, $qr);
-	    	return $result;
-	    }
+    	return $result;
+    }
 
     //Thêm user mới với quyền mặc định là 1
     public function addUser($username, $password, $email, $fullname, $role_id = 1){
