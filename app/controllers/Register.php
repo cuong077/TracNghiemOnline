@@ -3,34 +3,12 @@
 class Register extends Controller{
 
     function index(){
-        echo "Hello đây là trang đăng ký";
 
-        echo '<form action="Register/process" method="post">
-	
-			fullname :
-			<input type="text" name="fullname" />
-			<br>
+        $this->view("simple", [
+          "Page"        => "simple_register",
+          "title"       => "Đăng ký - Thi trắc nghiệm trức tuyến"
+        ]);
 
-			email :
-			<input type="text" name="email" />
-			<br>
-
-			username :
-			<input type="text" name="username" />
-			<br>
-
-			password :
-			<input type="text" name="password" />
-			<br>
-
-			re password :
-			<input type="text" name="repassword" />
-			<br>
-
-			
-			<input type="submit" name="register">
-			<br>
-		</form>';
 
     }
 
@@ -73,8 +51,8 @@ class Register extends Controller{
             if (!preg_match('/^[0-9A-Za-z_]+$/', $username, $matches)){
                 $error["username"] = "Tài khoản không được chứa kí tự đặc biệt.";
             }else{
-                if($loginmodel->checkExistedUser($username)){
-                    $error["username"] = "Tài khoản đã tồn tại.";
+                if($loginmodel->checkExistedUser($email)){
+                    $error["email"] = "Email đã tồn tại.";
                 }
             }
             
@@ -99,24 +77,22 @@ class Register extends Controller{
     		if($result){
 				$success = "Đăng kí thành công";
     		}else{
-    			$success = "Không đăng kí được";
+    			$success = "Đăng kí thất bại";
     		}
     	}
 
-    	print_r($error);
-    	print_r($success);
 
-/*
+
 		$this->view("simple", [
 			"Page"  			=> "simple_register",
-			"title" 			=> "Đăng ký",
+			"title" 			=> "Đăng ký - Thi trắc nghiệm trức tuyến",
 			"error"				=> $error,
-			"back_firstname" 	=> $firstname,
-			"back_lastname"		=> $lastname,
+			"back_fullname" 	=> $fullname,
+			"back_email"		=> $email,
 			"back_username"		=> $username,
 			"success"			=> $success
 		]);
-*/
+
     }
 
 }
