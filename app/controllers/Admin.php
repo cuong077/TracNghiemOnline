@@ -30,16 +30,29 @@ class Admin extends Controller{
 		]);
 	}
 	function danhsachbaithi(){
+
 		$this->view("admin", [
 			"Page"  			=> "admin_danhsachbaithi",
 			"title" 			=> "Các user đã chọn"
 		]);
 	}
+
+
 	function suabaithi(){
 		$this->view("admin", [
 			"Page"  			=> "admin_suabaithi",
 			"title" 			=> "Các bài thi đã chọn"
 		]);
 	}
+
+	function test(){
+		
+	}
+
+
+
+
+
+
 }
 ?>
