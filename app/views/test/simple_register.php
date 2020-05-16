@@ -19,7 +19,6 @@
                                     <?php if(isset($data['success']) && $data['success'] != ""){ ?>
                                         <h3 style="color: green;text-align: center;">Đăng kí thành công</h3>
                                     <?php } ?>
-                                    
                                     <div class="form-group">
                                         
                                                 <?php if(isset($data['error']['fullname'])){ ?>

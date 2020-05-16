@@ -15,7 +15,6 @@
                                 <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
                                   <form action="Login/process" method="post" class="form-box">
                                     <?php if(isset($data['error'])){ ?>
-                                      
 
                                         <p style="color:red;text-align: center;"><?php echo $data['error']; ?></p>
 

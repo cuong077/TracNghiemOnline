@@ -10,7 +10,6 @@
                                 <div style="background-color:#ffff;border-radius: 7px;" class="col-lg-12 ">
                                     <div class="col-lg-7" id="exam" data-aos="fade-up" data-aos-delay="500">
                                         <div><div class="question question-1">
-                                            
                                             <div class="collapse nodepad" aria-expanded="true" id="nodepad21">
                                                 <textarea placeholder="Your draft goes here..."></textarea>
                                             </div>

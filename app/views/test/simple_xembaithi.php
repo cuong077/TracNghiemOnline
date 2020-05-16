@@ -17,8 +17,6 @@
 
                                 <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
                                     <div class="mr-3"><h5 class="m-0"><b>Tên bài thi:</b></h5></div>
-
-                                    
                                     <div><h5 class="m-0">Bài thi Toán giữa kỳ</h5></div>
                                 </div>
                   
