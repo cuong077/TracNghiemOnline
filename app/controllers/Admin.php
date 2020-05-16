@@ -45,6 +45,40 @@ class Admin extends Controller{
 		]);
 	}
 
+	
+
+	function addSubject($subjectName){
+		$error = [];
+		$success = "";
+  
+		if (!$this->is_Admin()) {
+			$this->redirect("Home");
+		  }
+		  else {
+			$subjectModel = $this->model("SubjectModel");
+  
+			//check khong ton tai bai thi
+			if ($subjectModel->existSubjectWithName($subjectName)) {
+			  if ($subjectModel->addSubject($subjectName)) {
+				$success="Thêm môn học thành công.";
+			  }
+			  else {
+				$error["subject"] = "Không thể thêm môn học vào database.";
+			  }
+			}
+			else {
+			  $error["subject"] = "Đã tồn tại môn học.";
+			}
+		}
+  
+		$this->view("", [
+		  "Page"  			=> "",
+		  "title" 			=> "",
+		  "error"				=> $error,
+		  "success"			=> $success
+		]);
+	  }
+  
 	function test(){
 		
 	}
