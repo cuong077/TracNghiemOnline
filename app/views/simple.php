@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
+    <script src="public/simple/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="public/simple/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="public/simple/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="public/simple/css/elegant-icons.css" type="text/css">
@@ -53,6 +54,7 @@
                                 <li><a href="Login">Đăng nhập</a></li>
                                 <li><a href="Register">Đăng ký</a></li>
                                 <?php }else{ ?>
+                                <li><a href="Examination">Xem danh sách bài thi</a></li>
                                 <li><a href="Logout">Đăng xuất</a></li>
                                 <?php } ?>
                             <!--
@@ -161,7 +163,7 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="public/simple/js/jquery-3.3.1.min.js"></script>
+    
     <script src="public/simple/js/bootstrap.min.js"></script>
     <script src="public/simple/js/jquery.nice-select.min.js"></script>
     <script src="public/simple/js/jquery-ui.min.js"></script>

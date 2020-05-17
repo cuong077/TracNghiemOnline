@@ -1,5 +1,5 @@
 <?php
-	class AnswerModel extends DB{
+class AnswerModel extends DB{
 
     //Them cau hoi
     public function addAnswer($content, $is_correct, $questionId){
@@ -12,17 +12,26 @@
     	return false;
     }
 
-		//Xoa cau hoi
-		public function deleteAnswer($questionId)
-		{
-			$qr = "DELETE FROM answer WHERE id='$questionId'";
+	//Xoa cau hoi
+	public function deleteAnswer($questionId)
+	{
+		$qr = "DELETE FROM answer WHERE id='$questionId'";
 
-			if (mysqli_query($this->con, $qr)) {
-				return true;
-			}
-			else{
-				return false;
-			}
+		if (mysqli_query($this->con, $qr)) {
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
+
+	public function getAllAnswerOfQuestion($questionId){
+
+		$qr = "SELECT * FROM answers WHERE question_id=$questionId";
+	    $result = mysqli_query($this->con, $qr);
+
+	    return $result;
+
+	}
+}
 ?>

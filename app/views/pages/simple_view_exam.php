@@ -19,18 +19,14 @@
                                     <div class="mr-3"><h5 class="m-0"><b>Tên bài thi:</b></h5></div>
 
                                     
-                                    <div><h5 class="m-0">Bài thi Toán giữa kỳ</h5></div>
+                                    <div><h5 class="m-0"><?php echo $data["description"]; ?></h5></div>
                                 </div>
                   
                                 <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
                                     <div class="mr-3"><h5 class="m-0"><b>Thời lượng:</b></h5></div>
-                                    <div><h5 class="m-0">60 phút</h5></div>
+                                    <div><h5 class="m-0"><?php echo $data["time"]; ?> phút</h5></div>
                                 </div>
-                  
-                                <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
-                                    <div class="mr-3"><h5 class="m-0"><b>Tên giáo viên:</b></h5></div>
-                                    <div><h5 class="m-0">Trần Đăng Khoa</h5></div>
-                                </div>
+                
                   
                                 <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
                                     <div class="mr-3"><h5 class="m-0"><b>Hình thức:</b></h5></div>
@@ -39,7 +35,7 @@
                               </div>
                         </div>
                         <div class="col-lg-3">
-                            <button style="margin:10px;"  type="button" class="btn btn-success">Bắt đầu thi</button>
+                            <a href='<?php echo Config::$base_url.'Examination/joinExam/'.$data["exam_id"]; ?>'><button style="margin:10px;"  type="button" class="btn btn-success">Bắt đầu thi</button></a>
                         </div>
                         </div>
                     </div>
