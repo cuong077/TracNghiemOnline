@@ -49,12 +49,18 @@
                                 <li class="active"><a href="#">Trang chủ</a></li>
                                 <li><a href="#">Tra cứu kết quả</a></li>
                                 <li><a href="#">Liên Hệ</a></li>
+
                                 <?php if(!isset($_SESSION['username'])){ ?>
                                 <li><a href="Login">Đăng nhập</a></li>
                                 <li><a href="Register">Đăng ký</a></li>
-                                <?php }else{ ?>
-                                <li><a href="Logout">Đăng xuất</a></li>
-                                <?php } ?>
+                                <?php }else {
+                                        if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 3)) {?>
+                                            <li><a href="Manager">Quản lý</a></li>
+                                            <li><a href="Logout">Đăng xuất</a></li>
+                                <?php   } else { ?>
+                                    <li><a href="Logout">Đăng xuất</a></li>
+                                <?php }}?>
+                                <!--  -->
                             <!--
                                 <li><a href="login.html">Đăng Nhập</a>
                                     <ul class="dropdown">

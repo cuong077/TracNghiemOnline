@@ -15,10 +15,10 @@
     }
 
     //lay n exams trong database
-    public function getListExams($startIndex, $endIndex)
+    public function getListExams()
     {
-      $qr = "SELECT * FROM exams LIMIT $startIndex,$endIndex";
-      
+      $qr = "SELECT * FROM exams";
+      // echo $qr;
       $result = mysqli_query($this->con, $qr);
 
       return $result;

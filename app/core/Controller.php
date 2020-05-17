@@ -23,7 +23,7 @@ class Controller{
   }
 
   public function getUserId(){
-    return $_SESSION['userid'];
+    return @$_SESSION['userid'];
   }
 
   public function is_Admin(){
@@ -83,5 +83,8 @@ class Controller{
   {
     $_SESSION[$name]=$value;
   }
+
+
 }
+
 ?>

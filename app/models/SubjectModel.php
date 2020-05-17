@@ -14,31 +14,45 @@
     }
 
 		//Xoa khoi hoc
-		public function deleteSubject($subjectId)
-		{
-			$qr = "DELETE FROM subjects WHERE id='$subjectId'";
+	public function deleteSubject($subjectId)
+	{
+		$qr = "DELETE FROM subjects WHERE id='$subjectId'";
 
-			if (mysqli_query($this->con, $qr)) {
-				return true;
-			}
-			else{
-				return false;
-			}
+		if (mysqli_query($this->con, $qr)) {
+			return true;
 		}
-
-    //Chinh sua ten khoi hoc
-		public function updateGrade($subjectId, $subjectName)
-		{
-      $qr = "UPDATE subjects SET name='$subjectName',
-                              WHERE id='$subjectId'";
-
-			if (mysqli_query($this->con, $qr)) {
-				return true;
-			}
-			else{
-				return false;
-			}
+		else{
+			return false;
 		}
 	}
+
+    //Chinh sua ten khoi hoc
+	public function updateSubject($subjectId, $subjectName)
+	{
+		$qr = "UPDATE subjects SET name='$subjectName' WHERE id=$subjectId";
+		
+		// echo $qr;
+
+		if (mysqli_query($this->con, $qr)) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+
+	public function getListSubjects(){
+		$qr = "SELECT * FROM subjects";
+		$result = mysqli_query($this->con, $qr);
+		return $result;
+	}
+
+	public function getSubject($subjectId){
+		$qr = "SELECT * FROM subjects WHERE id=$subjectId";
+		$result = mysqli_query($this->con, $qr);
+		return $result;
+	}
+}
 
 ?>
