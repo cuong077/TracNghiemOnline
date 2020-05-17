@@ -60,13 +60,13 @@ class Login extends Controller{
               $row = mysqli_fetch_array($result);
               $this->addSessionValue("username", $row["username"]);
               $this->addSessionValue("permission", $row["role_id"]);
+              $this->addSessionValue("userid", $row["id"]);
               $this->redirect("Home");
               exit;
             }
           }
 
         }
-
 
       }
   	}

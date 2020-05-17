@@ -17,7 +17,8 @@
     //lay n exams trong database
     public function getListExams($startIndex, $endIndex)
     {
-      $qr = "SELECT * FROM exams LIMIT '$startIndex','$endIndex'";
+      $qr = "SELECT * FROM exams LIMIT $startIndex,$endIndex";
+      
       $result = mysqli_query($this->con, $qr);
 
       return $result;
@@ -26,9 +27,8 @@
     //lay 1 exam trong database
     public function getExam($examId)
     {
-      $qr = "SELECT * FROM exams WHERE id='$examId' LIMIT 1";
+      $qr = "SELECT * FROM exams e join exam_time et on e.exam_time_id = et.id WHERE e.id=$examId ";
       $result = mysqli_query($this->con, $qr);
-
       return $result;
     }
 

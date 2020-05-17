@@ -45,7 +45,6 @@ class Admin extends Controller{
 		]);
 	}
 
-	
 
 	function addSubject($subjectName){
 		$error = [];
@@ -78,15 +77,6 @@ class Admin extends Controller{
 		  "success"			=> $success
 		]);
 	  }
-  
-	function test(){
-		
-	}
-
-
-
-
-
 
 }
 ?>
