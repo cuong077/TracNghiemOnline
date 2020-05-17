@@ -22,6 +22,10 @@ class Controller{
   	}
   }
 
+  public function getUserId(){
+    return $_SESSION['userid'];
+  }
+
   public function is_Admin(){
   	if(isset($_SESSION['username']) && $_SESSION['username'] != "" && $_SESSION['permission'] == 3){
   		return true;

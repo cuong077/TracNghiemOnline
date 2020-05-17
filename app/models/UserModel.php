@@ -15,7 +15,7 @@
 		//Kiểm tra user và password có đúng ko
 		public function checkUserAndPasswordIsCorrect($email, $password){
 			$password = md5($password);
-			$qr = "SELECT username, fullname, role_id FROM users WHERE email = '$email' AND password = '$password' LIMIT 1";
+			$qr = "SELECT username, fullname, role_id, id FROM users WHERE email = '$email' AND password = '$password' LIMIT 1";
 			$result = mysqli_query($this->con, $qr);
 	    	return $result;
 	    }
