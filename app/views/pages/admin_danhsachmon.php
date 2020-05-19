@@ -14,11 +14,12 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"><b style="color:#3c8dbc;">Tất cả môn </b></h3>
+                      
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách môn học </b></h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <div>
+                    <div style="padding:15px;">
                         <div>
                             <table class="table table-striped custab text-center">
                                 <thead>
@@ -39,21 +40,32 @@
                                     <td><?php echo $row[1];?></td>
 
                                     <td class="text-center">
-                                        <a class='btn btn-success btn-xs' href="Manager/themmon"><span
-                                                class="glyphicon glyphicon-plus"></span> Add</a>
+
                                         <a class='btn btn-info btn-xs' href="Manager/suamon/<?php echo $row[0];?>"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit</a>
+                                                class="glyphicon glyphicon-edit"></span> Sửa</a>
                                         <a href="#" class="btn btn-danger btn-xs"><span
-                                                class="glyphicon glyphicon-remove"></span> Del</a></td>
+                                                class="glyphicon glyphicon-remove"></span> Xóa</a></td>
                                 </tr>
                                 <?php }?>
+                                                                
                             </table>
                         </div>
+<!--                     
+                        <div class="text-center padding-bottom-xs">
+                            <a  style="height:40px;" class="text-center btn btn-success btn-xs" href="Manager/suamon/<?php echo $row[0];?>"><span
+                                                    class="glyphicon glyphicon-plus"></span> Thêm môn học</a>
+                        </div>
+                         -->
+                    
                     </div>
 
                 </div>
 
             </div>
         </div>
+        <a id="button">
+            
+        </a>
+
     </section>
 </div>

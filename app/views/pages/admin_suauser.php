@@ -22,63 +22,67 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form class="form-horizontal" method="post">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="email" class="col-sm-2 control-label">Email</label>
-
-                                <div class="col-sm-10">
+                        <table class="table table-striped text-center">
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="email" class="control-label">Email</label>
+                                </th>
+                                <td>
                                     <input type="email" class="form-control" id="email" placeholder="Email" name="email"
                                         value="<?php echo $user[0]; ?>">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="UserName" class="col-sm-2 control-label">UserName</label>
+                                </td>
+                            </tr>
+                            
+                            <tr class="text-center">
+                                <th class="text-center col-sm-2">
+                                    <label for="UserName" class="control-label">User Name</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="UserName" placeholder="UserName"
+                                                name="username" value="<?php echo $user[1]; ?>">
+                                </td> 
+                            </tr>
+                           
+                            <tr>
+                                <th class="text-center">
+                                    <label for="FullName" class="control-label">FullName</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="FullName" placeholder="FullName"
+                                                name="fullname" value="<?php echo $user[2]; ?>">
+                                </td>
+                            </tr>
+                            
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="UserName" placeholder="UserName" name="username"
-                                        value="<?php echo $user[1]; ?>">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="FullName" class="col-sm-2 control-label">FullName</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="FullName" placeholder="FullName" name="fullname"
-                                        value="<?php echo $user[2]; ?>">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="RoleID" class="col-sm-2 control-label">Role</label>
-
-                                <!-- <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="RoleID" placeholder="RoleID" name="role_id"
-                                        value="<?php echo $user[3]; ?>">
-                                </div> -->
-                                <div class="col-sm-10 ">
-                                    <select class="browser-default custom-select">
-                                        <option name="roleSelect">Danh sách quyền</option>
-                                            <?php $roles=$data["roles"]; 
+                            <tr>
+                                <th class="text-center">
+                                    <label for="RoleID" class="control-label">Role</label>
+                                </th>
+                                <td>
+                                    <select class="browser-default custom-select form-control" name="roleSelect">
+                                        <!-- <option>Danh sách quyền</option> -->
+                                        <?php $roles=$data["roles"]; 
                                                 // print_r($roles);
 
                                                 for ($index=0; $index < count($roles); $index++) { 
                                                     $row = $roles[$index];
-                                            ?>
-                                            <option value="<?php echo $row[0];?>" <?php if((int)$user[3] == $row[0]) echo "selected"; ?>><?php echo $row[1];?> 
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$user[3] == $row[0]) echo "selected"; ?>><?php echo $row[1];?>
                                         </option>
 
                                         <?php
                                             }
                                         ?>
                                     </select>
-                                </div>
-                                
-                            </div>
+                                </td>
 
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                </div>
-                            </div>
-                        </div>
+                            </tr>
+                            
+
+                        </table>
+                      
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <a class="btn btn-default" href="Manager/danhsachuser">Cancel</a>

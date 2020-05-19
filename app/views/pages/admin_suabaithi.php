@@ -15,61 +15,118 @@
                 <!-- Horizontal Form -->
                 <div class="box box-info">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách bài thi đã chọn</b></h3>
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Chính sửa bài thi đã chọn</b></h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form class="form-horizontal" method="post">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="MaThoiGian" class="col-sm-2 control-label">Mã thời gian</label>
+                        <table class="table table-striped text-center">
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaBaiThi" class="control-label">Mã bài thi</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MaBaiThi" placeholder="Mã bài thi"
+                                        value="<?php echo $exam[0];?>" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaGiaoVien" class="control-label">Mã giáo viên</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MaGiaoVien" placeholder="Mã giáo viên"
+                                        value="<?php echo $exam[2];?>" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaThoiGian" class="control-label">Mã thời gian</label>
+                                </th>
+                                <td>
+                                    <!-- <input type="text" class="form-control" id="MaThoiGian" placeholder="Mã thời gian"
+                                        value="<?php echo $exam[4];?>" readonly> -->
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MaThoiGian" placeholder="Mã thời gian"
-                                        value="<?php echo $exam[4];?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="MaGiaoVien" class="col-sm-2 control-label">Mã giáo viên</label>
+                                    <select class="browser-default custom-select form-control" name="examTimeSelect">
+                                        <?php $examTimes=$data["examTimes"]; 
+                                                // print_r($roles);
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MaGiaoVien" placeholder="Mã giáo viên" value="<?php echo $exam[2];?>" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="MaKhoi" class="col-sm-2 control-label">Mã khối</label>
+                                                for ($index=0; $index < count($examTimes); $index++) { 
+                                                    $row = $examTimes[$index];
+                                        ?>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MaKhoi" placeholder="Mã khối" value="<?php echo $exam[3];?>" name="grade_id">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="MaBaiThi" class="col-sm-2 control-label">Mã bài thi</label>
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$exam[4] == $row[0]) echo "selected"; ?>><?php echo $row[1];?>
+                                        </option>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MaBaiThi" placeholder="Mã bài thi" value="<?php echo $exam[0];?>">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="MaMon" class="col-sm-2 control-label">Mã môn</label>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MaMon" placeholder="Mã môn">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="MoTaBaiThi" class="col-sm-2 control-label">Mô tả bài thi</label>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaKhoi" class="control-label">Mã khối</label>
+                                </th>
+                                <td>
 
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MoTaBaiThi" placeholder="Mô tả bài thi" value="<?php echo $exam[1];?>" name="exam_description">
-                                </div>
-                            </div>
-                          
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                </div>
-                            </div>
-                        </div>
+                                    <select class="browser-default custom-select form-control" name="gradeSelected">
+                                        <?php $grades=$data["grades"]; 
+
+                                                for ($index=0; $index < count($grades); $index++) { 
+                                                    $row = $grades[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$row["id"] == $exam[3]) echo "selected";?>>
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaMon" class="control-label">Mã môn</label>
+                                </th>
+                                <td>
+                                    <select class="browser-default custom-select form-control" name="gradeSelected">
+                                        <?php $subjects=$data["subjects"]; 
+
+                                                for ($index=0; $index < count($subjects); $index++) { 
+                                                    $row = $subjects[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$row["id"] == $exam[5]) echo "selected";?>>
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MoTaBaiThi" class="control-label">Mô tả bài thi</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MoTaBaiThi" placeholder="Mô tả bài thi"
+                                        value="<?php echo $exam[1];?>" name="exam_description">
+                                </td>
+                            </tr>
+
+
+                        </table>
+
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <a href="Manager/danhsachbaithi" class="btn btn-default">Cancel</a>
@@ -80,6 +137,131 @@
                 </div>
                 <!-- Horizontal Form -->
 
+
+                <!-- Horizontal Form -->
+                <div class="box box-info">
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách câu hỏi.</b></h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" method="post">
+                        <table class="table table-striped text-center">
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaBaiThi" class="control-label">Mã bài thi</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MaBaiThi" placeholder="Mã bài thi"
+                                        value="<?php echo $exam[0];?>" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaGiaoVien" class="control-label">Mã giáo viên</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MaGiaoVien" placeholder="Mã giáo viên"
+                                        value="<?php echo $exam[2];?>" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaThoiGian" class="control-label">Mã thời gian</label>
+                                </th>
+                                <td>
+                                    <!-- <input type="text" class="form-control" id="MaThoiGian" placeholder="Mã thời gian"
+                                        value="<?php echo $exam[4];?>" readonly> -->
+
+                                    <select class="browser-default custom-select form-control" name="examTimeSelect">
+                                        <?php $examTimes=$data["examTimes"]; 
+                                                // print_r($roles);
+
+                                                for ($index=0; $index < count($examTimes); $index++) { 
+                                                    $row = $examTimes[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$exam[4] == $row[0]) echo "selected"; ?>><?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <th class="text-center col-sm-2">
+                                    <label for="MaKhoi" class="control-label">Mã khối</label>
+                                </th>
+                                <td>
+
+                                    <select class="browser-default custom-select form-control" name="gradeSelected">
+                                        <?php $grades=$data["grades"]; 
+
+                                                for ($index=0; $index < count($grades); $index++) { 
+                                                    $row = $grades[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$row["id"] == $exam[3]) echo "selected";?>>
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaMon" class="control-label">Mã môn</label>
+                                </th>
+                                <td>
+                                    <select class="browser-default custom-select form-control" name="gradeSelected">
+                                        <?php $subjects=$data["subjects"]; 
+
+                                                for ($index=0; $index < count($subjects); $index++) { 
+                                                    $row = $subjects[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$row["id"] == $exam[5]) echo "selected";?>>
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MoTaBaiThi" class="control-label">Mô tả bài thi</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MoTaBaiThi" placeholder="Mô tả bài thi"
+                                        value="<?php echo $exam[1];?>" name="exam_description">
+                                </td>
+                            </tr>
+
+
+                        </table>
+
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <a href="Manager/danhsachbaithi" class="btn btn-default">Cancel</a>
+                            <button type="submit" class="btn btn-info pull-right">Update</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- Horizontal Form -->
             </div>
 
         </div>

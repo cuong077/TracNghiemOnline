@@ -114,7 +114,8 @@ class Manager extends Controller{
 			$username = $_POST["username"];
 			$email = $_POST["email"];
 			$fullname = $_POST["fullname"];
-			$role_id = $_POST["role_id"];
+			$role_id = $_POST["roleSelect"];
+
 
 			// echo 'vo post';
 
@@ -128,16 +129,7 @@ class Manager extends Controller{
 		}
 	}
 
-	private function checkIsAdminOrRedirect(){
-		if (!$this->is_Admin()) {
-			if ($this->is_Login()) {
-				$this->redirect("Home");
-			}
-			else{
-				$this->redirect("Login");
-			}	
-		}
-	}
+	
 
 	function danhsachkhoi(){
 		$this->checkIsAdminOrRedirect();
@@ -206,26 +198,37 @@ class Manager extends Controller{
 				array_push($rowToAdd, $row["id"]);
 				array_push($rowToAdd, $row["description"]);
 				array_push($rowToAdd, $this->getNameUserWithId((int)$row["user_id"]));
-				array_push($rowToAdd, $this->getNameGradeWithId((int)$row["grade_id"]));
-				array_push($rowToAdd, $this->getNameExamTimeWithId((int)$row["exam_time_id"]));
+				array_push($rowToAdd, (int)$row["grade_id"]);
+				array_push($rowToAdd, (int)$row["exam_time_id"]);
+				array_push($rowToAdd, (int)$row["subject_id"]);
 
 				// array_push($exam, $rowToAdd);
 			}
-			
+
+			$grades = $this->getListNameGrade();
+			$subjects = $this->getListNameSubject();
+			$examTimes = $this->getListNameExamTime();
+
 			$this->view("admin", [
 				"Page"  			=> "admin_suabaithi",
 				"title" 			=> "Sửa thông tin bài thi",
-				"exam" 				=> $rowToAdd
+				"exam" 				=> $rowToAdd,
+				"grades" 			=> $grades,
+				"subjects"			=> $subjects,
+				"examTimes"			=> $examTimes
 			]);
 
 		} else {
 			$this->checkIsAdminOrRedirect();
 
 			$description = $_POST["description"];
+			$gradeId = $_POST["gradeSelected"];
+			$subjectId = $_POST["subjectSelected"];
+			
 
-			if (isset($description)) {
+			if (isset($description) && isset($gradeId)) {
 				$examModel = $this->model("ExamsModel");
-				$result = $examModel->updateExam();
+				$result = $examModel->updateExam($description, $subjectId, $gradeId, $exam_time_id, $examId);
 				$this->redirect("Manager/suabaithi/".$examId);
 			}
 		}
@@ -412,5 +415,15 @@ class Manager extends Controller{
 		return (int)$row["time"];
 	}
 
+	private function checkIsAdminOrRedirect(){
+		if (!$this->is_Admin()) {
+			if ($this->is_Login()) {
+				$this->redirect("Home");
+			}
+			else{
+				$this->redirect("Login");
+			}	
+		}
+	}
 }
 ?>

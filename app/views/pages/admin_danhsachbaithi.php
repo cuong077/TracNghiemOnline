@@ -14,7 +14,10 @@
             <div class="col-lg-12">
                 <!-- general form elements -->
                 <div class="box box-primary">
+                    <div class="box-header with-border text-center">
 
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách bài thi </b></h3>
+                    </div>
                     <!-- /.box-header -->
                     <!-- form start -->
                     <div>
@@ -46,9 +49,9 @@
                                             <a class="btn btn-info btn-xs"
                                                 href="Manager/suabaithi/<?php echo $row[0];?>">
                                                 <span class="glyphicon glyphicon-edit"></span>
-                                                Edit</a>
+                                                Sửa</a>
                                             <a href="#" class="btn btn-danger btn-xs"><span
-                                                    class="glyphicon glyphicon-remove"></span> Del</a></td>
+                                                    class="glyphicon glyphicon-remove"></span>Xóa</a></td>
                                     </tr>
                                     <?php }?>
                                 </tbody>

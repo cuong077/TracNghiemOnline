@@ -7,7 +7,7 @@
       $qr = "INSERT INTO exam_results( user_id, exam_id, time_join, is_completed)
              VALUES ($user_id, $exam_id, '$time_join', $is_completed)";
 
-             echo $qr;
+            //  echo $qr;
       if (mysqli_query($this->con, $qr)) {
         return true;
       }

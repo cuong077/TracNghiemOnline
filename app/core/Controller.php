@@ -84,6 +84,48 @@ class Controller{
     $_SESSION[$name]=$value;
   }
 
+  public function getListNameGrade(){
+		$gradeModel = $this->model("GradesModel");
+		$result = $gradeModel->getListGrades();
+		$grades = [];
+		$index = 0;
+
+		while($row = mysqli_fetch_array($result)){
+			$grades[$index] = $row;
+			$index++;
+		}
+		// print_r($grades);
+		return $grades;
+	}
+
+	public function getListNameSubject(){
+		$subjectModel = $this->model("SubjectModel");
+		$result = $subjectModel->getListSubjects();
+		$subjects = [];
+		$index = 0;
+
+		while($row = mysqli_fetch_array($result)){
+			$subjects[$index] = $row;
+			$index++;
+		}
+
+		return $subjects;
+	}
+
+	public function getListNameExamTime(){
+		$examTimeModel = $this->model("ExamTimeModel");
+		$result = $examTimeModel->getListExamTime();
+		$examTimes = [];
+		$index = 0;
+
+		while($row = mysqli_fetch_array($result)){
+			$examTimes[$index] = $row;
+			$index++;
+		}
+
+		return $examTimes;
+	}
+
 
 }
 

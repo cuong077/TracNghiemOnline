@@ -13,7 +13,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách User</b></h3>
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách người dùng</b></h3>
                     </div>
 
                     <div>

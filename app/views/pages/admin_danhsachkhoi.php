@@ -14,7 +14,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"><b style="color:#3c8dbc;">Tất cả khối</b></h3>
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách khối</b></h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -37,8 +37,6 @@
                                     <td><?php echo $row[0]?></td>
                                     <td><?php echo $row[1]?></td>
                                     <td>
-                                        <a href="Manager/themkhoi" class="btn btn-success btn-xs"><span
-                                                class="glyphicon glyphicon-plus"></span> Add</a>
                                         <a class='btn btn-info btn-xs' href="Manager/suakhoi/<?php echo $row[0]?>"><span
                                                 class="glyphicon glyphicon-edit"></span> Edit</a>
                                         <a href="Manager/xoakhoi/<?php echo $row[0]?>"

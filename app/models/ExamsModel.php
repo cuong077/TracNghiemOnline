@@ -45,17 +45,15 @@
       }
     }
 
-    public function updateExam($description, $time_start, $time_end, $userId, $subjectId, $gradeId, $exam_time_id, $examId)
+    public function updateExam($description, $subjectId, $gradeId, $exam_time_id, $examId)
     {
       // code...
-      $qr = "UPDATE exams SET description='$description',
-                              time_start='$time_start',
-                              time_end='$time_end',
-                              user_id='$userId',
-                              subject_id='$subjectId',
-                              grade_id='$gradeId',
-                              exam_time_id='$exam_time_id')
-                          WHERE id='$examId'";
+      $qr = "UPDATE exams SET 
+                              description='$description',
+                              subject_id=$subjectId,
+                              grade_id=$gradeId,
+                              exam_time_id=$exam_time_id)
+                          WHERE id=$examId";
 
       if (mysqli_num_rows(mysqli_query($this->con, $qr)) > 0) {
         return true;
