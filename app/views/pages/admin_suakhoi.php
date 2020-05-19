@@ -40,7 +40,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a href="manager/danhsachkhoi" class="btn btn-default">Cancel</a>
+                            <a href="Manager/danhsachkhoi" class="btn btn-default">Cancel</a>
                             <button type="submit" class="btn btn-info pull-right" name="updateGrade">Update</button>
                         </div>
                         <!-- /.box-footer -->

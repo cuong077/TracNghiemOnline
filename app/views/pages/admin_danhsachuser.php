@@ -46,11 +46,11 @@
                                     <td> <?php echo $row[0]; ?></td>
                                     <td> <?php echo $row[2]; ?></td>
                                     <td class="text-center">
-                                        <!-- <a class="btn btn-success btn-xs" href="manager/themuser"><span
+                                        <!-- <a class="btn btn-success btn-xs" href="Manager/themuser"><span
                                                 class="glyphicon glyphicon-plus"></span> Add</a> -->
-                                        <a class='btn btn-info btn-xs' href="manager/suauser/<?php echo $row[3]?>"><span
+                                        <a class='btn btn-info btn-xs' href="Manager/suauser/<?php echo $row[3]?>"><span
                                                 class="glyphicon glyphicon-edit"></span> Edit</a>
-                                        <a href="manager/xoauser/<?php echo $row[3]?>" class="btn btn-danger btn-xs"><span
+                                        <a href="Manager/xoauser/<?php echo $row[3]?>" class="btn btn-danger btn-xs"><span
                                                 class="glyphicon glyphicon-remove"></span> Del</a>
                                     </td>
                                 </tr>

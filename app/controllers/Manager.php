@@ -5,7 +5,8 @@ class Manager extends Controller{
     function index(){
 
 		if ($this->is_Admin()) {
-			$this->redirect("manager/danhsachuser");
+			// echo 'test';
+			$this->redirect("Manager/danhsachuser");
 		}
 		elseif ($this->is_Login()) {
 			$this->redirect("Home");
@@ -31,9 +32,12 @@ class Manager extends Controller{
 		$users = [];
 		$index = 0;
 
+		// print_r()
+
 		if($listUsers != null){
 			//fetch list user	
 			while ($row = mysqli_fetch_array($listUsers)) {
+				
 				$rowToAdd = [];
 				array_push($rowToAdd, $row["username"]);
 				array_push($rowToAdd, $row["fullname"]);
@@ -44,6 +48,8 @@ class Manager extends Controller{
 				$users[$index] = $rowToAdd;
 				$index++;
 			}
+
+
 		}
 		else{
 			//show nofi doesn't have user
@@ -78,11 +84,28 @@ class Manager extends Controller{
 					$userToView[] .= $row["role_id"];
 				}
 			}
+			$roleModel = $this->model("RoleModel");
+			$roles = $roleModel->getListRoles();
+			$rolesToView = [];
+			$index = 0;
+
+			while ($row = mysqli_fetch_array($roles)) {
+				$rowToAdd = [];
+
+				array_push($rowToAdd, $row["id"]);
+				array_push($rowToAdd, $row["name"]);
+				array_push($rowToAdd, $row["description"]);
+				// print_r($rowToAdd);
+				$rolesToView[$index] = $rowToAdd;
+				$index++;
+			}
+
 			$this->view("admin", [
 				"Page"  			=> "admin_suauser",
 				"title" 			=> "Thông tin người dùng ",
 				"error"				=> $error,
-				"user"				=> $userToView
+				"user"				=> $userToView,
+				"roles" 			=> $rolesToView
 			]);
 		}
 		else{
@@ -93,11 +116,13 @@ class Manager extends Controller{
 			$fullname = $_POST["fullname"];
 			$role_id = $_POST["role_id"];
 
+			// echo 'vo post';
+
 			if (isset($username) && isset($email) && isset($fullname) && isset($role_id)) {
 				$userModel = $this->model("UserModel");
 				$userModel->updateUserInformation($fullname, $username, $role_id, $userId);
 			
-				$this->redirect("manager/suauser/".$userId);
+				$this->redirect("Manager/suauser/".$userId);
 			}
 			
 		}
@@ -201,7 +226,7 @@ class Manager extends Controller{
 			if (isset($description)) {
 				$examModel = $this->model("ExamsModel");
 				$result = $examModel->updateExam();
-				$this->redirect("manager/suabaithi/".$examId);
+				$this->redirect("Manager/suabaithi/".$examId);
 			}
 		}
 		
@@ -232,7 +257,7 @@ class Manager extends Controller{
 			if (isset($gradeName)) {
 				$gradeMode = $this->model("GradesModel");
 				$result = $gradeMode->updateGrade($gradeId, $gradeName);
-				$this->redirect("manager/suakhoi/".$gradeId);
+				$this->redirect("Manager/suakhoi/".$gradeId);
 			}
 		}
 	}
@@ -254,7 +279,7 @@ class Manager extends Controller{
 				$gradeModel = $this->model("GradesModel");
 				$gradeModel->addGrade($gradeName);
 
-				$this->redirect("manager/danhsachkhoi");	
+				$this->redirect("Manager/danhsachkhoi");	
 			}
 		}
 	}
@@ -317,7 +342,7 @@ class Manager extends Controller{
 				$subjectModel = $this->model("SubjectModel");
 				$subjectModel->updateSubject($subjectId, $subjectName);
 			
-				$this->redirect("manager/suamon/".$subjectId);
+				$this->redirect("Manager/suamon/".$subjectId);
 			}
 			
 		}
@@ -339,7 +364,7 @@ class Manager extends Controller{
 			if (isset($subjectName)) {
 				$subjectModel = $this->model("SubjectModel");
 				$subjectModel->addSubject($subjectName);
-				$this->redirect("manager/danhsachmon");	
+				$this->redirect("Manager/danhsachmon");	
 			}
 		}
 	}

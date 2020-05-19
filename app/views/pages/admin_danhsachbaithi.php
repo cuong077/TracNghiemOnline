@@ -44,7 +44,7 @@
                                         <td><?php echo $row[4];?></td>
                                         <td class="text-center">
                                             <a class="btn btn-info btn-xs"
-                                                href="manager/suabaithi/<?php echo $row[0];?>">
+                                                href="Manager/suabaithi/<?php echo $row[0];?>">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                                 Edit</a>
                                             <a href="#" class="btn btn-danger btn-xs"><span

@@ -33,7 +33,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a href="manager/danhsachmon" class="btn btn-default">Cancel</a>
+                            <a href="Manager/danhsachmon" class="btn btn-default">Cancel</a>
                             <button type="submit" class="btn btn-info pull-right" name="addSubject">Add</button>
                         </div>
                         <!-- /.box-footer -->

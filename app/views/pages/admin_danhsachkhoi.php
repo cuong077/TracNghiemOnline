@@ -37,11 +37,11 @@
                                     <td><?php echo $row[0]?></td>
                                     <td><?php echo $row[1]?></td>
                                     <td>
-                                        <a href="manager/themkhoi" class="btn btn-success btn-xs"><span
+                                        <a href="Manager/themkhoi" class="btn btn-success btn-xs"><span
                                                 class="glyphicon glyphicon-plus"></span> Add</a>
-                                        <a class='btn btn-info btn-xs' href="manager/suakhoi/<?php echo $row[0]?>"><span
+                                        <a class='btn btn-info btn-xs' href="Manager/suakhoi/<?php echo $row[0]?>"><span
                                                 class="glyphicon glyphicon-edit"></span> Edit</a>
-                                        <a href="manager/xoakhoi/<?php echo $row[0]?>"
+                                        <a href="Manager/xoakhoi/<?php echo $row[0]?>"
                                             class="btn btn-danger btn-xs"><span
                                                 class="glyphicon glyphicon-remove"></span> Del</a></td>
 

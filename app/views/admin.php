@@ -106,7 +106,7 @@
                     <li class="header">MAIN NAVIGATION</li>
                     <?php if(isset($_SESSION["permission"]) && $_SESSION["permission"]==3){?>
                     <li class="treeview">
-                        <a href="manager/danhsachuser">
+                        <a href="Manager/danhsachuser">
                             <i class="fa fa-user"></i>
                             <span>User</span>
                         </a>
@@ -118,9 +118,9 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="manager/danhsachbaithi"><i class="fa fa-circle-o"></i> Danh sách bài thi</a>
+                            <li><a href="Manager/danhsachbaithi"><i class="fa fa-circle-o"></i> Danh sách bài thi</a>
                             </li>
-                            <li><a href="manager/addExam"><i class="fa fa-circle-o"></i> Thêm bài thi</a></li>
+                            <li><a href="Manager/addExam"><i class="fa fa-circle-o"></i> Thêm bài thi</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -129,8 +129,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="manager/danhsachkhoi"><i class="fa fa-circle-o"></i> Danh sách khối</a></li>
-                            <li><a href="manager/themkhoi"><i class="fa fa-circle-o"></i> Thêm khối</a></li>
+                            <li><a href="Manager/danhsachkhoi"><i class="fa fa-circle-o"></i> Danh sách khối</a></li>
+                            <li><a href="Manager/themkhoi"><i class="fa fa-circle-o"></i> Thêm khối</a></li>
                         </ul>
                     </li>
 
@@ -140,8 +140,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="manager/danhsachmon"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
-                            <li><a href="manager/themmon"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
+                            <li><a href="Manager/danhsachmon"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
+                            <li><a href="Manager/themmon"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
                         </ul>
                     </li>
                     <?php }?>
@@ -153,8 +153,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="manager/danhsachmon"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
-                            <li><a href="manager/themmon"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
+                            <li><a href="Manager/danhsachmon"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
+                            <li><a href="Manager/themmon"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
                         </ul>
                     </li>
                     <?php }?>

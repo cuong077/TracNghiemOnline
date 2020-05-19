@@ -41,7 +41,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a type="submit" class="btn btn-default" href="manager/danhsachmon">Cancel</a>
+                            <a type="submit" class="btn btn-default" href="Manager/danhsachmon">Cancel</a>
                             <button type="submit" class="btn btn-info pull-right" name="updateSubject">Update</button>
                         </div>
                         <!-- /.box-footer -->

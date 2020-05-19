@@ -48,12 +48,30 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="RoleID" class="col-sm-2 control-label">RoleID</label>
+                                <label for="RoleID" class="col-sm-2 control-label">Role</label>
 
-                                <div class="col-sm-10">
+                                <!-- <div class="col-sm-10">
                                     <input type="text" class="form-control" id="RoleID" placeholder="RoleID" name="role_id"
                                         value="<?php echo $user[3]; ?>">
+                                </div> -->
+                                <div class="col-sm-10 ">
+                                    <select class="browser-default custom-select">
+                                        <option name="roleSelect">Danh sách quyền</option>
+                                            <?php $roles=$data["roles"]; 
+                                                // print_r($roles);
+
+                                                for ($index=0; $index < count($roles); $index++) { 
+                                                    $row = $roles[$index];
+                                            ?>
+                                            <option value="<?php echo $row[0];?>" <?php if((int)$user[3] == $row[0]) echo "selected"; ?>><?php echo $row[1];?> 
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
                                 </div>
+                                
                             </div>
 
                             <div class="form-group">
@@ -63,7 +81,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a class="btn btn-default" href="manager/danhsachuser">Cancel</a>
+                            <a class="btn btn-default" href="Manager/danhsachuser">Cancel</a>
                             <button type="submit" name="UpdateUser" class="btn btn-info pull-right">Update</button>
                         </div>
                         <!-- /.box-footer -->

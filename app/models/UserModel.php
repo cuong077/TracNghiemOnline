@@ -74,7 +74,8 @@
 		}
 
 		public function getListUsersWithoutCurrentUser($currentUserId){
-			$qr = "SELECT username, fullname, r.description AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id != $currentUserId";
+			$qr = "SELECT username, fullname, r.name AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id != $currentUserId";
+			//echo $qr;
 			$result = mysqli_query($this->con, $qr);
 			if (mysqli_num_rows($result) > 0) {
 				return $result;
@@ -85,6 +86,7 @@
 
 		public function getUser($userId){
 			$qr = "SELECT username, fullname, r.description AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id = $userId LIMIT 1";
+			// echo $qr;
 			$result = mysqli_query($this->con, $qr);
 			if (mysqli_num_rows($result) > 0) {
 				return $result;
