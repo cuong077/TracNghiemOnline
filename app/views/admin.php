@@ -120,7 +120,7 @@
                         <ul class="treeview-menu ">
                             <li><a href="Manager/danhsachbaithi"><i class="fa fa-circle-o"></i> Danh sách bài thi</a>
                             </li>
-                            <li><a href="Manager/addExam"><i class="fa fa-circle-o"></i> Thêm bài thi</a></li>
+                            <li><a href="Manager/thembaithi"><i class="fa fa-circle-o"></i> Thêm bài thi</a></li>
                         </ul>
                     </li>
                     <li class="treeview">

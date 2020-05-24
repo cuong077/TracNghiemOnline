@@ -16,11 +16,58 @@ class Manager extends Controller{
 		}
 	}
 	
-    function addExam(){
-		$this->view("admin", [
-			"Page"  			=> "admin_addexam",
-			"title" 			=> "Thi trắc nghiệm trức tuyến"
-		]);
+    function thembaithi(){
+		if (!isset($_POST["AddExam"])) {
+			$this->checkIsAdminOrRedirect();
+
+			$grades = $this->getListNameGrade();
+			$subjects = $this->getListNameSubject();
+			$examTimes = $this->getListNameExamTime();
+
+			$this->view("admin", [
+				"Page"  			=> "admin_thembaithi",
+				"title" 			=> "Thêm bài thi",
+				"grades" 			=> $grades,
+				"subjects"			=> $subjects,
+				"examTimes"			=> $examTimes
+			]);
+
+		} else {
+			$this->checkIsAdminOrRedirect();
+			//add exams
+			$examModel = $this->model("ExamsModel");
+			$examTimeSelect = $_POST['examTimeSelect'];
+			$gradeSelected = $_POST["gradeSelected"];
+			$subjectSelected = $_POST["subjectSelected"];
+			$exam_description = $_POST["exam_description"];
+			//echo $exam_description;
+
+			$examModel->addExams($exam_description, $this->getUserId(), $subjectSelected, $gradeSelected, $examTimeSelect);
+
+			//add question
+			$counter = $_POST["counter_questions"];
+			for ($index=1; $index <= $counter ; $index++) { 
+				$question = $_POST["nameQuestion_". $index];
+				$questionModel = $this->model("QuestionModel");
+				$questionModel->addQuestion($question);
+				$questionId = $questionModel->IdQuestion();
+				// echo $questionId;
+
+				for($ans=1; $ans <= 4; $ans++){
+					@$ansContent = $_POST["answers_". $index ."_". $ans];
+					// echo $ansContent;
+					
+					$answerModel = $this->model("AnswerModel");
+					$is_correct = 1;
+					if ($_POST["answers_radio_". $index] == $ans){
+						$is_correct = 2;
+					} 
+					echo $is_correct;
+					$answerModel->addAnswer($ansContent, $is_correct, $questionId);
+				//	echo $ansContent . $is_correct . $questionId;
+				}
+			}
+		}
 	}
 
 	function danhsachuser(){
@@ -128,8 +175,6 @@ class Manager extends Controller{
 			
 		}
 	}
-
-	
 
 	function danhsachkhoi(){
 		$this->checkIsAdminOrRedirect();
@@ -372,10 +417,6 @@ class Manager extends Controller{
 		}
 	}
 
-
-	public function thembaithi(){
-
-	}
 
 	private function getSubjectIdToView(){
 

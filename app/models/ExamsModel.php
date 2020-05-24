@@ -2,16 +2,12 @@
   class ExamsModel extends DB
   {
     //Them exam vao database
-    public function addExams($description, $time_start, $time_end, $userId, $subjectId, $gradeId, $exam_time_id)
+    public function addExams($description, $userId, $subjectId, $gradeId, $exam_time_id)
     {
-      $qr = "INSERT INTO exams(description, time_start, time_end, user_id, subject_id, grade_id, exam_time_id)
-             VALUES ('$description', '$time_start', '$time_end', '$userId', '$subjectId', '$gradeId', '$exam_time_id')";
+      $qr = "INSERT INTO exams(description, user_id, subject_id, grade_id, exam_time_id)
+             VALUES ('$description', $userId, $subjectId, $gradeId, $exam_time_id)";
 
-      if (mysqli_num_rows(mysqli_query($this->con, $qr)) > 0) {
-        return true;
-      }
-
-      return false;
+      mysqli_query($this->con, $qr);
     }
 
     //lay n exams trong database
