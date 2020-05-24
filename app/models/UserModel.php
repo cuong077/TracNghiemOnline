@@ -5,34 +5,37 @@
 		//Kiểm tra xem user đó có tồn tại trong csdl hay chưa
 		public function checkExistedUser($email){
 			$qr = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
-      if(mysqli_num_rows(mysqli_query($this->con, $qr)) > 0){
-        return true;
-      }
+			if(mysqli_num_rows(mysqli_query($this->con, $qr)) > 0){
+				return true;
+			}
 
-      return false;
+    		return false;
 		}
 
 		//Kiểm tra user và password có đúng ko
 		public function checkUserAndPasswordIsCorrect($email, $password){
 			$password = md5($password);
-			$qr = "SELECT username, fullname, role_id, id FROM users WHERE email = '$email' AND password = '$password' LIMIT 1";
+			$qr = "SELECT username, fullname, role_id, u.id, r.id FROM users u JOIN roles r ON r.id = u.role_id WHERE email = '$email' AND password = '$password' LIMIT 1";
 			$result = mysqli_query($this->con, $qr);
+			print_r($result);
+
+
 	    	return $result;
 	    }
 
-    //Thêm user mới với quyền mặc định là 1
-    public function addUser($username, $password, $email, $fullname, $role_id = 1){
-    	$password = md5($password);
-    	$qr = "INSERT INTO users(username, password, email, fullname, role_id) VALUES ('$username', '$password', '$email', '$fullname', '$role_id')";
+		//Thêm user mới với quyền mặc định là 1
+		public function addUser($username, $password, $email, $fullname, $role_id = 1){
+			$password = md5($password);
+			$qr = "INSERT INTO users(username, password, email, fullname, role_id) VALUES ('$username', '$password', '$email', '$fullname', '$role_id')";
 
-    	if(mysqli_query($this->con, $qr)){
-    		return true;
-    	}
+			if(mysqli_query($this->con, $qr)){
+				return true;
+			}
 
-    	return false;
-    }
+			return false;
+		}
 
-		//xoa user trong database
+			//xoa user trong database
 		public function deleteUser($email)
 		{
 			$qr = "DELETE FROM users WHERE email='$email'";
@@ -57,21 +60,39 @@
 			}
 		}
 
-		//update thong tin ca nhan
-		public function updateUserInformation($fullname, $username, $password, $userId)
+			//update thong tin ca nhan
+		public function updateUserInformation($fullname, $username, $role_id, $userId)
 		{
-			$password = md5($password);
-			$qr = "UPDATE users SET fullname='$fullname',
-															username='$username',
-															password='$password'
-													WHERE id='$userId'";
-
+			$qr = "UPDATE users SET fullname='$fullname', username='$username', role_id=$role_id WHERE id=$userId";
+			
 			if (mysqli_query($this->con, $qr)) {
 				return true;
 			}
 			else{
 				return false;
 			}
+		}
+
+		public function getListUsersWithoutCurrentUser($currentUserId){
+			$qr = "SELECT username, fullname, r.name AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id != $currentUserId";
+			//echo $qr;
+			$result = mysqli_query($this->con, $qr);
+			if (mysqli_num_rows($result) > 0) {
+				return $result;
+			}
+			
+			return null;
+		}
+
+		public function getUser($userId){
+			$qr = "SELECT username, fullname, r.description AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id = $userId LIMIT 1";
+			// echo $qr;
+			$result = mysqli_query($this->con, $qr);
+			if (mysqli_num_rows($result) > 0) {
+				return $result;
+			}
+			
+			return null;
 		}
 	}
 

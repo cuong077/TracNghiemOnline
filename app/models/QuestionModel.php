@@ -3,9 +3,9 @@
 class QuestionModel extends DB{
 
     //Thêm cau hoi
-    public function addQuestion($examId, $content){
+    public function addQuestion($content){
 
-    	$qr = "INSERT INTO questions(exam_id, content) VALUES ('$examId', '$content')";
+    	$qr = "INSERT INTO questions(content) VALUES ('$content')";
 
     	if(mysqli_query($this->con, $qr)){
     		return true;
@@ -38,7 +38,15 @@ class QuestionModel extends DB{
 		else{
 			return false;
 		}
+
+		public function IdQuestion(){
+			$qr = "SELECT id FROM `questions` ORDER BY id DESC limit 1";
+			$result = mysqli_query($this->con, $qr);
+			$row = mysqli_fetch_array($result);
+			return $row["id"];
+		}
 	}
+
 
 	public function getAllQuestionOfExam($examId){
 
@@ -54,3 +62,4 @@ class QuestionModel extends DB{
 
 
 ?>
+

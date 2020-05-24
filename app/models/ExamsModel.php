@@ -2,23 +2,19 @@
   class ExamsModel extends DB
   {
     //Them exam vao database
-    public function addExams($description, $time_start, $time_end, $userId, $subjectId, $gradeId, $exam_time_id)
+    public function addExams($description, $userId, $subjectId, $gradeId, $exam_time_id)
     {
-      $qr = "INSERT INTO exams(description, time_start, time_end, user_id, subject_id, grade_id, exam_time_id)
-             VALUES ('$description', '$time_start', '$time_end', '$userId', '$subjectId', '$gradeId', '$exam_time_id')";
+      $qr = "INSERT INTO exams(description, user_id, subject_id, grade_id, exam_time_id)
+             VALUES ('$description', $userId, $subjectId, $gradeId, $exam_time_id)";
 
-      if (mysqli_num_rows(mysqli_query($this->con, $qr)) > 0) {
-        return true;
-      }
-
-      return false;
+      mysqli_query($this->con, $qr);
     }
 
     //lay n exams trong database
-    public function getListExams($startIndex, $endIndex)
+    public function getListExams()
     {
-      $qr = "SELECT * FROM exams LIMIT $startIndex,$endIndex";
-      
+      $qr = "SELECT * FROM exams";
+      // echo $qr;
       $result = mysqli_query($this->con, $qr);
 
       return $result;
@@ -45,17 +41,15 @@
       }
     }
 
-    public function updateExam($description, $time_start, $time_end, $userId, $subjectId, $gradeId, $exam_time_id, $examId)
+    public function updateExam($description, $subjectId, $gradeId, $exam_time_id, $examId)
     {
       // code...
-      $qr = "UPDATE exams SET description='$description',
-                              time_start='$time_start',
-                              time_end='$time_end',
-                              user_id='$userId',
-                              subject_id='$subjectId',
-                              grade_id='$gradeId',
-                              exam_time_id='$exam_time_id')
-                          WHERE id='$examId'";
+      $qr = "UPDATE exams SET 
+                              description='$description',
+                              subject_id=$subjectId,
+                              grade_id=$gradeId,
+                              exam_time_id=$exam_time_id)
+                          WHERE id=$examId";
 
       if (mysqli_num_rows(mysqli_query($this->con, $qr)) > 0) {
         return true;

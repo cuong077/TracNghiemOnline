@@ -47,6 +47,7 @@
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
+
                                 <li class=""><a href="Home">Trang chủ</a></li>
                                 
                                 <?php if(!isset($_SESSION['username'])){ ?>
@@ -54,11 +55,17 @@
                                 <li><a href="Register">Đăng ký</a></li>
 
                                 <?php }else{ ?>
+                          
+                                <?php if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 3)) {?>
+                                            <li><a href="Manager">Quản lý</a></li>
+                                            <li><a href="Logout">Đăng xuất</a></li>
+                                <?php  } ?>
                                 <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
                                 <li><a href="Examination">Xem danh sách bài thi</a></li>
                                 <li><a href="Examination/findExam">Tham gia bài thi bằng ID</a></li>
                                 <li><a href="Logout">Đăng xuất</a></li>
                                 <?php } ?>
+
                             <!--
                                 <li><a href="login.html">Đăng Nhập</a>
                                     <ul class="dropdown">
