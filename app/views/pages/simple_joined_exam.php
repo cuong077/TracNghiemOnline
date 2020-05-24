@@ -147,6 +147,8 @@
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("demo").innerHTML = "EXPIRED";
+
+            window.location="<?php echo Config::$base_url . 'Examination/submitExam/' . $data['exam_result_id']; ?>";
         }
         }, 1000);
 

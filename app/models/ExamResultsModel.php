@@ -90,6 +90,25 @@
       return $result;
     }
 
+
+    public function getAllExamResultOfUser($user_id)
+    {
+      $qr = "SELECT er.id, er.is_completed, er.time_join, e.description, g.name as grade_name, s.name as subject_name FROM exam_results er join exams e on er.exam_id = e.id join subjects s on e.subject_id = s.id join grades g on g.id = e.grade_id  WHERE er.user_id=$user_id order by er.id desc";
+      $result = mysqli_query($this->con, $qr);
+      return $result;
+    }
+
+    public function checkUserDoingExam($user_id){
+      $qr = "SELECT * FROM exam_results WHERE user_id=$user_id and is_completed = 2 LIMIT 1";
+     
+      $result = mysqli_query($this->con, $qr);
+
+
+      if(mysqli_num_rows($result) > 0)
+        return true;
+      return false;
+    }
+
     //xoa exam trong database voi id
     public function deleteExam($examId)
     {

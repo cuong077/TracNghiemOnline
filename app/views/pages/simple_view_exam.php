@@ -21,10 +21,28 @@
                                     
                                     <div><h5 class="m-0"><?php echo $data["description"]; ?></h5></div>
                                 </div>
-                  
+                                
+
+                                <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                                    <div class="mr-3"><h5 class="m-0"><b>Môn:</b></h5></div>
+                                    <div><h5 class="m-0"><?php echo $data["subject_name"]; ?></h5></div>
+                                </div>
+
+                                <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                                    <div class="mr-3"><h5 class="m-0"><b>Khối:</b></h5></div>
+                                    <div><h5 class="m-0"><?php echo $data["grade_name"]; ?></h5></div>
+                                </div>
+
+                                
+
                                 <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
                                     <div class="mr-3"><h5 class="m-0"><b>Thời lượng:</b></h5></div>
                                     <div><h5 class="m-0"><?php echo $data["time"]; ?> phút</h5></div>
+                                </div>
+
+                                <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                                    <div class="mr-3"><h5 class="m-0"><b>Giáo viên :</b></h5></div>
+                                    <div><h5 class="m-0"><?php echo $data["teacher_name"]; ?></h5></div>
                                 </div>
                 
                   

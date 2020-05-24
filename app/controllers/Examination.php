@@ -2,6 +2,17 @@
 
 class Examination extends Controller{
 
+    public function __construct() {
+        
+        if(!$this->is_Login()){
+            $this->redirect("Home");
+            exit;
+        }
+
+    }
+
+
+
 
     public function index(){
 
@@ -13,7 +24,6 @@ class Examination extends Controller{
 			"Page"  			=> "simple_view_list_exam",
 			"title" 			=> "Danh sách các bài thi"
 		]);
-
     }
 
     public function joinExam($exam_id){
@@ -185,6 +195,10 @@ class Examination extends Controller{
 
         $exam_result = mysqli_fetch_array($examResultModel->getExamResult($exam_result_id));
 
+        if($exam_result == null){
+            $this->redirect("Examination/viewListResultExam");
+        }
+
         $exam = mysqli_fetch_array($examModel->getExam($exam_result["exam_id"]));
 
 
@@ -204,12 +218,46 @@ class Examination extends Controller{
         ]);
     }
 
+    public function viewListResultExam(){
+
+
+        $user_id = $this->getUserId();
+
+
+        // load model 
+
+        $examResultModel = $this->model("ExamResultsModel");
+
+        $allExamResultOfUser = $examResultModel->getAllExamResultOfUser($user_id);
+
+
+        $this->view("simple", [
+            "Page"              => "simple_view_list_result_exam",
+            "title"             => "Danh sách các bài thi đã tham gia",
+            "allExamResultOfUser"   => $allExamResultOfUser
+        ]);
+    }
+
     public function viewExam($exam_id){
+
+        $user_id = $this->getUserId();
 
 		$examsmodel = $this->model("ExamsModel");
 
+        $examResultModel = $this->model("ExamResultsModel");
+
+        if($examResultModel->checkUserDoingExam($user_id)){
+            echo "<script>alert('Vui lòng hoàn tất vài thi hiện để có thể tham gia bài thi mới !');</script>";
+            $this->redirect("Examination/viewListResultExam");
+            exit;
+        }
+
+        
 		$exam = mysqli_fetch_array($examsmodel->getExam($this->clear($exam_id)));
 
+        if($exam == null){
+            $this->redirect("Examination/listExams");
+        }
 		//echo "<a href='".Config::$base_url."Examination/joinExam/$exam_id'>".$exam['description']."</a>";
 
 
@@ -218,7 +266,10 @@ class Examination extends Controller{
 			"title" 			=> "Xem bài thi",
             "description"       => $exam["description"],
             "time"              => $exam["time"],
-            "exam_id"           => $exam_id
+            "exam_id"           => $exam_id,
+            "subject_name"      => $exam["subject_name"],
+            "grade_name"        => $exam["grade_name"],
+            "teacher_name"      => $exam["teacher_name"]
 		]);
 	}
 
@@ -247,8 +298,50 @@ class Examination extends Controller{
             $user_answer_model = $this->model("UserAnswerModel");
             $user_answer_model->updateAnswer($exam_result_id, $question_id, $answer_id);
         }
+    }
+
+
+
+    public function findExam(){
+
+        $error = null;
+
+        if(isset($_POST['find'])){
+
+            $exam_id = $this->clear($_POST['exam_id']);
+
+
+            //load model
+            $examsmodel = $this->model("ExamsModel");
+
+
+            if(mysqli_num_rows($examsmodel->getExam($exam_id)) > 0){
+                $this->redirect("Examination/viewExam/".$exam_id);
+                exit;
+            }else{
+                $error = "Không tìm thấy ID bài thi này.";
+            }
+
+        }
+
+        $this->view("simple", [
+            "Page"              => "simple_view_find_exam",
+            "title"             => "Tham gia bài thi theo ID",
+            "error"             => $error
+        ]);
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -289,7 +382,6 @@ class Examination extends Controller{
 
         return $ArrQuestions;
     }
-
 
     private function getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_id, $exam_result_id, $user_id){
 

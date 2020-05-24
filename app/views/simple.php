@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <base href="<?php echo Config::$base_url; ?>">
-    <title>Trang Chủ</title>
+    <title><?php echo $data['title']; ?></title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -47,14 +47,16 @@
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li class="active"><a href="#">Trang chủ</a></li>
-                                <li><a href="#">Tra cứu kết quả</a></li>
-                                <li><a href="#">Liên Hệ</a></li>
+                                <li class=""><a href="Home">Trang chủ</a></li>
+                                
                                 <?php if(!isset($_SESSION['username'])){ ?>
                                 <li><a href="Login">Đăng nhập</a></li>
                                 <li><a href="Register">Đăng ký</a></li>
+
                                 <?php }else{ ?>
+                                <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
                                 <li><a href="Examination">Xem danh sách bài thi</a></li>
+                                <li><a href="Examination/findExam">Tham gia bài thi bằng ID</a></li>
                                 <li><a href="Logout">Đăng xuất</a></li>
                                 <?php } ?>
                             <!--

@@ -1,27 +1,10 @@
 
 
 
-    <!-- Hero Section Begin -->
-    <section class="hero set-bg" data-setbg="public/simple/img/hero/about.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="hero__text">
-                        <div class="section-title">
-                            <h2>Hệ thống thi trắc nghiệm trực tuyến</h2>
-                            <p>TracNgiemOnline</p>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
+     <!-- Hero Section Begin -->
+    <section style="padding:50px 0;" class="hero set-bg" data-setbg="public/simple/img/hero/about.jpg">
     </section>
     <!-- Hero Section End -->
-
-    <!-- Categories Section Begin -->
-   
-    <!-- Categories Section End -->
 
     <!-- Most Search Section Begin -->
     <section class="most-search spad">

@@ -27,7 +27,7 @@
     //lay 1 exam trong database
     public function getExam($examId)
     {
-      $qr = "SELECT * FROM exams e join exam_time et on e.exam_time_id = et.id WHERE e.id=$examId ";
+      $qr = "SELECT et.time, e.id, e.description, s.name as subject_name, g.name as grade_name, u.fullname as teacher_name FROM exams e join exam_time et on e.exam_time_id = et.id join subjects s on s.id = e.subject_id join grades g on g.id = e.grade_id join users u on u.id = e.user_id WHERE e.id=$examId ";
       $result = mysqli_query($this->con, $qr);
       return $result;
     }
