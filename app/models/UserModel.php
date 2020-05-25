@@ -17,9 +17,7 @@
 			$password = md5($password);
 			$qr = "SELECT username, fullname, role_id, u.id, r.id FROM users u JOIN roles r ON r.id = u.role_id WHERE email = '$email' AND password = '$password' LIMIT 1";
 			$result = mysqli_query($this->con, $qr);
-			print_r($result);
-
-
+			
 	    	return $result;
 	    }
 

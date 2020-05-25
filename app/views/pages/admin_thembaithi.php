@@ -32,7 +32,7 @@
                             </tr> -->
                             <tr>
                                 <th class="text-center col-sm-2">
-                                    <label for="MaThoiGian" class="control-label">Mã thời gian</label>
+                                    <label for="MaThoiGian" class="control-label">Thời gian làm</label>
                                 </th>
                                 <td>
                                     <!-- <input type="text" class="form-control" id="MaThoiGian" placeholder="Mã thời gian"
@@ -46,7 +46,7 @@
                                                     $row = $examTimes[$index];
                                         ?>
 
-                                        <option value="<?php echo $row[0];?>"><?php echo $row[1];?>
+                                        <option value="<?php echo $row[0];?>"><?php echo $row[1];?> phút
                                         </option>
 
                                         <?php
@@ -58,7 +58,7 @@
                             <tr>
 
                                 <th class="text-center col-sm-2">
-                                    <label for="MaKhoi" class="control-label">Mã khối</label>
+                                    <label for="MaKhoi" class="control-label">Khối</label>
                                 </th>
                                 <td>
 
@@ -81,7 +81,7 @@
                             </tr>
                             <tr>
                                 <th class="text-center col-sm-2">
-                                    <label for="MaMon" class="control-label">Mã môn</label>
+                                    <label for="MaMon" class="control-label">Môn</label>
                                 </th>
                                 <td>
                                     <select class="browser-default custom-select form-control" name="subjectSelected">
@@ -163,11 +163,10 @@ function addQuestion() {
     counter += 1;
 
     let blockHTML = `<div class="question pad">
-                                <input type="text" name="nameQuestion_` + counter + `" class="form-control" value="` +
-        counter + `. ">
+                                <input type="text" name="nameQuestion_` + counter + `" class="form-control" value="">
                                 <div class="col-xs-12 col-md-6 row pad">
                                     <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="1">
-                                    <input type="text" class="w-75 form-control col-xs-11" name="_radio`+counter+`_1">
+                                    <input type="text" class="w-75 form-control col-xs-11" name="answers_`+counter+`_1">
                                 </div>
                                 <div class="col-xs-12 col-md-6 row pad">
                                     <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="2">

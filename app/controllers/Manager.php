@@ -42,15 +42,15 @@ class Manager extends Controller{
 			$exam_description = $_POST["exam_description"];
 			//echo $exam_description;
 
-			$examModel->addExams($exam_description, $this->getUserId(), $subjectSelected, $gradeSelected, $examTimeSelect);
+			$exam_id = $examModel->addExams($exam_description, $this->getUserId(), $subjectSelected, $gradeSelected, $examTimeSelect);
 
 			//add question
 			$counter = $_POST["counter_questions"];
 			for ($index=1; $index <= $counter ; $index++) { 
 				$question = $_POST["nameQuestion_". $index];
 				$questionModel = $this->model("QuestionModel");
-				$questionModel->addQuestion($question);
-				$questionId = $questionModel->IdQuestion();
+				
+				$questionId = $questionModel->addQuestion($question ,$exam_id);
 				// echo $questionId;
 
 				for($ans=1; $ans <= 4; $ans++){
@@ -58,13 +58,15 @@ class Manager extends Controller{
 					// echo $ansContent;
 					
 					$answerModel = $this->model("AnswerModel");
-					$is_correct = 1;
+					$is_correct = 2;
 					if ($_POST["answers_radio_". $index] == $ans){
-						$is_correct = 2;
+						$is_correct = 1;
 					} 
 					echo $is_correct;
 					$answerModel->addAnswer($ansContent, $is_correct, $questionId);
 				//	echo $ansContent . $is_correct . $questionId;
+
+					$this->redirect("Manager/danhsachbaithi");
 				}
 			}
 		}

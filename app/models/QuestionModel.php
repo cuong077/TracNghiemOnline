@@ -3,12 +3,12 @@
 class QuestionModel extends DB{
 
     //Thêm cau hoi
-    public function addQuestion($content){
+    public function addQuestion($content, $exam_id){
 
-    	$qr = "INSERT INTO questions(content) VALUES ('$content')";
+    	$qr = "INSERT INTO questions(content, exam_id) VALUES ('$content', '$exam_id')";
 
     	if(mysqli_query($this->con, $qr)){
-    		return true;
+    		return mysqli_insert_id($this->con);;
     	}
 
     	return false;
@@ -39,13 +39,15 @@ class QuestionModel extends DB{
 			return false;
 		}
 
-		public function IdQuestion(){
+		
+	}
+
+	public function IdQuestion(){
 			$qr = "SELECT id FROM `questions` ORDER BY id DESC limit 1";
 			$result = mysqli_query($this->con, $qr);
 			$row = mysqli_fetch_array($result);
 			return $row["id"];
 		}
-	}
 
 
 	public function getAllQuestionOfExam($examId){

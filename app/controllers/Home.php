@@ -8,12 +8,17 @@ class Home extends Controller{
         $subjects = $this->getListNameSubject();
         $exams = $this->getExamsToView();
 
+        $examsmodel = $this->model("ExamsModel");
+
+        $results = $examsmodel->getListExams(0, 10);
+        
         $this->view("simple",[
             "Page"          => "simple_home",
             "title"         => "Trang chủ",
             "grades"        => $grades,
             "subjects"      => $subjects,
-            "exams"         => $exams
+            "exams"         => $exams,
+            "list_exam"     => $results
         ]);
 
     }

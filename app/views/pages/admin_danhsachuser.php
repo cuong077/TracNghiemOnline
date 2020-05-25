@@ -49,9 +49,9 @@
                                         <!-- <a class="btn btn-success btn-xs" href="Manager/themuser"><span
                                                 class="glyphicon glyphicon-plus"></span> Add</a> -->
                                         <a class='btn btn-info btn-xs' href="Manager/suauser/<?php echo $row[3]?>"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit</a>
-                                        <a href="Manager/xoauser/<?php echo $row[3]?>" class="btn btn-danger btn-xs"><span
-                                                class="glyphicon glyphicon-remove"></span> Del</a>
+                                                class="glyphicon glyphicon-edit"></span> Chỉnh sửa</a>
+                                        <a href="javascript:void(0)" class="btn btn-danger btn-xs"><span
+                                                class="glyphicon glyphicon-remove"></span> Chặn</a>
                                     </td>
                                 </tr>
 
@@ -72,8 +72,8 @@
     </div>
     <div class="modal-footer">
         <form method="post">
-            <a href="" data-dismiss="modal" class="btn btn-primary" name="delete">Delete</button>
-                <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+            <a href="" data-dismiss="modal" class="btn btn-primary" name="delete">Ẩn</button>
+                <button type="button" data-dismiss="modal" class="btn">Hủy</button>
         </form>
 
     </div>

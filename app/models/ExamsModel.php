@@ -7,7 +7,11 @@
       $qr = "INSERT INTO exams(description, user_id, subject_id, grade_id, exam_time_id)
              VALUES ('$description', $userId, $subjectId, $gradeId, $exam_time_id)";
 
-      mysqli_query($this->con, $qr);
+      if(mysqli_query($this->con, $qr)){
+        return mysqli_insert_id($this->con);
+      }
+
+      return false;
     }
 
     //lay n exams trong database

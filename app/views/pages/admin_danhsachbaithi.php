@@ -44,14 +44,15 @@
                                         <td><?php echo $row[1];?></td>
                                         <td><?php echo $row[2];?></td>
                                         <td><?php echo $row[3];?></td>
-                                        <td><?php echo $row[4];?></td>
+                                        <td><?php echo $row[4];?> phút</td>
+                                        <!-- Manager/suabaithi/<?php echo $row[0];?> -->
                                         <td class="text-center">
                                             <a class="btn btn-info btn-xs"
-                                                href="Manager/suabaithi/<?php echo $row[0];?>">
+                                                href="javascript:void(0)">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                                 Sửa</a>
-                                            <a href="#" class="btn btn-danger btn-xs"><span
-                                                    class="glyphicon glyphicon-remove"></span>Xóa</a></td>
+                                            <a href="javascript:void(0)" class="btn btn-danger btn-xs"><span
+                                                    class="glyphicon glyphicon-remove"></span>Ẩn</a></td>
                                     </tr>
                                     <?php }?>
                                 </tbody>

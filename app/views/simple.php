@@ -10,8 +10,6 @@
     <base href="<?php echo Config::$base_url; ?>">
     <title><?php echo $data['title']; ?></title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
     <script src="public/simple/js/jquery-3.3.1.min.js"></script>
@@ -39,8 +37,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3 col-md-3">
-                    <div class="header__logo">
-                        <a href="./index.html"><img src="#" alt="logo here"></a>
+                    <div class="" style="margin-top: 20px;">
+                        <a href=""><img src="public/simple/img/home_logo.png" width="50%" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9">
@@ -56,9 +54,8 @@
 
                                 <?php }else{ ?>
                           
-                                <?php if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 3)) {?>
+                                <?php if ((isset($_SESSION["permission"]) && ((int)$_SESSION["permission"] == 3 || (int)$_SESSION["permission"] == 2) )) {?>
                                             <li><a href="Manager">Quản lý</a></li>
-                                            <li><a href="Logout">Đăng xuất</a></li>
                                 <?php  } ?>
                                 <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
                                 <li><a href="Examination">Xem danh sách bài thi</a></li>
