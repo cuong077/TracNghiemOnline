@@ -22,7 +22,7 @@
                     <!-- form start -->
                     <form class="form-horizontal" method="post">
                         <div class="box-body">
-                            <div class="form-group">
+                            <div hidden class="form-group">
                                 <label for="Makhoi" class="col-sm-2 control-label">Mã khối</label>
 
                                 <div class="col-sm-10">
@@ -34,6 +34,13 @@
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="Tenkhoi" name="grade_name" placeholder="Tên khối" value="<?php echo $grade["name"]?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="MoTa" class="col-sm-2 control-label">Mô tả</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="MoTa" name="description" placeholder="Mô tả" value="<?php echo $grade["description"]?>">
                                 </div>
                             </div>
 

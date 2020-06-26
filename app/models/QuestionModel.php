@@ -38,15 +38,14 @@ class QuestionModel extends DB{
 		else{
 			return false;
 		}
-
-		public function IdQuestion(){
-			$qr = "SELECT id FROM `questions` ORDER BY id DESC limit 1";
-			$result = mysqli_query($this->con, $qr);
-			$row = mysqli_fetch_array($result);
-			return $row["id"];
-		}
 	}
 
+	public function IdQuestion(){
+		$qr = "SELECT id FROM `questions` ORDER BY id DESC limit 1";
+		$result = mysqli_query($this->con, $qr);
+		$row = mysqli_fetch_array($result);
+		return $row["id"];
+	}
 
 	public function getAllQuestionOfExam($examId){
 
@@ -57,8 +56,6 @@ class QuestionModel extends DB{
 
 	}
 }
-
-
 
 
 ?>

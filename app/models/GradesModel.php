@@ -3,8 +3,8 @@
 	class GradesModel extends DB{
 
     //Them khoi hoc
-    public function addGrade($gradeName){
-    	$qr = "INSERT INTO grades(name) VALUES ('$gradeName')";
+    public function addGrade($gradeName, $gradeDescription){
+    	$qr = "INSERT INTO grades(name, description) VALUES ('$gradeName', '$gradeDescription')";
 
     	if(mysqli_query($this->con, $qr)){
     		return true;
@@ -27,9 +27,10 @@
 		}
 
     //Chinh sua ten khoi hoc
-	public function updateGrade($gradeId, $gradeName)
+	public function updateGrade($gradeId, $gradeName, $gradeDescription)
 	{
-		$qr = "UPDATE grades SET name='$gradeName'
+		$qr = "UPDATE grades SET name='$gradeName',
+								 description='$gradeDescription'
 								WHERE id=$gradeId";
 		// echo $qr;
 		if (mysqli_query($this->con, $qr)) {

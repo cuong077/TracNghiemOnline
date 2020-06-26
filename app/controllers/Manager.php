@@ -290,6 +290,7 @@ class Manager extends Controller{
 			while ($row = mysqli_fetch_array($result)) {
 				$grade["id"] = $row["id"];
 				$grade["name"] = $row["name"];
+				$grade["description"] = $row["description"];
 			}
 			
 			$this->view("admin", [
@@ -301,10 +302,11 @@ class Manager extends Controller{
 			$this->checkIsAdminOrRedirect();
 
 			$gradeName = $_POST["grade_name"];
+			$gradeDescription = $_POST["description"];
 
 			if (isset($gradeName)) {
 				$gradeMode = $this->model("GradesModel");
-				$result = $gradeMode->updateGrade($gradeId, $gradeName);
+				$result = $gradeMode->updateGrade($gradeId, $gradeName, $gradeDescription);
 				$this->redirect("Manager/suakhoi/".$gradeId);
 			}
 		}
@@ -322,7 +324,8 @@ class Manager extends Controller{
 		else{
 			$this->checkIsAdminOrRedirect();
 			$gradeName = $_POST["grade_name"];
-			
+			$gradeDescription = $_POST["decription"];
+
 			if (isset($gradeName)) {
 				$gradeModel = $this->model("GradesModel");
 				$gradeModel->addGrade($gradeName);
@@ -399,15 +402,31 @@ class Manager extends Controller{
 	public function themmon(){
 		if (!isset($_POST["addSubject"])) {
 			$this->checkIsAdminOrRedirect();
+			
+			$gradeMode = $this->model("GradesModel");
+			$result = $gradeMode->getListGrades();
+			$grades = [];
+			
+
+			while($row = mysqli_fetch_array($result)){
+				$rowToAdd = [];
+				array_push($rowToAdd, $row["id"]);
+				array_push($rowToAdd, $row["name"]);
+				// $rowToAdd[] .= $row["name"];
+
+				array_push($grades, $rowToAdd);
+			}
 
 			$this->view("admin", [
 				"Page"  			=> "admin_themmon",
-				"title" 			=> "Thêm môn học"
+				"title" 			=> "Thêm môn học",
+				"grades"			=> $grades
 			]);
 		}
 		else{
 			$this->checkIsAdminOrRedirect();
 			$subjectName = $_POST["subject_name"];
+			$gradeId = $_POST["gradeSelect"];
 			
 			if (isset($subjectName)) {
 				$subjectModel = $this->model("SubjectModel");

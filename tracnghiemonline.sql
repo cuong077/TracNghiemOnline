@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 03, 2020 at 06:16 PM
--- Server version: 5.7.29-0ubuntu0.18.04.1
--- PHP Version: 7.2.24-0ubuntu0.18.04.4
+-- Host: 127.0.0.1
+-- Generation Time: Jun 26, 2020 at 12:59 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,323 +18,560 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tracnghiemonline`
+-- Database: `test`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `answers`
+-- Table structure for table `answer`
 --
 
-CREATE TABLE `answers` (
-  `id` int(11) NOT NULL,
-  `content` text NOT NULL,
-  `is_correct` tinyint(4) NOT NULL,
-  `question_id` int(11) NOT NULL
+CREATE TABLE `answer` (
+  `AnswerId` int(11) NOT NULL,
+  `Content` text NOT NULL,
+  `Is_correct` tinyint(4) NOT NULL,
+  `QuestionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `exams`
+-- Table structure for table `chapter`
 --
 
-CREATE TABLE `exams` (
-  `id` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `time_start` datetime NOT NULL,
-  `time_end` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `subject_id` int(11) NOT NULL,
-  `grade_id` int(11) NOT NULL,
-  `exam_time_id` int(11) NOT NULL
+CREATE TABLE `chapter` (
+  `ChapterId` int(11) NOT NULL,
+  `Name` int(11) NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `GradeSubjectId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `class`
+--
+
+CREATE TABLE `class` (
+  `ClassId` int(11) NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Password` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `UserId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `document`
+--
+
+CREATE TABLE `document` (
+  `DocumentId` int(11) NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ClassId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exam`
+--
+
+CREATE TABLE `exam` (
+  `ExamId` int(11) NOT NULL,
+  `Description` text NOT NULL,
+  `CreatedDate` datetime NOT NULL,
+  `AmountOfQuestion` datetime NOT NULL,
+  `TimeStart` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `ExamTypeId` int(11) NOT NULL,
+  `ExamTimeId` int(11) NOT NULL,
+  `ClassId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `exam_results`
+-- Table structure for table `examtime`
 --
 
-CREATE TABLE `exam_results` (
-  `id` int(11) NOT NULL,
-  `time_join` datetime NOT NULL,
-  `point` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `exam_id` int(11) NOT NULL
+CREATE TABLE `examtime` (
+  `ExamTimeId` int(11) NOT NULL,
+  `Time` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `exam_time`
+-- Table structure for table `examtype`
 --
 
-CREATE TABLE `exam_time` (
-  `id` int(11) NOT NULL,
-  `time` int(11) NOT NULL
+CREATE TABLE `examtype` (
+  `ExamTypeId` int(11) NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grade`
+--
+
+CREATE TABLE `grade` (
+  `GradeId` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grades`
+-- Table structure for table `gradesubject`
 --
 
-CREATE TABLE `grades` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+CREATE TABLE `gradesubject` (
+  `GradeSubjectId` int(11) NOT NULL,
+  `GradeId` int(11) NOT NULL,
+  `SubjectId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lession`
+--
+
+CREATE TABLE `lession` (
+  `LessionId` int(11) NOT NULL,
+  `Name` int(11) NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ChapterId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `question`
+--
+
+CREATE TABLE `question` (
+  `QuestionId` int(11) NOT NULL,
+  `LessionId` int(11) NOT NULL,
+  `Content` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `questions`
+-- Table structure for table `result`
 --
 
-CREATE TABLE `questions` (
-  `id` int(11) NOT NULL,
-  `exam_id` int(11) NOT NULL,
-  `content` text NOT NULL
+CREATE TABLE `result` (
+  `ResultId` int(11) NOT NULL,
+  `TimeJoin` datetime NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `ExamId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
+-- Table structure for table `role`
 --
 
-CREATE TABLE `roles` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL
+CREATE TABLE `role` (
+  `RoleId` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subjects`
+-- Table structure for table `subject`
 --
 
-CREATE TABLE `subjects` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+CREATE TABLE `subject` (
+  `SubjectId` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `fullname` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role_id` int(11) NOT NULL
+CREATE TABLE `user` (
+  `UserId` int(11) NOT NULL,
+  `FullName` varchar(255) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `Username` varchar(255) NOT NULL,
+  `Birthday` datetime NOT NULL,
+  `Phone` varchar(10) DEFAULT NULL,
+  `Password` varchar(32) NOT NULL,
+  `RoleId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_answers`
+-- Table structure for table `useranswerquestion`
 --
 
-CREATE TABLE `user_answers` (
-  `id` int(11) NOT NULL,
-  `question_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `answer_id` int(11) NOT NULL
+CREATE TABLE `useranswerquestion` (
+  `UserAnswerQuestionId` int(11) NOT NULL,
+  `ResultId` int(11) NOT NULL,
+  `QuestionId` int(11) NOT NULL,
+  `AnswerId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userclass`
+--
+
+CREATE TABLE `userclass` (
+  `UserClassId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `ClassId` int(11) NOT NULL,
+  `DateJoin` datetime NOT NULL,
+  `Status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `answers`
+-- Indexes for table `answer`
 --
-ALTER TABLE `answers`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ANSWERS_QUESTIONS` (`question_id`);
+ALTER TABLE `answer`
+  ADD PRIMARY KEY (`AnswerId`);
 
 --
--- Indexes for table `exams`
+-- Indexes for table `chapter`
 --
-ALTER TABLE `exams`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_EXAMS_USER` (`user_id`),
-  ADD KEY `FK_EXAMS_SUBJECTS` (`subject_id`),
-  ADD KEY `FK_EXAMS_GRADES` (`grade_id`),
-  ADD KEY `FK_EXAMS_TIME` (`exam_time_id`);
+ALTER TABLE `chapter`
+  ADD PRIMARY KEY (`ChapterId`);
 
 --
--- Indexes for table `exam_results`
+-- Indexes for table `class`
 --
-ALTER TABLE `exam_results`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_RESULT_USERS` (`user_id`),
-  ADD KEY `FK_results_exams` (`exam_id`);
+ALTER TABLE `class`
+  ADD PRIMARY KEY (`ClassId`),
+  ADD KEY `FK_Class_User_UserId` (`UserId`);
 
 --
--- Indexes for table `exam_time`
+-- Indexes for table `document`
 --
-ALTER TABLE `exam_time`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `document`
+  ADD PRIMARY KEY (`DocumentId`),
+  ADD KEY `FK_Document_Class_ClassId` (`ClassId`);
 
 --
--- Indexes for table `grades`
+-- Indexes for table `exam`
 --
-ALTER TABLE `grades`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `exam`
+  ADD PRIMARY KEY (`ExamId`),
+  ADD KEY `FK_Exam_User_UserId` (`UserId`),
+  ADD KEY `FK_Exam_ExamType_ExamTypeId` (`ExamTypeId`),
+  ADD KEY `FK_Exam_ExamTime_ExamTimeId` (`ExamTimeId`),
+  ADD KEY `FK_Exam_Class_ClassId` (`ClassId`);
 
 --
--- Indexes for table `questions`
+-- Indexes for table `examtime`
 --
-ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_QUESTIONS_EXAMS` (`exam_id`);
+ALTER TABLE `examtime`
+  ADD PRIMARY KEY (`ExamTimeId`);
 
 --
--- Indexes for table `roles`
+-- Indexes for table `examtype`
 --
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `examtype`
+  ADD PRIMARY KEY (`ExamTypeId`);
 
 --
--- Indexes for table `subjects`
+-- Indexes for table `grade`
 --
-ALTER TABLE `subjects`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `grade`
+  ADD PRIMARY KEY (`GradeId`);
 
 --
--- Indexes for table `users`
+-- Indexes for table `gradesubject`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_USERS_ROLES` (`role_id`);
+ALTER TABLE `gradesubject`
+  ADD PRIMARY KEY (`GradeSubjectId`),
+  ADD KEY `FK_GradeSubject_Grade_GradeId` (`GradeId`),
+  ADD KEY `FK_GradeSubject_Subject_SubjectId` (`SubjectId`);
 
 --
--- Indexes for table `user_answers`
+-- Indexes for table `lession`
 --
-ALTER TABLE `user_answers`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_userAnswer_user` (`user_id`),
-  ADD KEY `FK_userAnswer_ANSWER` (`answer_id`);
+ALTER TABLE `lession`
+  ADD PRIMARY KEY (`LessionId`),
+  ADD KEY `FK_Lession_Chapter_ChapterId` (`ChapterId`);
+
+--
+-- Indexes for table `question`
+--
+ALTER TABLE `question`
+  ADD PRIMARY KEY (`QuestionId`);
+
+--
+-- Indexes for table `result`
+--
+ALTER TABLE `result`
+  ADD PRIMARY KEY (`ResultId`);
+
+--
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`RoleId`);
+
+--
+-- Indexes for table `subject`
+--
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`SubjectId`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`UserId`),
+  ADD KEY `FK_User_Role_RoleId` (`RoleId`);
+
+--
+-- Indexes for table `useranswerquestion`
+--
+ALTER TABLE `useranswerquestion`
+  ADD PRIMARY KEY (`UserAnswerQuestionId`);
+
+--
+-- Indexes for table `userclass`
+--
+ALTER TABLE `userclass`
+  ADD PRIMARY KEY (`UserClassId`),
+  ADD KEY `FK_UserClass_User_UserId` (`UserId`),
+  ADD KEY `FK_UserClass_Class_ClassId` (`ClassId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `answers`
+-- AUTO_INCREMENT for table `answer`
 --
-ALTER TABLE `answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `answer`
+  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `exams`
+-- AUTO_INCREMENT for table `chapter`
 --
-ALTER TABLE `exams`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `chapter`
+  MODIFY `ChapterId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `exam_results`
+-- AUTO_INCREMENT for table `class`
 --
-ALTER TABLE `exam_results`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `class`
+  MODIFY `ClassId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `exam_time`
+-- AUTO_INCREMENT for table `document`
 --
-ALTER TABLE `exam_time`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `document`
+  MODIFY `DocumentId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `grades`
+-- AUTO_INCREMENT for table `exam`
 --
-ALTER TABLE `grades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `exam`
+  MODIFY `ExamId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `questions`
+-- AUTO_INCREMENT for table `examtime`
 --
-ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `examtime`
+  MODIFY `ExamTimeId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `roles`
+-- AUTO_INCREMENT for table `examtype`
 --
-ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `examtype`
+  MODIFY `ExamTypeId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `subjects`
+-- AUTO_INCREMENT for table `grade`
 --
-ALTER TABLE `subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `grade`
+  MODIFY `GradeId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `gradesubject`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `gradesubject`
+  MODIFY `GradeSubjectId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user_answers`
+-- AUTO_INCREMENT for table `lession`
 --
-ALTER TABLE `user_answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `lession`
+  MODIFY `LessionId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `question`
+--
+ALTER TABLE `question`
+  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `result`
+--
+ALTER TABLE `result`
+  MODIFY `ResultId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `RoleId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subject`
+--
+ALTER TABLE `subject`
+  MODIFY `SubjectId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `useranswerquestion`
+--
+ALTER TABLE `useranswerquestion`
+  MODIFY `UserAnswerQuestionId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `userclass`
+--
+ALTER TABLE `userclass`
+  MODIFY `UserClassId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
---
--- Constraints for table `answers`
---
-ALTER TABLE `answers`
-  ADD CONSTRAINT `FK_ANSWERS_QUESTIONS` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`);
+
 
 --
--- Constraints for table `exams`
+-- Indexes for table `answers`
 --
-ALTER TABLE `exams`
-  ADD CONSTRAINT `FK_EXAMS_GRADES` FOREIGN KEY (`grade_id`) REFERENCES `grades` (`id`),
-  ADD CONSTRAINT `FK_EXAMS_SUBJECTS` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
-  ADD CONSTRAINT `FK_EXAMS_TIME` FOREIGN KEY (`exam_time_id`) REFERENCES `exam_time` (`id`),
-  ADD CONSTRAINT `FK_EXAMS_USER` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `exam_results`
---
-ALTER TABLE `exam_results`
-  ADD CONSTRAINT `FK_RESULT_USERS` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `FK_results_exams` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`);
-
---
--- Constraints for table `questions`
---
-ALTER TABLE `questions`
-  ADD CONSTRAINT `FK_QUESTIONS_EXAMS` FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`);
-
---
--- Constraints for table `users`
---
-ALTER TABLE `users`
-  ADD CONSTRAINT `FK_USERS_ROLES` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
-
---
--- Constraints for table `user_answers`
---
-ALTER TABLE `user_answers`
-  ADD CONSTRAINT `FK_userAnswer_ANSWER` FOREIGN KEY (`answer_id`) REFERENCES `answers` (`id`),
-  ADD CONSTRAINT `FK_userAnswer_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- GradeSubject
+ALTER TABLE GradeSubject
+  ADD CONSTRAINT FK_GradeSubject_Grade_GradeId
+  FOREIGN KEY (GradeId) REFERENCES Grade(GradeId); 
+
+ALTER TABLE GradeSubject
+  ADD CONSTRAINT FK_GradeSubject_Subject_SubjectId
+  FOREIGN KEY (SubjectId) REFERENCES Subject(SubjectId); 
+
+-- Chapter
+ALTER TABLE Chapter
+  ADD CONSTRAINT FK_Chapter_GradeSubject_GradeSubjectId
+  FOREIGN KEY (GradeSubjectId) REFERENCES GradeSubject(GradeSubjectId); 
+
+-- Lession
+ALTER TABLE Lession
+  ADD CONSTRAINT FK_Lession_Chapter_ChapterId
+  FOREIGN KEY (ChapterId) REFERENCES Chapter(ChapterId); 
+
+-- User
+ALTER TABLE User
+  ADD CONSTRAINT FK_User_Role_RoleId
+  FOREIGN KEY (RoleId) REFERENCES Role(RoleId); 
+
+-- Class
+ALTER TABLE Class
+  ADD CONSTRAINT FK_Class_User_UserId
+  FOREIGN KEY (UserId) REFERENCES User(UserId); 
+
+-- UserClass
+ALTER TABLE UserClass
+  ADD CONSTRAINT FK_UserClass_User_UserId
+  FOREIGN KEY (UserId) REFERENCES User(UserId); 
+
+ALTER TABLE UserClass
+  ADD CONSTRAINT FK_UserClass_Class_ClassId
+  FOREIGN KEY (ClassId) REFERENCES Class(ClassId);
+
+-- Document
+ALTER TABLE Document
+  ADD CONSTRAINT FK_Document_Class_ClassId
+  FOREIGN KEY (ClassId) REFERENCES Class(ClassId);
+
+-- Exam
+ALTER TABLE Exam
+  ADD CONSTRAINT FK_Exam_User_UserId
+  FOREIGN KEY (UserId) REFERENCES User(UserId);
+
+ALTER TABLE Exam
+  ADD CONSTRAINT FK_Exam_ExamType_ExamTypeId
+  FOREIGN KEY (ExamTypeId) REFERENCES ExamType(ExamTypeId);
+
+ALTER TABLE Exam
+  ADD CONSTRAINT FK_Exam_ExamTime_ExamTimeId
+  FOREIGN KEY (ExamTimeId) REFERENCES ExamTime(ExamTimeId);
+
+ALTER TABLE Exam
+  ADD CONSTRAINT FK_Exam_Class_ClassId
+  FOREIGN KEY (ClassId) REFERENCES Class(ClassId);
+
+-- Question
+ALTER TABLE Question
+  ADD CONSTRAINT FK_Question_Lession_LessionId
+  FOREIGN KEY (LessionId) REFERENCES Lession(LessionId);
+
+-- Answer
+ALTER TABLE Answer
+  ADD CONSTRAINT FK_Answer_Question_QuestionId
+  FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId);
+
+-- Result
+ALTER TABLE Result
+  ADD CONSTRAINT FK_Result_Exam_ExamId
+  FOREIGN KEY (ExamId) REFERENCES Exam(ExamId);
+
+ALTER TABLE Result
+  ADD CONSTRAINT FK_Result_User_UserId
+  FOREIGN KEY (UserId) REFERENCES User(UserId);
+
+-- UserAnswerQuestion
+ALTER TABLE UserAnswerQuestion
+  ADD CONSTRAINT FK_UserAnswerQuestion_Result_ResultId
+  FOREIGN KEY (ResultId) REFERENCES Result(ResultId);
+
+ALTER TABLE UserAnswerQuestion
+  ADD CONSTRAINT FK_UserAnswerQuestion_Question_QuestionId
+  FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId);
+
+ALTER TABLE UserAnswerQuestion
+  ADD CONSTRAINT FK_UserAnswerQuestion_Answer_AnswerId
+  FOREIGN KEY (AnswerId) REFERENCES Answer(AnswerId);

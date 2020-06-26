@@ -29,6 +29,30 @@
                                         name="subject_name">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="TenMon" class="col-sm-2 control-label">Khối</label>
+                                <div class="col-sm-10">
+                                    <select class="col-sm-10 browser-default custom-select form-control"
+                                        name="gradeSelect">
+                                        <!-- <option>Danh sách quyền</option> -->
+                                        <?php $grades = $data["grades"] ;
+                                                // print_r($roles);
+
+                                                for ($index=0; $index < count($grades); $index++) { 
+                                                    $row = $grades[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>">
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+
+                            </div>
 
                         </div>
                         <!-- /.box-body -->
