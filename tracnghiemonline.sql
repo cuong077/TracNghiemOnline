@@ -575,3 +575,113 @@ ALTER TABLE UserAnswerQuestion
 ALTER TABLE UserAnswerQuestion
   ADD CONSTRAINT FK_UserAnswerQuestion_Answer_AnswerId
   FOREIGN KEY (AnswerId) REFERENCES Answer(AnswerId);
+
+
+-- GENERATE PROCEDURE
+-- GRADE
+
+-- 1. Get all grades
+DELIMITER //
+
+CREATE PROCEDURE Grade_GetAllGrades()
+BEGIN
+	SELECT GradeId, Name, Description FROM Grade;
+END //
+
+DELIMITER ;
+
+-- 2. Get grades with id
+DELIMITER //
+
+CREATE PROCEDURE Grade_GetGrade(IN gradeIdToSearch INT)
+BEGIN
+	SELECT Name, Description FROM Grade WHERE GradeId=gradeIdToSearch;
+END //
+
+DELIMITER ;
+
+-- 3. Insert grade
+DELIMITER //
+
+CREATE PROCEDURE Grade_InsertGrade(IN gradeNameToInsert varchar(255), IN descriptionToInsert varchar(255))
+BEGIN
+  Insert Grade(Name, Description) VALUES(gradeNameToInsert, descriptionToInsert);
+END //
+
+DELIMITER ;
+
+-- 4. Update with gradeId 
+DELIMITER //
+
+CREATE PROCEDURE Grade_UpdateGrade(IN gradeIdToUpdate INT, IN nameToUpdate varchar(255), IN descriptionToUpdate varchar(255))
+BEGIN
+  Update Grade
+ 	SET Name = nameToUpdate, 
+    	description = descriptionToUpdate
+    WHERE GradeId = gradeIdToUpdate;
+END //
+
+DELIMITER ;
+
+
+-- AnswerModel
+
+
+
+-- USER
+-- 1. GET USER WITH ID
+DELIMITER //
+
+CREATE PROCEDURE User_GetUser(IN emailToSearch varchar(255))
+BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId Description FROM User WHERE Email=emailToSearch;
+END //
+
+DELIMITER ;
+
+-- 2. Check password is correct
+
+DELIMITER //
+
+CREATE PROCEDURE User_CheckUsernameAndPasswordIsCorrect(IN emailToCheck varchar(255), IN passwordToCheck varchar(255))
+BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToCheck AND Password=passwordToCheck;
+END //
+
+DELIMITER ;
+
+-- 3. Get all user without current user.
+DELIMITER //
+
+CREATE PROCEDURE User_GetUserWithoutCurrentUser(IN userIdToSearch INT)
+BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, u.RoleId, r.Name AS RoleName 
+    FROM User u JOIN Role r ON u.RoleId = r.RoleId
+    WHERE UserId != userIdToSearch;
+END //
+
+DELIMITER ;
+
+-- 4. Insert user
+DELIMITER //
+
+CREATE PROCEDURE User_InsertUser(
+  IN usernameToInsert varchar(255),
+  IN passwordToInsert varchar(255), 
+  IN emailToInsert varchar(255), 
+  IN fullnameToInsert varchar(255), 
+  roleIdToInsert INT)
+BEGIN
+  Insert User(Username,
+              Password, 
+              Email,
+              Fullname,
+              RoleId
+      )VALUES(usernameToInsert,
+              passwordToInsert,
+              emailToInsert,
+              fullnameToInsert,
+              roleIdToInsert);
+END //
+
+DELIMITER ;

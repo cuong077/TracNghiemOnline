@@ -72,8 +72,8 @@ class Register extends Controller{
 
     	if(count($error)==0){
 			
-    		$result = $loginmodel->addUser($username, $password, $email, $fullname);
-
+    		$result = $loginmodel->addUser($username, $password, $email, $fullname, 2);
+			// echo "vo";
     		if($result){
 				$success = "Đăng kí thành công";
     		}else{

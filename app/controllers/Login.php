@@ -57,10 +57,11 @@ class Login extends Controller{
               $error = "Email hoặc mật khẩu sai.";
             }
             else{
-              $row = mysqli_fetch_array($result);
-              $this->addSessionValue("username", $row["username"]);
-              $this->addSessionValue("permission", $row["role_id"]);
-              $this->addSessionValue("userid", $row["id"]);
+              $row = mysqli_fetch_assoc($result);
+              $this->addSessionValue("username", $row["Username"]);
+              $this->addSessionValue("permission", $row["RoleId"]);
+              $this->addSessionValue("userid", $row["UserId"]);
+              
               $this->redirect("Home");
               exit;
             }
@@ -71,18 +72,11 @@ class Login extends Controller{
       }
   	}
 
-  	
-
-  	
-
-  	
-
     $this->view("simple", [
       "Page"        => "simple_login",
       "title"       => "Đăng nhập - Thi trắc nghiệm trức tuyến",
       "error"      => $error
     ]);
-
   }
 }
 ?>

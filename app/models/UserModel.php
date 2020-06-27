@@ -4,7 +4,7 @@
 
 		//Kiểm tra xem user đó có tồn tại trong csdl hay chưa
 		public function checkExistedUser($email){
-			$qr = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+			$qr = "CALL User_GetUser('$email')";
 			if(mysqli_num_rows(mysqli_query($this->con, $qr)) > 0){
 				return true;
 			}
@@ -15,26 +15,23 @@
 		//Kiểm tra user và password có đúng ko
 		public function checkUserAndPasswordIsCorrect($email, $password){
 			$password = md5($password);
-			$qr = "SELECT username, fullname, role_id, u.id, r.id FROM users u JOIN roles r ON r.id = u.role_id WHERE email = '$email' AND password = '$password' LIMIT 1";
+			$qr = "CALL User_CheckUsernameAndPasswordIsCorrect('$email', '$password')";
 			$result = mysqli_query($this->con, $qr);
-			print_r($result);
-
-
+			
 	    	return $result;
 	    }
 
 		//Thêm user mới với quyền mặc định là 1
 		public function addUser($username, $password, $email, $fullname, $role_id = 1){
 			$password = md5($password);
-			$qr = "INSERT INTO users(username, password, email, fullname, role_id) VALUES ('$username', '$password', '$email', '$fullname', '$role_id')";
+			$qr = "CALL User_InsertUser('$username', '$password', '$email', '$fullname', $role_id);";
+			echo $qr;
 
-			if(mysqli_query($this->con, $qr)){
-				return true;
-			}
+			$result = mysqli_query($this->con, "CALL User_InsertUser('tesst', '45eea262ec1d46cc5ee3817bc821e757', 'thanhdinh@gmail.com', 'dinh', 2)");
+			print_r("result: " . $result . ".");
 
-			return false;
+    		// return false;
 		}
-
 			//xoa user trong database
 		public function deleteUser($email)
 		{
@@ -74,14 +71,14 @@
 		}
 
 		public function getListUsersWithoutCurrentUser($currentUserId){
-			$qr = "SELECT username, fullname, r.name AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id != $currentUserId";
-			//echo $qr;
-			$result = mysqli_query($this->con, $qr);
-			if (mysqli_num_rows($result) > 0) {
-				return $result;
-			}
+			$qr = "CALL User_GetUserWithoutCurrentUser($currentUserId)";
+			echo $qr;
+			// $result = mysqli_query($this->con, $qr);
+			// if (mysqli_num_rows($result) > 0) {
+			// 	return $result;
+			// }
 			
-			return null;
+			// return null;
 		}
 
 		public function getUser($userId){

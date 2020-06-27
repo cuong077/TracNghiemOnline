@@ -6,7 +6,7 @@ class Manager extends Controller{
 
 		if ($this->is_Admin()) {
 			// echo 'test';
-			$this->redirect("Manager/danhsachuser");
+			$this->redirect("Manager/GetListUser");
 		}
 		elseif ($this->is_Login()) {
 			$this->redirect("Home");
@@ -70,7 +70,7 @@ class Manager extends Controller{
 		}
 	}
 
-	function danhsachuser(){
+	function GetListUser(){
 		//check admin	
 		$this->checkIsAdminOrRedirect();
 		$userModel = $this->model("UserModel");
@@ -83,7 +83,7 @@ class Manager extends Controller{
 
 		if($listUsers != null){
 			//fetch list user	
-			while ($row = mysqli_fetch_array($listUsers)) {
+			while ($row = mysqli_fetch_assoc($listUsers)) {
 				
 				$rowToAdd = [];
 				array_push($rowToAdd, $row["username"]);
@@ -180,7 +180,7 @@ class Manager extends Controller{
 		$this->checkIsAdminOrRedirect();
 
 		$grades = [];
-		$gradeMode = $this->model("GradesModel");
+		$gradeMode = $this->model("GradeModel");
 		$result = $gradeMode->getListGrades();
 		$index = 0;
 
@@ -284,10 +284,10 @@ class Manager extends Controller{
 		if (!isset($_POST["updateGrade"])) {
 			$this->checkIsAdminOrRedirect();
 
-			$gradeMode = $this->model("GradesModel");
+			$gradeMode = $this->model("GradeModel");
 			$result = $gradeMode->getGrade($gradeId);
 			
-			while ($row = mysqli_fetch_array($result)) {
+			while ($row = mysqli_fetch_assoc($result)) {
 				$grade["id"] = $row["id"];
 				$grade["name"] = $row["name"];
 				$grade["description"] = $row["description"];
@@ -305,7 +305,7 @@ class Manager extends Controller{
 			$gradeDescription = $_POST["description"];
 
 			if (isset($gradeName)) {
-				$gradeMode = $this->model("GradesModel");
+				$gradeMode = $this->model("GradeModel");
 				$result = $gradeMode->updateGrade($gradeId, $gradeName, $gradeDescription);
 				$this->redirect("Manager/suakhoi/".$gradeId);
 			}
@@ -327,7 +327,7 @@ class Manager extends Controller{
 			$gradeDescription = $_POST["decription"];
 
 			if (isset($gradeName)) {
-				$gradeModel = $this->model("GradesModel");
+				$gradeModel = $this->model("GradeModel");
 				$gradeModel->addGrade($gradeName);
 
 				$this->redirect("Manager/danhsachkhoi");	
@@ -403,7 +403,7 @@ class Manager extends Controller{
 		if (!isset($_POST["addSubject"])) {
 			$this->checkIsAdminOrRedirect();
 			
-			$gradeMode = $this->model("GradesModel");
+			$gradeMode = $this->model("GradeModel");
 			$result = $gradeMode->getListGrades();
 			$grades = [];
 			
@@ -459,9 +459,9 @@ class Manager extends Controller{
 	}
 
 	private function getNameGradeWithId($gradeId){
-		$gradeMode = $this->model("GradesModel");
+		$gradeMode = $this->model("GradeModel");
 		$result = $gradeMode->getGrade($gradeId);
-		$row = mysqli_fetch_array($result);
+		$row = mysqli_fetch_assoc($result);
 		$gradeName = $row["name"];
 
 		return $gradeName;
