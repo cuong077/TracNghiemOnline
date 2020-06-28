@@ -1,89 +1,103 @@
+<?php $user = $data["user"];?>
 
- <!-- Content Wrapper. Contains page content -->
- <div class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Danh sách User
-       
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Forms</a></li>
-        <li class="active">Danh sách user đã chọn</li>
-      </ol>
+
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="row">
-        <!-- left column -->
-        <div class="col-lg-12">
-            <!-- form start -->
-  <!-- Horizontal Form -->
-  <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Horizontal Form</h3>
+        <div class="row">
+            <!-- left column -->
+            <div class="col-lg-12">
+                <!-- form start -->
+                <!-- Horizontal Form -->
+                <div class="box box-info">
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Thông tin người dùng <?php echo $user[1]?><b>
+                        </h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal" method="post">
+                        <table class="table table-striped text-center">
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="email" class="control-label">Email</label>
+                                </th>
+                                <td>
+                                    <input type="email" class="form-control" id="email" placeholder="Email" name="email"
+                                        value="<?php echo $user[0]; ?>">
+                                </td>
+                            </tr>
+                            
+                            <tr class="text-center">
+                                <th class="text-center col-sm-2">
+                                    <label for="UserName" class="control-label">User Name</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="UserName" placeholder="UserName"
+                                                name="username" value="<?php echo $user[1]; ?>">
+                                </td> 
+                            </tr>
+                           
+                            <tr>
+                                <th class="text-center">
+                                    <label for="FullName" class="control-label">FullName</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="FullName" placeholder="FullName"
+                                                name="fullname" value="<?php echo $user[2]; ?>">
+                                </td>
+                            </tr>
+                            
+
+                            <tr>
+                                <th class="text-center">
+                                    <label for="RoleID" class="control-label">Role</label>
+                                </th>
+                                <td>
+                                    <select class="browser-default custom-select form-control" name="roleSelect">
+                                        <!-- <option>Danh sách quyền</option> -->
+                                        <?php $roles=$data["roles"]; 
+                                                // print_r($roles);
+
+                                                for ($index=0; $index < count($roles); $index++) { 
+                                                    $row = $roles[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$user[3] == $row[0]) echo "selected"; ?>><?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+
+                            </tr>
+                            
+
+                        </table>
+                      
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <a class="btn btn-default" href="Manager/danhsachuser">Cancel</a>
+                            <button type="submit" name="UpdateUser" class="btn btn-info pull-right">Update</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- Horizontal Form -->
+
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form class="form-horizontal">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="email" class="col-sm-2 control-label">Email</label>
-
-                  <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" placeholder="Email">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="UserName" class="col-sm-2 control-label">UserName</label>
-
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="UserName" placeholder="UserName">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="FullName" class="col-sm-2 control-label">FullName</label>
-
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="FullName" placeholder="FullName">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="RoleID" class="col-sm-2 control-label">RoleID</label>
-
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="RoleID" placeholder="RoleID">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-
-                  <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                  </div>
-                </div>
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">update</button>
-              </div>
-              <!-- /.box-footer -->
-            </form>
-          </div>
-           <!-- Horizontal Form -->
-         
-          </div>
 
         </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

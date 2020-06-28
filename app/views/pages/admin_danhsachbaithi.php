@@ -1,83 +1,71 @@
-
- <!-- Content Wrapper. Contains page content -->
- <div class="content-wrapper">
+<?php $exams=$data["exams"];
+  // print_r($exams);
+?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Danh sách bài thi
-       
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Forms</a></li>
-        <li class="active">Danh sách bài thi</li>
-      </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="row">
-        <!-- left column -->
-        <div class="col-lg-12">
-          <!-- general form elements -->
-          <div class="box box-primary">
-            
-            <!-- /.box-header -->
-            <!-- form start -->
-<div>
-    <div>
-    <table class="table table-striped custab">
-    <thead>
-        <tr>
-            <th>Mã bài thi</th>
-            <th>Mã giáo viên</th>
-            <th>Mã môn</th>
-            <th>Mã thời gian</th>
-            <th>Mô tả bài thi</th>
-            <th>Thời gian bắt đầu</th>
-            <th>Thời gian kết thúc</th>
-           
-        </tr>
-    </thead>
-            <tr>
-                <td>1</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="admin/suabaithi"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
-            </tr>
-            <tr>
-                <<td>1</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="admin/suabaithi"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
-            </tr>
-            <tr>
-            <td>1</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="admin/suabaithi"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
-            </tr>
-    </table>
-    </div>
-</div>
-         
-          </div>
+        <div class="row">
+            <!-- left column -->
+            <div class="col-lg-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border text-center">
 
+                        <h3 class="box-title"><b style="color:#3c8dbc;">Danh sách bài thi </b></h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <div>
+                        <div>
+                            <table class="table table-striped custab text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Mã bài thi</th>
+                                        <th>Bài thi</th>
+                                        <th>Giáo viên</th>
+                                        <th>Khối lớp</th>
+                                        <th>Thời gian</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                       for ($index=0; $index < count($exams); $index++) { 
+                                        # code...
+                                        $row = $exams[$index];
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $row[0];?></td>
+                                        <td><?php echo $row[1];?></td>
+                                        <td><?php echo $row[2];?></td>
+                                        <td><?php echo $row[3];?></td>
+                                        <td><?php echo $row[4];?> phút</td>
+                                        <!-- Manager/suabaithi/<?php echo $row[0];?> -->
+                                        <td class="text-center">
+                                            <a class="btn btn-info btn-xs"
+                                                href="javascript:void(0)">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                                Sửa</a>
+                                            <a href="javascript:void(0)" class="btn btn-danger btn-xs"><span
+                                                    class="glyphicon glyphicon-remove"></span>Ẩn</a></td>
+                                    </tr>
+                                    <?php }?>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
-      </div>
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+<!-- /.content-wrapper -->

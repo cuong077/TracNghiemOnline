@@ -7,12 +7,24 @@
       $qr = "INSERT INTO exam_results( user_id, exam_id, time_join, is_completed)
              VALUES ($user_id, $exam_id, '$time_join', $is_completed)";
 
-             echo $qr;
       if (mysqli_query($this->con, $qr)) {
-        return true;
+        return mysqli_insert_id($this->con);
       }
 
       return false;
+    }
+
+
+    //
+    public function updateStatusExamResult($exam_result_id, $status){
+
+      $qr = "UPDATE exam_results set is_completed = $status where id = $exam_result_id";
+      if (mysqli_query($this->con, $qr) > 0){
+        return true;
+      }else{
+        return false;
+      }
+
     }
 
     //lay n exams trong database
@@ -28,7 +40,6 @@
         return null;
       }
     }
-
 
 
     public function getTimePassed($exam_result_id, $time_current){
@@ -71,12 +82,31 @@
     }
 
     //lay 1 exam trong database
-    public function getExam($examId)
+    public function getExamResult($exam_result_id)
     {
-      $qr = "SELECT * FROM exams WHERE id=$examId LIMIT 1";
+      $qr = "SELECT * FROM exam_results WHERE id=$exam_result_id LIMIT 1";
       $result = mysqli_query($this->con, $qr);
 
       return $result;
+    }
+
+
+    public function getAllExamResultOfUser($user_id)
+    {
+      $qr = "SELECT er.id, er.is_completed, er.time_join, e.description, g.name as grade_name, s.name as subject_name FROM exam_results er join exams e on er.exam_id = e.id join subjects s on e.subject_id = s.id join grades g on g.id = e.grade_id  WHERE er.user_id=$user_id order by er.id desc";
+      $result = mysqli_query($this->con, $qr);
+      return $result;
+    }
+
+    public function checkUserDoingExam($user_id){
+      $qr = "SELECT * FROM exam_results WHERE user_id=$user_id and is_completed = 2 LIMIT 1";
+     
+      $result = mysqli_query($this->con, $qr);
+
+
+      if(mysqli_num_rows($result) > 0)
+        return true;
+      return false;
     }
 
     //xoa exam trong database voi id
