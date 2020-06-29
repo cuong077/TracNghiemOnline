@@ -8,7 +8,7 @@ class Home extends Controller{
         // $subjects = $this->getListNameSubject();
         // $exams = $this->getExamsToView();
 
-        $this->view("simple",[
+        $this->view("simple2",[
             "Page"          => "simple_home",
             "title"         => "Trang chủ",
             "grades"        => $grades

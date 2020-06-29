@@ -300,8 +300,6 @@ class Examination extends Controller{
         }
     }
 
-
-
     public function findExam(){
 
         $error = null;
@@ -329,7 +327,6 @@ class Examination extends Controller{
             "title"             => "Tham gia bài thi theo ID",
             "error"             => $error
         ]);
-
     }
 
 
