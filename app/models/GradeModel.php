@@ -18,7 +18,7 @@ class GradeModel extends DB
     //Xoa khoi hoc
     public function deleteGrade($gradeId)
     {
-        $qr = "DELETE FROM grade WHERE id='$gradeId'";
+        $qr = "CALL Grade_DeleteGrade()";
 
         if (mysqli_query($this->con, $qr)) {
             return true;
@@ -34,10 +34,19 @@ class GradeModel extends DB
         // echo $qr;
         if (mysqli_query($this->con, $qr)) {
             return true;
-        } else {
-            return false;
+        } 
+        
+        return false;
+    }
+
+    public function hiddenGrade($gradeId){
+        $qr = "CALL Grade_HiddenGrade('$gradeId')";
+        
+        if(mysqli_query($this->con, $qr)){
+            return true;
         }
 
+        return false;
     }
 
     public function getListGrades()

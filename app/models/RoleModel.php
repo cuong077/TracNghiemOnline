@@ -3,8 +3,9 @@
 	class RoleModel extends DB{
 
         public function getListRoles(){
-            $qr = "SELECT * FROM roles";
+            $qr = "CALL Role_GetListRole()";
             $result = mysqli_query($this->con, $qr);
+
             return $result;
         }
     

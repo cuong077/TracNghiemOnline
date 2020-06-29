@@ -20,7 +20,7 @@
 
                                     <?php } ?>
                                     <h3 class="h4 text-black mb-4">Đăng Nhập</h3>
-                                    <div class="form-group">
+                                    <div class="form-group has-error">
                                       <input type="text" name="email" class="form-control" placeholder="Email">
                                     </div>
                                     <div class="form-group">

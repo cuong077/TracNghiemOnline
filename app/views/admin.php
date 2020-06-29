@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>Trang quản lý | Admin</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <base href="<?php echo Config::$base_url; ?>">
@@ -104,24 +104,12 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <!-- <li class="header">MAIN NAVIGATION</li> -->
-                    <?php if(isset($_SESSION["permission"]) && $_SESSION["permission"]==3){?>
+                    <?php if(isset($_SESSION["permission"]) && $_SESSION["permission"]==1){?>
                     <li class="treeview">
-                        <a href="Manager/danhsachuser">
+                        <a href="Manager/ListUsers">
                             <i class="fa fa-user"></i>
                             <span>User</span>
                         </a>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-laptop"></i>
-                            <span>Bài thi</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu ">
-                            <li><a href="Manager/danhsachbaithi"><i class="fa fa-circle-o"></i> Danh sách bài thi</a>
-                            </li>
-                            <li><a href="Manager/thembaithi"><i class="fa fa-circle-o"></i> Thêm bài thi</a></li>
-                        </ul>
                     </li>
                     <li class="treeview">
                         <a href="#">
@@ -129,8 +117,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="Manager/danhsachkhoi"><i class="fa fa-circle-o"></i> Danh sách khối</a></li>
-                            <li><a href="Manager/themkhoi"><i class="fa fa-circle-o"></i> Thêm khối</a></li>
+                            <li><a href="Manager/ListGrades"><i class="fa fa-circle-o"></i> Danh sách khối</a></li>
+                            <li><a href="Manager/AddGrade"><i class="fa fa-circle-o"></i> Thêm khối</a></li>
                         </ul>
                     </li>
 
@@ -140,8 +128,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="Manager/danhsachmon"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
-                            <li><a href="Manager/themmon"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
+                            <li><a href="Manager/ListSubjects"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
+                            <li><a href="Manager/AddSubject"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
                         </ul>
                     </li>
                     <?php }?>
@@ -153,8 +141,8 @@
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="Manager/danhsachmon"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
-                            <li><a href="Manager/themmon"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
+                            <li><a href="Manager/ListSubjects"><i class="fa fa-circle-o"></i> Danh sách môn học</a></li>
+                            <li><a href="Manager/AddSubject"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
                         </ul>
                     </li>
                     <?php }?>

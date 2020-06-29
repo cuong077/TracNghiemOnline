@@ -24,8 +24,10 @@
                             <table class="table table-striped custab text-center">
                                 <thead>
                                     <tr>
-                                        <th>Mã môn</th>
+                                        <!-- <th>Mã môn</th> -->
                                         <th>Tên môn</th>
+                                        <th>Khối lớp học</th>
+                                        <th>Mô tả</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -33,18 +35,22 @@
                                       for ($index=0; $index < count($subjects); $index++) { 
                                         # code...
                                         $row = $subjects[$index];
-                                  ?>
-
+                                ?>
                                 <tr>
-                                    <td><?php echo $row[0];?></td>
+                                    <!-- <td></td> -->
                                     <td><?php echo $row[1];?></td>
-
+                                    <td><?php echo($row[2]);?></td>
+                                    <td><?php echo($row[3]);?></td>
+                                    
                                     <td class="text-center">
 
-                                        <a class='btn btn-info btn-xs' href="Manager/suamon/<?php echo $row[0];?>"><span
+                                        <a class='btn btn-info btn-xs' href="Manager/EditSubject/<?php echo $row[0];?>"><span
                                                 class="glyphicon glyphicon-edit"></span> Sửa</a>
-                                        <a href="#" class="btn btn-danger btn-xs"><span
+                                        <a href="Manager/HiddenSubject/<?php echo $row[0];?>" class="btn btn-danger btn-xs"><span
+                                                class="glyphicon glyphicon-remove"></span> Ẩn</a>
+                                        <a href="Manager/DeleteSubject/<?php echo $row[0];?>" class="btn btn-danger btn-xs"><span
                                                 class="glyphicon glyphicon-remove"></span> Xóa</a></td>
+                                        
                                 </tr>
                                 <?php }?>
                                                                 
@@ -52,7 +58,7 @@
                         </div>
 <!--                     
                         <div class="text-center padding-bottom-xs">
-                            <a  style="height:40px;" class="text-center btn btn-success btn-xs" href="Manager/suamon/<?php echo $row[0];?>"><span
+                            <a  style="height:40px;" class="text-center btn btn-success btn-xs" href="Manager/EditSubject/<?php echo $row[0];?>"><span
                                                     class="glyphicon glyphicon-plus"></span> Thêm môn học</a>
                         </div>
                          -->

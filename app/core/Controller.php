@@ -21,7 +21,16 @@ class Controller
     public function is_Login()
     {
         if (isset($_SESSION['username']) && $_SESSION['username'] != "") {
-            return true;
+            $email = @$_SESSION["email"];
+            $userModel = $this->model("UserModel");
+            $blockResult = $userModel->isBlock($email);
+            $blockRow = mysqli_fetch_assoc($blockResult);
+            $isBlock = !(bool)$blockRow["Active"];
+
+            if($isBlock == false){
+                return true;
+            }
+            return false;
         } else {
             return false;
         }
@@ -35,7 +44,7 @@ class Controller
     public function is_Admin()
     {
         if (isset($_SESSION['username']) && $_SESSION['username'] != "" && $_SESSION['permission'] == 1) {
-            return true;
+           return true;
         } else {
             return false;
         }
@@ -140,4 +149,9 @@ class Controller
         return $examTimes;
     }
 
+    public function messageBox($msg){
+        echo "<script>alert('$msg')</script>";
+    }
+
 }
+?>

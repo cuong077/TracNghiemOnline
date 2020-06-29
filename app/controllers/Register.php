@@ -3,6 +3,7 @@
 class Register extends Controller{
 
     function index(){
+		$loginmodel = $this->model("UserModel");
 
         $this->view("simple", [
           "Page"        => "simple_register",

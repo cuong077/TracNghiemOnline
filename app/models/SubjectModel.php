@@ -3,10 +3,11 @@
 	class SubjectModel extends DB{
 
     //Them mon hoc
-    public function addSubject($subjectName){
-    	$qr = "INSERT INTO subjects(name) VALUES ('$subjectName')";
-
-    	if(mysqli_query($this->con, $qr)){
+    public function addSubject($subjectName, $subjectDescription){
+    	$qr = "CALL Subject_InsertSubject('$subjectName', '$subjectDescription')";
+		print_r($qr);
+		mysqli_next_result($this->con);
+		if(mysqli_query($this->con, $qr)){
     		return true;
     	}
 
@@ -14,10 +15,9 @@
     }
 
 		//Xoa khoi hoc
-	public function deleteSubject($subjectId)
+	public function hiddenSubject($subjectId)
 	{
-		$qr = "DELETE FROM subjects WHERE id='$subjectId'";
-
+		$qr = "CALL Subject_HiddenSubjectById('$subjectId')";
 		if (mysqli_query($this->con, $qr)) {
 			return true;
 		}
@@ -29,10 +29,9 @@
     //Chinh sua ten khoi hoc
 	public function updateSubject($subjectId, $subjectName)
 	{
-		$qr = "UPDATE subjects SET name='$subjectName' WHERE id=$subjectId";
+		$qr = "UPDATE subject SET Name='$subjectName' WHERE SubjectId=$subjectId";
 		
 		// echo $qr;
-
 		if (mysqli_query($this->con, $qr)) {
 			return true;
 		}
@@ -41,18 +40,34 @@
 		}
 	}
 	
-
 	public function getListSubjects(){
-		$qr = "SELECT * FROM subjects";
+		$qr = "CALL Subject_GetListSubjects()";
 		$result = mysqli_query($this->con, $qr);
+
 		return $result;
 	}
 
 	public function getSubject($subjectId){
-		$qr = "SELECT * FROM subjects WHERE id=$subjectId";
+		$qr = "CALL Subject_GetSubject($subjectId)";
 		$result = mysqli_query($this->con, $qr);
+
 		return $result;
 	}
-}
 
+	public function insertedId(){
+        return mysqli_insert_id($this->con);
+	}
+	
+	public function deleteSubject($subjectId){
+		$qr = "CALL Subject_DeleteSubject($subjectId)";
+		// echo $qr;
+		mysqli_next_result($this->con);
+
+		if (mysqli_query($this->con, $qr)) {
+			return true;
+		}
+
+		return false;
+	}
+}
 ?>

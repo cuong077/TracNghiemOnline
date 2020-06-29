@@ -9,7 +9,7 @@
 				return true;
 			}
 
-    		return false;
+			return false;
 		}
 
 		//Kiểm tra user và password có đúng ko
@@ -19,18 +19,31 @@
 			$result = mysqli_query($this->con, $qr);
 			
 	    	return $result;
-	    }
+		}
+		
+		public function isBlock($email){
+
+			$qr = "CALL User_IsBlock('$email')";
+			mysqli_next_result($this->con);
+			$result = mysqli_query($this->con, $qr);
+
+			return $result;
+		}
 
 		//Thêm user mới với quyền mặc định là 1
 		public function addUser($username, $password, $email, $fullname, $role_id = 1){
 			$password = md5($password);
+
+			mysqli_next_result($this->con);
+
 			$qr = "CALL User_InsertUser('$username', '$password', '$email', '$fullname', $role_id);";
-			echo $qr;
 
-			$result = mysqli_query($this->con, "CALL User_InsertUser('tesst', '45eea262ec1d46cc5ee3817bc821e757', 'thanhdinh@gmail.com', 'dinh', 2)");
-			print_r("result: " . $result . ".");
+			if(mysqli_query($this->con, $qr)){
+				return true;
+			}
 
-    		// return false;
+			return false;
+			
 		}
 			//xoa user trong database
 		public function deleteUser($email)
@@ -48,7 +61,7 @@
 		//thay doi quyen cho users
 		public function changePermission($permissionId, $userId)
 		{
-			$qr = "UPDATE users SET role_id='$permissionId' WHERE id='$userId'";
+			$qr = "UPDATE user SET RoleId='$permissionId' WHERE UserId='$userId'";
 			if (mysqli_query($this->con, $qr)) {
 				return true;
 			}
@@ -60,7 +73,7 @@
 			//update thong tin ca nhan
 		public function updateUserInformation($fullname, $username, $role_id, $userId)
 		{
-			$qr = "UPDATE users SET fullname='$fullname', username='$username', role_id=$role_id WHERE id=$userId";
+			$qr = "UPDATE user SET FullName='$fullname', Username='$username', RoleId=$role_id WHERE UserId=$userId";
 			
 			if (mysqli_query($this->con, $qr)) {
 				return true;
@@ -72,24 +85,42 @@
 
 		public function getListUsersWithoutCurrentUser($currentUserId){
 			$qr = "CALL User_GetUserWithoutCurrentUser($currentUserId)";
-			echo $qr;
-			// $result = mysqli_query($this->con, $qr);
-			// if (mysqli_num_rows($result) > 0) {
-			// 	return $result;
-			// }
-			
-			// return null;
-		}
-
-		public function getUser($userId){
-			$qr = "SELECT username, fullname, r.description AS permissionName, u.id AS user_id, r.id AS role_id, email FROM users u JOIN roles r ON r.id = u.role_id WHERE u.id = $userId LIMIT 1";
-			// echo $qr;
+			//echo $qr;
 			$result = mysqli_query($this->con, $qr);
 			if (mysqli_num_rows($result) > 0) {
 				return $result;
 			}
 			
 			return null;
+		}
+
+		public function getUser($userId){
+			$qr = "CALL User_GetUserById('$userId')";
+			$result = mysqli_query($this->con, $qr);
+			
+			if (mysqli_num_rows($result) > 0) {
+				return $result;
+			}
+			
+			return null;
+		}
+
+		public function activeUser($userId){
+			$qr = "CALL User_UpdateActive(true, '$userId')";
+			if(mysqli_query($this->con, $qr)){
+				return true;
+			}
+
+			return false;
+		}
+
+		public function blockUser($userId){
+			$qr = "CALL User_UpdateActive(false, '$userId')";
+			if(mysqli_query($this->con, $qr)){
+				return true;
+			}
+
+			return false;
 		}
 	}
 

@@ -29,7 +29,7 @@
                                 </th>
                                 <td>
                                     <input type="email" class="form-control" id="email" placeholder="Email" name="email"
-                                        value="<?php echo $user[0]; ?>">
+                                        value="<?php echo $user[0]; ?>" disabled>
                                 </td>
                             </tr>
                             
@@ -85,8 +85,8 @@
                       
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a class="btn btn-default" href="Manager/danhsachuser">Cancel</a>
-                            <button type="submit" name="UpdateUser" class="btn btn-info pull-right">Update</button>
+                            <a class="btn btn-default" href="Manager/GetListUser">Quay lại</a>
+                            <button type="submit" name="UpdateUser" class="btn btn-info pull-right">Cập nhật</button>
                         </div>
                         <!-- /.box-footer -->
                     </form>

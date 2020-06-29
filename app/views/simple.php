@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <?php echo @$_SESSION["permission"];?>
+    
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -58,10 +58,13 @@
                                 <?php }else{ ?>
                           
                                 <?php if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 1)) {?>
-                                            <li><a href="Manager">Quản lý</a></li>
+                                    <li><a href="Manager">Quản lý</a></li>
+                                <?php  } 
+                                    elseif((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 2)) {?>
+                                    <li><a href="Teacher">Xem danh sách bài thi</a></li>
+
                                 <?php  } ?>
                                 <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
-                                <li><a href="Examination">Xem danh sách bài thi</a></li>
                                 <li><a href="Examination/findExam">Tham gia bài thi bằng ID</a></li>
                                 <li><a href="Logout">Đăng xuất</a></li>
                                 <?php } ?>

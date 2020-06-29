@@ -125,7 +125,8 @@ CREATE TABLE `examtype` (
 CREATE TABLE `grade` (
   `GradeId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL
+  `Description` varchar(255) DEFAULT NULL,
+  `Hidden` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -199,7 +200,8 @@ CREATE TABLE `role` (
 CREATE TABLE `subject` (
   `SubjectId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL
+  `Description` varchar(255) DEFAULT NULL,
+  `Hidden` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -216,7 +218,8 @@ CREATE TABLE `user` (
   `Birthday` datetime NOT NULL,
   `Phone` varchar(10) DEFAULT NULL,
   `Password` varchar(32) NOT NULL,
-  `RoleId` int(11) NOT NULL
+  `RoleId` int(11) NOT NULL,
+  `Active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -623,18 +626,29 @@ END //
 
 DELIMITER ;
 
+-- 5. Hidden Grade by GradeId
+DELIMITER //
+
+CREATE PROCEDURE Grade_HiddenGrade(IN gradeIdToUpdate INT)
+BEGIN
+ 	UPDATE Grade
+    SET Hidden = True
+    WHERE GradeId = gradeIdToUpdate;
+END //
+
+DELIMITER ;
 
 -- AnswerModel
 
 
 
 -- USER
--- 1. GET USER WITH ID
+-- 1. GET USER WITH Email
 DELIMITER //
 
-CREATE PROCEDURE User_GetUser(IN emailToSearch varchar(255))
+CREATE PROCEDURE User_GetUserByEmail(IN emailToSearch varchar(255))
 BEGIN
- 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId Description FROM User WHERE Email=emailToSearch;
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToSearch;
 END //
 
 DELIMITER ;
@@ -645,7 +659,7 @@ DELIMITER //
 
 CREATE PROCEDURE User_CheckUsernameAndPasswordIsCorrect(IN emailToCheck varchar(255), IN passwordToCheck varchar(255))
 BEGIN
- 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToCheck AND Password=passwordToCheck;
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToCheck AND Password=passwordToCheck AND Active=true;
 END //
 
 DELIMITER ;
@@ -655,14 +669,14 @@ DELIMITER //
 
 CREATE PROCEDURE User_GetUserWithoutCurrentUser(IN userIdToSearch INT)
 BEGIN
- 	SELECT UserId, FullName, Email, Username, Birthday, Phone, u.RoleId, r.Name AS RoleName 
+ 	SELECT UserId, Active, FullName, Email, Username, Birthday, Phone, u.RoleId, r.Name AS RoleName 
     FROM User u JOIN Role r ON u.RoleId = r.RoleId
     WHERE UserId != userIdToSearch;
 END //
 
 DELIMITER ;
 
--- 4. Insert user
+-- 4. Insert user 
 DELIMITER //
 
 CREATE PROCEDURE User_InsertUser(
@@ -685,3 +699,159 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- 5. Get User with ID
+DELIMITER //
+
+CREATE PROCEDURE User_GetUserById(IN userIdToSearch INT)
+BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE UserId=userIdToSearch;
+END //
+
+DELIMITER ;
+
+-- 6. Update Active user
+DELIMITER //
+
+CREATE PROCEDURE User_UpdateActive(IN activeToUpdate BOOLEAN, IN userIdToUpdate INT)
+BEGIN
+ 	UPDATE User
+    SET Active=activeToUpdate
+    WHERE UserId=userIdToUpdate;
+END //
+
+DELIMITER ;
+
+-- 7. check user block
+DELIMITER //
+
+CREATE PROCEDURE User_IsBlock(IN emailToSearch varchar(255))
+BEGIN
+ 	SELECT Active FROM User WHERE Email=emailToSearch;
+END //
+
+DELIMITER ;
+
+-- Role
+-- 1. Get list role
+DELIMITER //
+
+CREATE PROCEDURE Role_GetListRole()
+BEGIN
+ 	SELECT RoleId, Name, Description FROM Role;
+END //
+
+DELIMITER ;
+
+
+-- GradeSubject
+-- 1. Insert GradeSubject
+DELIMITER //
+CREATE PROCEDURE GradeSubject_InsertGradeSubject(
+  IN gradeIdToInsert INT,
+  IN subjectIdToInsert INT
+)
+BEGIN
+  INSERT GradeSubject(GradeId, SubjectId) 
+    VALUES(
+      gradeIdToInsert,
+      subjectIdToInsert
+    );
+END //
+DELIMITER ;
+
+-- 2. get GradeId with SubjectId
+DELIMITER //
+CREATE PROCEDURE GradeSubject_GetGradeIdWithSubjectId(
+    IN subjectIdToSearch INT
+)
+BEGIN
+  SELECT GradeId FROM GradeSubject WHERE SubjectId=subjectIdToSearch AND Hidden!=true;
+END //
+DELIMITER ;
+
+-- 3. Update GradeId by SubjectId
+DELIMITER //
+CREATE PROCEDURE GradeSubject_UpdateGradeIdBySubjectId(
+    IN subjectIdToSearch INT,
+    IN gradeIdToUpdate INT
+)
+BEGIN
+  Update GradeSubject 
+    SET GradeId = gradeIdToUpdate
+    WHERE SubjectId = subjectIdToSearch;
+END //
+DELIMITER ;
+
+-- 4. delete gradesubject by subjectid
+DELIMITER //
+CREATE PROCEDURE GradeSubject_DeleteGradeBySubjectId(
+  IN subjectIdToSearch INT
+)
+BEGIN
+  DELETE FROM GradeSubject
+    WHERE SubjectId = subjectIdToSearch;
+END //
+DELIMITER ;
+
+-- SUBJECT
+-- 1. Get list subject
+DELIMITER //
+
+CREATE PROCEDURE Subject_GetListSubjects()
+BEGIN
+ 	SELECT SubjectId, Name, Description FROM Subject WHERE Hidden != True;
+END //
+
+DELIMITER ;
+
+-- 2. Hidden subject
+DELIMITER //
+
+CREATE PROCEDURE Subject_HiddenSubjectById(IN subjectIdToUpdate INT)
+BEGIN
+ 	UPDATE Subject 
+    SET Hidden = True
+    WHERE SubjectId = subjectIdToUpdate;
+END //
+
+DELIMITER ;
+
+-- 3. Insert subject
+DELIMITER //
+CREATE PROCEDURE Subject_InsertSubject(
+  IN subjectNameToInsert varchar(255),
+  IN subjectDescriptionToInsert varchar(255)
+)
+BEGIN
+  INSERT Subject(Name, Description) 
+    VALUES(
+      subjectNameToInsert,
+      subjectDescriptionToInsert
+    );
+END //
+DELIMITER ;
+
+-- 4. delete subject
+DELIMITER //
+CREATE PROCEDURE Subject_DeleteSubject(
+  IN subjectIdToSearch INT
+)
+BEGIN
+  DELETE FROM Subject
+    WHERE SubjectId=subjectIdToSearch;
+END //
+DELIMITER ;
+
+-- 5. get subject with subjectid
+DELIMITER //
+CREATE PROCEDURE Subject_GetSubject(
+  IN subjectIdToSearch INT
+)
+BEGIN
+  SELECT SubjectId, Name, Description, Hidden 
+    FROM Subject
+    WHERE SubjectId=subjectIdToSearch;
+END //
+DELIMITER ;
+

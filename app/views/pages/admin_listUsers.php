@@ -26,6 +26,7 @@
                                     <th>Full Name</th>
                                     <th>User Name</th>
                                     <th>Role</th>
+                                    <th>Active</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -45,13 +46,33 @@
                                     <td> <?php echo $row[1]; ?></td>
                                     <td> <?php echo $row[0]; ?></td>
                                     <td> <?php echo $row[2]; ?></td>
+                                    <td> 
+                                        <?php 
+                                        if($row[6]==true){
+                                            echo "<span style='color:green;'>Enable</span>";
+                                        }else{
+                                            echo "<span style='color:red;'>Disable</span>";
+                                        }
+                                    
+                                        ?>
+                                    </td>
+
                                     <td class="text-center">
                                         <!-- <a class="btn btn-success btn-xs" href="Manager/themuser"><span
                                                 class="glyphicon glyphicon-plus"></span> Add</a> -->
-                                        <a class='btn btn-info btn-xs' href="Manager/suauser/<?php echo $row[3]?>"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit</a>
-                                        <a href="Manager/xoauser/<?php echo $row[3]?>" class="btn btn-danger btn-xs"><span
-                                                class="glyphicon glyphicon-remove"></span> Del</a>
+                                        <a class='btn btn-info btn-xs' href="Manager/EditUser/<?php echo $row[3]?>"><span
+                                                class="glyphicon glyphicon-edit"></span> Sửa</a>
+                                          
+                                        <?php
+                                            if($row[6]==false){?>
+                                                <a href="Manager/ActiveUser/<?php echo $row[3]; ?>" class="btn btn-success btn-xs"><span
+                                                class="glyphicon glyphicon-remove"></span> Active</a>
+                                        <?php
+                                            }else{?>
+                                                <a href="Manager/BlockUser/<?php echo $row[3]; ?>" class="btn btn-danger btn-xs"><span
+                                                class="glyphicon glyphicon-remove"></span> Block</a>
+                                        <?php   }?>
+                                        
                                     </td>
                                 </tr>
 

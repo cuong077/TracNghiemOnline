@@ -31,6 +31,7 @@ class Login extends Controller{
     }
 
     $loginmodel = $this->model("UserModel");
+   
 
   	$error = "";
 
@@ -51,24 +52,36 @@ class Login extends Controller{
         }else{
 
           if($error == ""){
+            //check block
+            //
             $result = $loginmodel->checkUserAndPasswordIsCorrect($email, $password);
 
             if(mysqli_num_rows($result) == 0){
               $error = "Email hoặc mật khẩu sai.";
             }
             else{
-              $row = mysqli_fetch_assoc($result);
-              $this->addSessionValue("username", $row["Username"]);
-              $this->addSessionValue("permission", $row["RoleId"]);
-              $this->addSessionValue("userid", $row["UserId"]);
+
+              $blockResult = $loginmodel->isBlock($email);
+              $blockRow = mysqli_fetch_assoc($blockResult);
+              $isBlock = !(bool)$blockRow["Active"];
               
-              $this->redirect("Home");
-              exit;
+              if($isBlock == false){
+
+                $row = mysqli_fetch_assoc($result);
+                $this->addSessionValue("username", $row["Username"]);
+                $this->addSessionValue("permission", $row["RoleId"]);
+                $this->addSessionValue("userid", $row["UserId"]);
+                $this->addSessionValue("email", $row["Email"]);
+                
+                $this->redirect("Home");
+                exit;
+              }
+              else{
+                $error = "User đang bị khóa.";
+              }
             }
           }
-
         }
-
       }
   	}
 

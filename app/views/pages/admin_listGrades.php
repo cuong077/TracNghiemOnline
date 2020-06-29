@@ -25,6 +25,7 @@
                                     <tr>
                                         <th>Mã khối</th>
                                         <th>Tên khối</th>
+                                        <th>Mô tả</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -35,13 +36,14 @@
                                         ?>
                                 <tr>
                                     <td><?php echo $row[0]?></td>
-                                    <td><?php echo $row[1]?></td>
+                                    <td><?php echo $row[1]?></td> 
+                                    <td><?php echo $row[2]?></td> 
                                     <td>
-                                        <a class='btn btn-info btn-xs' href="Manager/suakhoi/<?php echo $row[0]?>"><span
-                                                class="glyphicon glyphicon-edit"></span> Edit</a>
-                                        <a href="Manager/xoakhoi/<?php echo $row[0]?>"
+                                        <a class='btn btn-info btn-xs' href="Manager/EditGrade/<?php echo $row[0]?>"><span
+                                                class="glyphicon glyphicon-edit"></span> Sửa</a>
+                                        <a href="Manager/HiddenGrade/<?php echo $row[0]?>"
                                             class="btn btn-danger btn-xs"><span
-                                                class="glyphicon glyphicon-remove"></span> Del</a></td>
+                                                class="glyphicon glyphicon-remove"></span> Ẩn</a></td>
 
                                     </td>
                                 </tr>
