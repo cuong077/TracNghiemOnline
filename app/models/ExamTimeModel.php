@@ -9,7 +9,8 @@
     }
 
     public function getListExamTime(){
-      $qr = "SELECT * FROM exam_time";
+      $qr = "SELECT * FROM examtime";
+
       $result = mysqli_query($this->con, $qr);
       
       return $result;

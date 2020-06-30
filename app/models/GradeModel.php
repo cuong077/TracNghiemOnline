@@ -18,6 +18,7 @@ class GradeModel extends DB
     //Xoa khoi hoc
     public function deleteGrade($gradeId)
     {
+
         $qr = "CALL Grade_DeleteGrade()";
 
         if (mysqli_query($this->con, $qr)) {
@@ -53,7 +54,7 @@ class GradeModel extends DB
     {
         $qr = "CALL Grade_GetAllGrades()";
         $result = mysqli_query($this->con, $qr);
-
+        
         return $result;
     }
 

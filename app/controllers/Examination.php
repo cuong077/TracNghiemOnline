@@ -11,9 +11,6 @@ class Examination extends Controller{
 
     }
 
-
-
-
     public function index(){
 
         $this->redirect("Examination/listExams");

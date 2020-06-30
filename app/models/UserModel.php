@@ -5,7 +5,10 @@
 		//Kiểm tra xem user đó có tồn tại trong csdl hay chưa
 		public function checkExistedUser($email){
 			$qr = "CALL User_GetUser('$email')";
-			if(mysqli_num_rows(mysqli_query($this->con, $qr)) > 0){
+
+			$result = mysqli_query($this->con, $qr);
+
+			if(mysqli_num_rows($result) > 0){
 				return true;
 			}
 
@@ -14,8 +17,11 @@
 
 		//Kiểm tra user và password có đúng ko
 		public function checkUserAndPasswordIsCorrect($email, $password){
+
 			$password = md5($password);
+
 			$qr = "CALL User_CheckUsernameAndPasswordIsCorrect('$email', '$password')";
+
 			$result = mysqli_query($this->con, $qr);
 			
 	    	return $result;

@@ -31,6 +31,7 @@
     <link href="public/simple2/css/fancybox/jquery.fancybox.css" rel="stylesheet">
     <link href="public/simple2/css/flexslider.css" rel="stylesheet" />
     <link href="public/simple2/css/style.css" rel="stylesheet" />
+    <link href="public/simple2/css/style2.css" rel="stylesheet" />
     <link href="public/simple2/css/swiper.min.css?v=1.0" rel="stylesheet" />
     <link href="public/simple2/css/dev.css?v=7.1" rel="stylesheet" />
     <link href="public/simple2/css/animate.css" rel="stylesheet" />
@@ -92,11 +93,6 @@
                         }
     </style>
 </head>
-<script type="text/javascript">
-    function ClearCookie() {
-                document.cookie = 'showblur' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;'
-            }
-</script>
 
 <body class="pageClass">
     <div class="fixed-contact-info">
@@ -113,19 +109,21 @@
             <div class="header-top" style="background: linear-gradient(45deg, #DCEDC8 0, #81C784 100%);">
                 <div class="container">
                     <div class="row rowHeader">
+                        <div class="col-md-1 col-xs-12">
+                        </div>
                         <!-- Start Logo -->
-                        <div class="col-md-2 col-xs-4">
+                        <div class="col-md-3 col-xs-4">
                             <h1>
-                                <a href="https://www.789.vn">
-                                    <img class="img-responsive hvr-pulse-grow" src="img/logo.png" alt="" style="width:120px; margin: 0 auto;">
+                                <a href="<?php echo Config::$base_url; ?>">
+                                    <img class="img-responsive hvr-pulse-grow" src="public/simple2/img/logo.png" alt="" style="width:120px; margin: 0 auto;">
                                 </a>
                             </h1>
                         </div>
                         <!-- End Logo -->
                         <!-- Start Slogan -->
-                        <div class="col-md-6 col-xs-8 logo">
+                        <div class="col-md-8 col-xs-8 logo">
                             <h1 style="cursor: pointer;">
-                                    <a href="https://www.789.vn/cau-truc-de-thi.html">
+                                    <a href="#">
                                         <div id="banner-teacher" class="carousel slide" data-ride="carousel">
                                             <!-- Wrapper for slides -->
                                             <div class="carousel-inner">
@@ -151,16 +149,17 @@
                                     </a>
                             </h1>
                             <h3 style="margin:0;padding:0;">
-                                <a href="https://www.789.vn/huong-dan/huong-dan-chung-10/tai-ung-dung-cham-diem-bai-thi-tren-giay-150" style="background-color: ivory;text-align:center;border: 1px solid green;padding: 3px;display: inline-block;width: 100%;" target="_blank">
+                                <a href="#" style="background-color: ivory;text-align:center;border: 1px solid green;padding: 3px;display: inline-block;width: 100%;">
                                     <img src="https://cdn.789.vn/Content/nganhangdethi/dailyexamimage/new1.gif" class="img-responsive img-daily" style="display:inline-block; width:40px;" />
-                                    Ứng dụng chấm điểm trên giấy
+                                    Hệ thống làm bài thi trực tuyến số I
                                     <img src="https://cdn.789.vn/Content/nganhangdethi/dailyexamimage/new1.gif" class="img-responsive img-daily" style="display:inline-block; width:40px;" />
                                 </a>
                             </h3>
                         </div>
                         <!-- End Slogan -->
-                        <!-- Start Right Header -->
-                        <div class="col-md-4 text-center col-xs-12">
+
+                        <!-- Start Right Header
+                        <div class="col-md-3 text-center col-xs-12">
                             <div>
                                 <div class="login-block">
                                     <div class="temp-block">
@@ -200,13 +199,15 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Right Header -->
+                         End Right Header -->
                     </div>
                 </div>
             </div>
             <!-- End Header Top-->
         </header>
         <!-- End Header -->
+
+
     </div>
     <div id="wrapper" class="menu-wrapper">
         <!-- start header -->
@@ -222,30 +223,35 @@
                     </div>
                     <div class="navbar-collapse collapse ">
                         <ul class="nav navbar-nav" style="width: 100%;">
-                            <li class=""><a href="https://www.789.vn" style="font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a>
+                            <li class=""><a href="Home" style="font-size: 20px;"><span class="glyphicon glyphicon-home"></span></a>
                             </li>
-                            <li class=""><a href="https://www.789.vn/thi-thu-thpt-quoc-gia.html">Thi THPT Quốc gia</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/thi-thu.html">KT học kỳ</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/thi-45-phut.html">KT 45 phút</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/thi-15-phut.html">KT 15 phút</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/bang-gia.html">Bảng giá</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/ban-co-van.html">Ban cố vấn</a>
-                            </li>
-                            <li class=""> <a href="https://www.789.vn/gioi-thieu.html">Giới thiệu</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/tin-tuc/tin-tuc-chung-17">Tin tức</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/huong-dan/huong-dan-hoc-sinh-9">Hướng dẫn</a>
-                            </li>
-                            <li class=""><a href="https://www.789.vn/hop-tac/he-thong-phan-phoi-18/he-thong-phan-phoi-151">Hệ thống phân phối</a>
-                            </li>
+
+                            <?php if(!isset($_SESSION['username'])){ ?>
+                            <li><a href="Login">Đăng nhập</a></li>
+                            <li><a href="Register">Đăng ký</a></li>
+
+                            <?php }else{ ?>
+                      
+                            <?php if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 1)) {?>
+                                <li><a href="Manager">Quản lý</a></li>
+                            <?php  } 
+                                elseif((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 2)) {?>
+                                -<li><a href="Teacher">Giáo viên</a></li>
+
+                            <?php  } ?>
+                            <li><a href="#">Xem lớp học đã tham gia</a></li>
+                            <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
+                            <li><a href="#">Xem lịch sử thi</a></li>
+                            <li><a href="Examination/findExam">Tham gia bài thi bằng ID</a></li>
+                            <li><a href="Logout">Đăng xuất</a></li>
+                            <?php } ?>
+
+                            <!--
                             <li class="" style="background-color: #FF7043;" data-toggle="tooltip" title="Thông tin tài khoản cá nhân & các chức năng liên quan"><a href="https://www.789.vn/thong-tin-tai-khoan.html"><span class="glyphicon glyphicon-user"></span></a>
                             </li>
+
+                            -->
+
                         </ul>
                     </div>
                 </div>
@@ -265,8 +271,19 @@
              <!-- Start Body ne hihi -->
 
 
+            <?php 
 
-        <?php require_once "./app/views/pages/".$data["Page"].".php" ?>
+
+                if(isset($data["menu"])){
+
+                    require_once "./app/views/pages/".$data["menu"].".php";
+
+                }else{
+                    require_once "./app/views/pages/".$data["Page"].".php";
+                }
+
+
+            ?>
 
 
 
@@ -343,7 +360,6 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-top"></div>
         </footer>
     </div> <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
     <script language="javascript">
@@ -370,9 +386,6 @@
                                     scrolling: 'no',
                                     preload: true
                                 }
-                            });
-                            $(this).bind("contextmenu", function (e) {
-                                e.preventDefault();
                             });
                 
                             //$(".fancybox").fancybox();

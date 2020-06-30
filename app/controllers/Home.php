@@ -9,7 +9,7 @@ class Home extends Controller{
         // $exams = $this->getExamsToView();
 
         $this->view("simple2",[
-            "Page"          => "simple_home",
+            "Page"          => "simple2_home",
             "title"         => "Trang chủ",
             "grades"        => $grades
             // "subjects"      => $subjects,
