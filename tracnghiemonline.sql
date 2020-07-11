@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2020 at 12:59 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.2.30
+-- Generation Time: Jul 11, 2020 at 02:05 PM
+-- Server version: 10.1.36-MariaDB
+-- PHP Version: 7.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,8 +19,153 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Database: `new_test`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_GetListChapterWithGradeSubjectID` (IN `_GradeID` INT, IN `_SubjectID` INT)  NO SQL
+BEGIN
+	DECLARE _gradesubjectid INT;
+ SELECT gradesubjectid INTO _gradesubjectid from gradesubject WHERE gradeid = _GradeID AND subjectid = _SubjectID limit 1;
+    SELECT * FROM chapter WHERE gradesubjectid = _gradesubjectid;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_DeleteGradeBySubjectId` (IN `subjectIdToSearch` INT)  BEGIN
+  DELETE FROM GradeSubject
+    WHERE SubjectId = subjectIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_GetGradeIdWithSubjectId` (IN `subjectIdToSearch` INT)  BEGIN
+  SELECT GradeId FROM GradeSubject WHERE SubjectId=subjectIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_GetSubjectsWithGradeID` (IN `GradeID` INT)  NO SQL
+BEGIN
+	SELECT gs.GradeId as grade_id, s.SubjectId as subject_id, s.Name as subject_name from gradesubject gs JOIN subject s on gs.SubjectId = s.SubjectId WHERE gs.GradeId = GradeID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_InsertGradeSubject` (IN `gradeIdToInsert` INT, IN `subjectIdToInsert` INT)  BEGIN
+  INSERT GradeSubject(GradeId, SubjectId
+	)VALUES(
+      gradeIdToInsert,
+      subjectIdToInsert
+    ) ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_UpdateGradeIdBySubjectId` (IN `subjectIdToSearch` INT, IN `gradeIdToUpdate` INT)  BEGIN
+  Update GradeSubject 
+    SET GradeId = gradeIdToUpdate
+    WHERE SubjectId = subjectIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_GetAllGrades` ()  BEGIN
+	SELECT GradeId, Name, Description FROM Grade WHERE Hidden!=true;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_GetGrade` (IN `gradeIdToSearch` INT)  BEGIN
+	SELECT Name, Description FROM Grade WHERE GradeId=gradeIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_HiddenGrade` (IN `gradeIdToUpdate` INT)  BEGIN
+ 	UPDATE Grade
+    SET Hidden = True
+    WHERE GradeId = gradeIdToUpdate;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_InsertGrade` (IN `gradeNameToInsert` VARCHAR(255), IN `descriptionToInsert` VARCHAR(255))  BEGIN
+  Insert Grade(Name, Description) VALUES(gradeNameToInsert, descriptionToInsert);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_UpdateGrade` (IN `gradeIdToUpdate` INT, IN `nameToUpdate` VARCHAR(255), IN `descriptionToUpdate` VARCHAR(255))  BEGIN
+  Update Grade
+ 	SET Name = nameToUpdate, 
+    	description = descriptionToUpdate
+    WHERE GradeId = gradeIdToUpdate;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Lesson_GetListLessonWithChapterID` (IN `_ChapterID` INT)  NO SQL
+BEGIN
+	SELECT * FROM lesson WHERE ChapterID = _ChapterID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Role_GetListRole` ()  BEGIN
+ 	SELECT RoleId, Name, Description FROM Role;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_DeleteSubject` (IN `subjectIdToSearch` INT)  BEGIN
+  DELETE FROM Subject
+    WHERE SubjectId=subjectIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_GetListSubjects` ()  BEGIN
+ 	SELECT SubjectId, Name, Description FROM Subject WHERE Hidden!=true;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_GetSubject` (IN `subjectIdToSearch` INT)  BEGIN
+  SELECT SubjectId, Name, Description, Hidden 
+    FROM Subject
+    WHERE SubjectId=subjectIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_HiddenSubjectById` (IN `subjectIdToUpdate` INT)  BEGIN
+ 	UPDATE Subject 
+    SET Hidden = True
+    WHERE SubjectId = subjectIdToUpdate;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_InsertSubject` (IN `subjectNameToInsert` VARCHAR(255), IN `subjectDescriptionToInsert` VARCHAR(255))  BEGIN
+  INSERT Subject(Name, Description) 
+    VALUES(
+      subjectNameToInsert,
+      subjectDescriptionToInsert
+    );
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_CheckUsernameAndPasswordIsCorrect` (IN `emailToCheck` VARCHAR(255) CHARSET utf8, IN `passwordToCheck` VARCHAR(255) CHARSET utf8)  BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToCheck AND Password=passwordToCheck;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_GetUser` (IN `emailToSearch` VARCHAR(255) CHARSET utf8)  BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId Description FROM User WHERE Email=emailToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_GetUserById` (IN `userIdToSearch` INT)  BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE UserId=userIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_GetUserWithoutCurrentUser` (IN `userIdToSearch` INT)  BEGIN
+ 	SELECT UserId, FullName, Email, Username, Birthday, Phone, u.RoleId, r.Name AS RoleName, Active 
+    FROM User u JOIN Role r ON u.RoleId = r.RoleId
+    WHERE UserId != userIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_InsertUser` (IN `usernameToInsert` VARCHAR(255) CHARSET utf8, IN `passwordToInsert` VARCHAR(255) CHARSET utf8, IN `emailToInsert` VARCHAR(255) CHARSET utf8, IN `fullnameToInsert` VARCHAR(255) CHARSET utf8, IN `roleIdToInsert` INT)  BEGIN
+  Insert User(Username,
+              Password, 
+              Email,
+              Fullname,
+              RoleId
+      )VALUES(usernameToInsert,
+              passwordToInsert,
+              emailToInsert,
+              fullnameToInsert,
+              roleIdToInsert);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_IsBlock` (IN `emailToSearch` VARCHAR(255) CHARSET utf8)  BEGIN
+ 	SELECT Active FROM User WHERE Email=emailToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `User_UpdateActive` (IN `activeToUpdate` BOOLEAN, IN `userIdToUpdate` INT)  BEGIN
+ 	UPDATE User
+    SET Active=activeToUpdate
+    WHERE UserId=userIdToUpdate;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -42,10 +188,18 @@ CREATE TABLE `answer` (
 
 CREATE TABLE `chapter` (
   `ChapterId` int(11) NOT NULL,
-  `Name` int(11) NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `GradeSubjectId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `chapter`
+--
+
+INSERT INTO `chapter` (`ChapterId`, `Name`, `Description`, `GradeSubjectId`) VALUES
+(1, 'Chương 1 : Đồ thị hàm số', '', 1),
+(2, 'Chương 2 : Logarit', '', 1);
 
 -- --------------------------------------------------------
 
@@ -104,6 +258,15 @@ CREATE TABLE `examtime` (
   `Name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `examtime`
+--
+
+INSERT INTO `examtime` (`ExamTimeId`, `Time`, `Name`) VALUES
+(1, 15, '15 phút'),
+(2, 45, '1 tiết'),
+(3, 60, '60 phút');
+
 -- --------------------------------------------------------
 
 --
@@ -126,8 +289,17 @@ CREATE TABLE `grade` (
   `GradeId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
-  `Hidden` tinyint(1) NOT NULL DEFAULT 0
+  `Hidden` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `grade`
+--
+
+INSERT INTO `grade` (`GradeId`, `Name`, `Description`, `Hidden`) VALUES
+(7, 'Khối 11', 'Năm thứ 2 của cấp 3', 0),
+(8, 'Khối 10 ', 'Năm đầu tiên của cấp 3', 0),
+(9, 'Khối 12', 'Năm cuối cấp 3', 0);
 
 -- --------------------------------------------------------
 
@@ -141,18 +313,36 @@ CREATE TABLE `gradesubject` (
   `SubjectId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `gradesubject`
+--
+
+INSERT INTO `gradesubject` (`GradeSubjectId`, `GradeId`, `SubjectId`) VALUES
+(1, 8, 14),
+(2, 8, 28);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `lession`
+-- Table structure for table `lesson`
 --
 
-CREATE TABLE `lession` (
-  `LessionId` int(11) NOT NULL,
-  `Name` int(11) NOT NULL,
+CREATE TABLE `lesson` (
+  `LessonId` int(11) NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ChapterId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `lesson`
+--
+
+INSERT INTO `lesson` (`LessonId`, `Name`, `Description`, `ChapterId`) VALUES
+(1, 'Bài 1 : Đồ thị 1', '', 1),
+(2, 'Bài 2 : Đồ thị 2', '', 1),
+(3, 'Bài 1 : Logarit 1', '', 2),
+(4, 'Bài 2 : Logarit 2', '', 2);
 
 -- --------------------------------------------------------
 
@@ -163,7 +353,8 @@ CREATE TABLE `lession` (
 CREATE TABLE `question` (
   `QuestionId` int(11) NOT NULL,
   `LessionId` int(11) NOT NULL,
-  `Content` text NOT NULL
+  `Content` text NOT NULL,
+  `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -191,6 +382,15 @@ CREATE TABLE `role` (
   `Description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`RoleId`, `Name`, `Description`) VALUES
+(1, 'admin', ''),
+(2, 'teacher', ''),
+(3, 'student', '');
+
 -- --------------------------------------------------------
 
 --
@@ -201,8 +401,16 @@ CREATE TABLE `subject` (
   `SubjectId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
-  `Hidden` tinyint(1) NOT NULL DEFAULT 0
+  `Hidden` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `subject`
+--
+
+INSERT INTO `subject` (`SubjectId`, `Name`, `Description`, `Hidden`) VALUES
+(14, 'Toán', '', 0),
+(28, 'Lý', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -219,8 +427,22 @@ CREATE TABLE `user` (
   `Phone` varchar(10) DEFAULT NULL,
   `Password` varchar(32) NOT NULL,
   `RoleId` int(11) NOT NULL,
-  `Active` tinyint(1) NOT NULL DEFAULT 1
+  `Active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`UserId`, `FullName`, `Email`, `Username`, `Birthday`, `Phone`, `Password`, `RoleId`, `Active`) VALUES
+(2, '', 'testemail@gmail.com', 'test', '0000-00-00 00:00:00', NULL, '098f6bcd4621d373cade4e832627b4f6', 1, 0),
+(3, 'quocha', 'quocha@gmail.com', 'quocha', '0000-00-00 00:00:00', NULL, 'a97afdb8a3eebaf49c033c75d25220c4', 1, 1),
+(4, 'dinh', 'thanhdinh@gmail.com', 'tesst', '0000-00-00 00:00:00', NULL, '45eea262ec1d46cc5ee3817bc821e757', 2, 0),
+(5, 'Duy', 'buiduy@gmail.com', 'duy', '0000-00-00 00:00:00', NULL, '5dc6da3adfe8ccf1287a98c0a8f74496', 2, 0),
+(6, 'Bùi Đức Duy', 'ducduy23089@gmail.com', 'duy12', '0000-00-00 00:00:00', NULL, '202cb962ac59075b964b07152d234b70', 2, 1),
+(7, 'ha', 'ducduy23089@gmail.com', 'hatest', '0000-00-00 00:00:00', NULL, '6c14da109e294d1e8155be8aa4b1ce8e', 2, 1),
+(8, 'ha', 'ducduy23089@gmail.com', 'hatest', '0000-00-00 00:00:00', NULL, '5dc6da3adfe8ccf1287a98c0a8f74496', 2, 1),
+(9, 'nguyen van cuong', 'cuong0776565@gmail.com', 'cuong077', '0000-00-00 00:00:00', NULL, 'f36e6b7eb1f91a47889a100466bf1d3c', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -257,13 +479,15 @@ CREATE TABLE `userclass` (
 -- Indexes for table `answer`
 --
 ALTER TABLE `answer`
-  ADD PRIMARY KEY (`AnswerId`);
+  ADD PRIMARY KEY (`AnswerId`),
+  ADD KEY `FK_Answer_Question_QuestionId` (`QuestionId`);
 
 --
 -- Indexes for table `chapter`
 --
 ALTER TABLE `chapter`
-  ADD PRIMARY KEY (`ChapterId`);
+  ADD PRIMARY KEY (`ChapterId`),
+  ADD KEY `FK_Chapter_GradeSubject_GradeSubjectId` (`GradeSubjectId`);
 
 --
 -- Indexes for table `class`
@@ -316,23 +540,26 @@ ALTER TABLE `gradesubject`
   ADD KEY `FK_GradeSubject_Subject_SubjectId` (`SubjectId`);
 
 --
--- Indexes for table `lession`
+-- Indexes for table `lesson`
 --
-ALTER TABLE `lession`
-  ADD PRIMARY KEY (`LessionId`),
+ALTER TABLE `lesson`
+  ADD PRIMARY KEY (`LessonId`),
   ADD KEY `FK_Lession_Chapter_ChapterId` (`ChapterId`);
 
 --
 -- Indexes for table `question`
 --
 ALTER TABLE `question`
-  ADD PRIMARY KEY (`QuestionId`);
+  ADD PRIMARY KEY (`QuestionId`),
+  ADD KEY `FK_Question_Lession_LessionId` (`LessionId`);
 
 --
 -- Indexes for table `result`
 --
 ALTER TABLE `result`
-  ADD PRIMARY KEY (`ResultId`);
+  ADD PRIMARY KEY (`ResultId`),
+  ADD KEY `FK_Result_Exam_ExamId` (`ExamId`),
+  ADD KEY `FK_Result_User_UserId` (`UserId`);
 
 --
 -- Indexes for table `role`
@@ -357,7 +584,10 @@ ALTER TABLE `user`
 -- Indexes for table `useranswerquestion`
 --
 ALTER TABLE `useranswerquestion`
-  ADD PRIMARY KEY (`UserAnswerQuestionId`);
+  ADD PRIMARY KEY (`UserAnswerQuestionId`),
+  ADD KEY `FK_UserAnswerQuestion_Result_ResultId` (`ResultId`),
+  ADD KEY `FK_UserAnswerQuestion_Question_QuestionId` (`QuestionId`),
+  ADD KEY `FK_UserAnswerQuestion_Answer_AnswerId` (`AnswerId`);
 
 --
 -- Indexes for table `userclass`
@@ -381,7 +611,7 @@ ALTER TABLE `answer`
 -- AUTO_INCREMENT for table `chapter`
 --
 ALTER TABLE `chapter`
-  MODIFY `ChapterId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ChapterId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `class`
@@ -405,7 +635,7 @@ ALTER TABLE `exam`
 -- AUTO_INCREMENT for table `examtime`
 --
 ALTER TABLE `examtime`
-  MODIFY `ExamTimeId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ExamTimeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `examtype`
@@ -417,19 +647,19 @@ ALTER TABLE `examtype`
 -- AUTO_INCREMENT for table `grade`
 --
 ALTER TABLE `grade`
-  MODIFY `GradeId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `GradeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `gradesubject`
 --
 ALTER TABLE `gradesubject`
-  MODIFY `GradeSubjectId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `GradeSubjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `lession`
+-- AUTO_INCREMENT for table `lesson`
 --
-ALTER TABLE `lession`
-  MODIFY `LessionId` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `lesson`
+  MODIFY `LessonId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `question`
@@ -447,19 +677,19 @@ ALTER TABLE `result`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `RoleId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RoleId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `SubjectId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SubjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `useranswerquestion`
@@ -477,381 +707,87 @@ ALTER TABLE `userclass`
 -- Constraints for dumped tables
 --
 
-
+--
+-- Constraints for table `answer`
+--
+ALTER TABLE `answer`
+  ADD CONSTRAINT `FK_Answer_Question_QuestionId` FOREIGN KEY (`QuestionId`) REFERENCES `question` (`QuestionId`);
 
 --
--- Indexes for table `answers`
+-- Constraints for table `chapter`
 --
+ALTER TABLE `chapter`
+  ADD CONSTRAINT `FK_Chapter_GradeSubject_GradeSubjectId` FOREIGN KEY (`GradeSubjectId`) REFERENCES `gradesubject` (`GradeSubjectId`);
+
+--
+-- Constraints for table `class`
+--
+ALTER TABLE `class`
+  ADD CONSTRAINT `FK_Class_User_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`);
+
+--
+-- Constraints for table `document`
+--
+ALTER TABLE `document`
+  ADD CONSTRAINT `FK_Document_Class_ClassId` FOREIGN KEY (`ClassId`) REFERENCES `class` (`ClassId`);
+
+--
+-- Constraints for table `exam`
+--
+ALTER TABLE `exam`
+  ADD CONSTRAINT `FK_Exam_Class_ClassId` FOREIGN KEY (`ClassId`) REFERENCES `class` (`ClassId`),
+  ADD CONSTRAINT `FK_Exam_ExamTime_ExamTimeId` FOREIGN KEY (`ExamTimeId`) REFERENCES `examtime` (`ExamTimeId`),
+  ADD CONSTRAINT `FK_Exam_ExamType_ExamTypeId` FOREIGN KEY (`ExamTypeId`) REFERENCES `examtype` (`ExamTypeId`),
+  ADD CONSTRAINT `FK_Exam_User_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`);
+
+--
+-- Constraints for table `gradesubject`
+--
+ALTER TABLE `gradesubject`
+  ADD CONSTRAINT `FK_GradeSubject_Grade_GradeId` FOREIGN KEY (`GradeId`) REFERENCES `grade` (`GradeId`),
+  ADD CONSTRAINT `FK_GradeSubject_Subject_SubjectId` FOREIGN KEY (`SubjectId`) REFERENCES `subject` (`SubjectId`);
+
+--
+-- Constraints for table `lesson`
+--
+ALTER TABLE `lesson`
+  ADD CONSTRAINT `FK_Lession_Chapter_ChapterId` FOREIGN KEY (`ChapterId`) REFERENCES `chapter` (`ChapterId`);
+
+--
+-- Constraints for table `question`
+--
+ALTER TABLE `question`
+  ADD CONSTRAINT `FK_Question_Lession_LessionId` FOREIGN KEY (`LessionId`) REFERENCES `lesson` (`LessonId`);
+
+--
+-- Constraints for table `result`
+--
+ALTER TABLE `result`
+  ADD CONSTRAINT `FK_Result_Exam_ExamId` FOREIGN KEY (`ExamId`) REFERENCES `exam` (`ExamId`),
+  ADD CONSTRAINT `FK_Result_User_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`);
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `FK_User_Role_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `role` (`RoleId`);
+
+--
+-- Constraints for table `useranswerquestion`
+--
+ALTER TABLE `useranswerquestion`
+  ADD CONSTRAINT `FK_UserAnswerQuestion_Answer_AnswerId` FOREIGN KEY (`AnswerId`) REFERENCES `answer` (`AnswerId`),
+  ADD CONSTRAINT `FK_UserAnswerQuestion_Question_QuestionId` FOREIGN KEY (`QuestionId`) REFERENCES `question` (`QuestionId`),
+  ADD CONSTRAINT `FK_UserAnswerQuestion_Result_ResultId` FOREIGN KEY (`ResultId`) REFERENCES `result` (`ResultId`);
+
+--
+-- Constraints for table `userclass`
+--
+ALTER TABLE `userclass`
+  ADD CONSTRAINT `FK_UserClass_Class_ClassId` FOREIGN KEY (`ClassId`) REFERENCES `class` (`ClassId`),
+  ADD CONSTRAINT `FK_UserClass_User_UserId` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
--- GradeSubject
-ALTER TABLE GradeSubject
-  ADD CONSTRAINT FK_GradeSubject_Grade_GradeId
-  FOREIGN KEY (GradeId) REFERENCES Grade(GradeId); 
-
-ALTER TABLE GradeSubject
-  ADD CONSTRAINT FK_GradeSubject_Subject_SubjectId
-  FOREIGN KEY (SubjectId) REFERENCES Subject(SubjectId); 
-
--- Chapter
-ALTER TABLE Chapter
-  ADD CONSTRAINT FK_Chapter_GradeSubject_GradeSubjectId
-  FOREIGN KEY (GradeSubjectId) REFERENCES GradeSubject(GradeSubjectId); 
-
--- Lession
-ALTER TABLE Lession
-  ADD CONSTRAINT FK_Lession_Chapter_ChapterId
-  FOREIGN KEY (ChapterId) REFERENCES Chapter(ChapterId); 
-
--- User
-ALTER TABLE User
-  ADD CONSTRAINT FK_User_Role_RoleId
-  FOREIGN KEY (RoleId) REFERENCES Role(RoleId); 
-
--- Class
-ALTER TABLE Class
-  ADD CONSTRAINT FK_Class_User_UserId
-  FOREIGN KEY (UserId) REFERENCES User(UserId); 
-
--- UserClass
-ALTER TABLE UserClass
-  ADD CONSTRAINT FK_UserClass_User_UserId
-  FOREIGN KEY (UserId) REFERENCES User(UserId); 
-
-ALTER TABLE UserClass
-  ADD CONSTRAINT FK_UserClass_Class_ClassId
-  FOREIGN KEY (ClassId) REFERENCES Class(ClassId);
-
--- Document
-ALTER TABLE Document
-  ADD CONSTRAINT FK_Document_Class_ClassId
-  FOREIGN KEY (ClassId) REFERENCES Class(ClassId);
-
--- Exam
-ALTER TABLE Exam
-  ADD CONSTRAINT FK_Exam_User_UserId
-  FOREIGN KEY (UserId) REFERENCES User(UserId);
-
-ALTER TABLE Exam
-  ADD CONSTRAINT FK_Exam_ExamType_ExamTypeId
-  FOREIGN KEY (ExamTypeId) REFERENCES ExamType(ExamTypeId);
-
-ALTER TABLE Exam
-  ADD CONSTRAINT FK_Exam_ExamTime_ExamTimeId
-  FOREIGN KEY (ExamTimeId) REFERENCES ExamTime(ExamTimeId);
-
-ALTER TABLE Exam
-  ADD CONSTRAINT FK_Exam_Class_ClassId
-  FOREIGN KEY (ClassId) REFERENCES Class(ClassId);
-
--- Question
-ALTER TABLE Question
-  ADD CONSTRAINT FK_Question_Lession_LessionId
-  FOREIGN KEY (LessionId) REFERENCES Lession(LessionId);
-
--- Answer
-ALTER TABLE Answer
-  ADD CONSTRAINT FK_Answer_Question_QuestionId
-  FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId);
-
--- Result
-ALTER TABLE Result
-  ADD CONSTRAINT FK_Result_Exam_ExamId
-  FOREIGN KEY (ExamId) REFERENCES Exam(ExamId);
-
-ALTER TABLE Result
-  ADD CONSTRAINT FK_Result_User_UserId
-  FOREIGN KEY (UserId) REFERENCES User(UserId);
-
--- UserAnswerQuestion
-ALTER TABLE UserAnswerQuestion
-  ADD CONSTRAINT FK_UserAnswerQuestion_Result_ResultId
-  FOREIGN KEY (ResultId) REFERENCES Result(ResultId);
-
-ALTER TABLE UserAnswerQuestion
-  ADD CONSTRAINT FK_UserAnswerQuestion_Question_QuestionId
-  FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId);
-
-ALTER TABLE UserAnswerQuestion
-  ADD CONSTRAINT FK_UserAnswerQuestion_Answer_AnswerId
-  FOREIGN KEY (AnswerId) REFERENCES Answer(AnswerId);
-
-
--- GENERATE PROCEDURE
--- GRADE
-
--- 1. Get all grades
-DELIMITER //
-
-CREATE PROCEDURE Grade_GetAllGrades()
-BEGIN
-	SELECT GradeId, Name, Description FROM Grade;
-END //
-
-DELIMITER ;
-
--- 2. Get grades with id
-DELIMITER //
-
-CREATE PROCEDURE Grade_GetGrade(IN gradeIdToSearch INT)
-BEGIN
-	SELECT Name, Description FROM Grade WHERE GradeId=gradeIdToSearch;
-END //
-
-DELIMITER ;
-
--- 3. Insert grade
-DELIMITER //
-
-CREATE PROCEDURE Grade_InsertGrade(IN gradeNameToInsert varchar(255), IN descriptionToInsert varchar(255))
-BEGIN
-  Insert Grade(Name, Description) VALUES(gradeNameToInsert, descriptionToInsert);
-END //
-
-DELIMITER ;
-
--- 4. Update with gradeId 
-DELIMITER //
-
-CREATE PROCEDURE Grade_UpdateGrade(IN gradeIdToUpdate INT, IN nameToUpdate varchar(255), IN descriptionToUpdate varchar(255))
-BEGIN
-  Update Grade
- 	SET Name = nameToUpdate, 
-    	description = descriptionToUpdate
-    WHERE GradeId = gradeIdToUpdate;
-END //
-
-DELIMITER ;
-
--- 5. Hidden Grade by GradeId
-DELIMITER //
-
-CREATE PROCEDURE Grade_HiddenGrade(IN gradeIdToUpdate INT)
-BEGIN
- 	UPDATE Grade
-    SET Hidden = True
-    WHERE GradeId = gradeIdToUpdate;
-END //
-
-DELIMITER ;
-
--- AnswerModel
-
-
-
--- USER
--- 1. GET USER WITH Email
-DELIMITER //
-
-CREATE PROCEDURE User_GetUserByEmail(IN emailToSearch varchar(255))
-BEGIN
- 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToSearch;
-END //
-
-DELIMITER ;
-
--- 2. Check password is correct
-
-DELIMITER //
-
-CREATE PROCEDURE User_CheckUsernameAndPasswordIsCorrect(IN emailToCheck varchar(255), IN passwordToCheck varchar(255))
-BEGIN
- 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE Email=emailToCheck AND Password=passwordToCheck AND Active=true;
-END //
-
-DELIMITER ;
-
--- 3. Get all user without current user.
-DELIMITER //
-
-CREATE PROCEDURE User_GetUserWithoutCurrentUser(IN userIdToSearch INT)
-BEGIN
- 	SELECT UserId, Active, FullName, Email, Username, Birthday, Phone, u.RoleId, r.Name AS RoleName 
-    FROM User u JOIN Role r ON u.RoleId = r.RoleId
-    WHERE UserId != userIdToSearch;
-END //
-
-DELIMITER ;
-
--- 4. Insert user 
-DELIMITER //
-
-CREATE PROCEDURE User_InsertUser(
-  IN usernameToInsert varchar(255),
-  IN passwordToInsert varchar(255), 
-  IN emailToInsert varchar(255), 
-  IN fullnameToInsert varchar(255), 
-  roleIdToInsert INT)
-BEGIN
-  Insert User(Username,
-              Password, 
-              Email,
-              Fullname,
-              RoleId
-      )VALUES(usernameToInsert,
-              passwordToInsert,
-              emailToInsert,
-              fullnameToInsert,
-              roleIdToInsert);
-END //
-
-DELIMITER ;
-
--- 5. Get User with ID
-DELIMITER //
-
-CREATE PROCEDURE User_GetUserById(IN userIdToSearch INT)
-BEGIN
- 	SELECT UserId, FullName, Email, Username, Birthday, Phone, RoleId FROM User WHERE UserId=userIdToSearch;
-END //
-
-DELIMITER ;
-
--- 6. Update Active user
-DELIMITER //
-
-CREATE PROCEDURE User_UpdateActive(IN activeToUpdate BOOLEAN, IN userIdToUpdate INT)
-BEGIN
- 	UPDATE User
-    SET Active=activeToUpdate
-    WHERE UserId=userIdToUpdate;
-END //
-
-DELIMITER ;
-
--- 7. check user block
-DELIMITER //
-
-CREATE PROCEDURE User_IsBlock(IN emailToSearch varchar(255))
-BEGIN
- 	SELECT Active FROM User WHERE Email=emailToSearch;
-END //
-
-DELIMITER ;
-
--- Role
--- 1. Get list role
-DELIMITER //
-
-CREATE PROCEDURE Role_GetListRole()
-BEGIN
- 	SELECT RoleId, Name, Description FROM Role;
-END //
-
-DELIMITER ;
-
-
--- GradeSubject
--- 1. Insert GradeSubject
-DELIMITER //
-CREATE PROCEDURE GradeSubject_InsertGradeSubject(
-  IN gradeIdToInsert INT,
-  IN subjectIdToInsert INT
-)
-BEGIN
-  INSERT GradeSubject(GradeId, SubjectId) 
-    VALUES(
-      gradeIdToInsert,
-      subjectIdToInsert
-    );
-END //
-DELIMITER ;
-
--- 2. get GradeId with SubjectId
-DELIMITER //
-CREATE PROCEDURE GradeSubject_GetGradeIdWithSubjectId(
-    IN subjectIdToSearch INT
-)
-BEGIN
-  SELECT GradeId FROM GradeSubject WHERE SubjectId=subjectIdToSearch AND Hidden!=true;
-END //
-DELIMITER ;
-
--- 3. Update GradeId by SubjectId
-DELIMITER //
-CREATE PROCEDURE GradeSubject_UpdateGradeIdBySubjectId(
-    IN subjectIdToSearch INT,
-    IN gradeIdToUpdate INT
-)
-BEGIN
-  Update GradeSubject 
-    SET GradeId = gradeIdToUpdate
-    WHERE SubjectId = subjectIdToSearch;
-END //
-DELIMITER ;
-
--- 4. delete gradesubject by subjectid
-DELIMITER //
-CREATE PROCEDURE GradeSubject_DeleteGradeBySubjectId(
-  IN subjectIdToSearch INT
-)
-BEGIN
-  DELETE FROM GradeSubject
-    WHERE SubjectId = subjectIdToSearch;
-END //
-DELIMITER ;
-
--- SUBJECT
--- 1. Get list subject
-DELIMITER //
-
-CREATE PROCEDURE Subject_GetListSubjects()
-BEGIN
- 	SELECT SubjectId, Name, Description FROM Subject WHERE Hidden != True;
-END //
-
-DELIMITER ;
-
--- 2. Hidden subject
-DELIMITER //
-
-CREATE PROCEDURE Subject_HiddenSubjectById(IN subjectIdToUpdate INT)
-BEGIN
- 	UPDATE Subject 
-    SET Hidden = True
-    WHERE SubjectId = subjectIdToUpdate;
-END //
-
-DELIMITER ;
-
--- 3. Insert subject
-DELIMITER //
-CREATE PROCEDURE Subject_InsertSubject(
-  IN subjectNameToInsert varchar(255),
-  IN subjectDescriptionToInsert varchar(255)
-)
-BEGIN
-  INSERT Subject(Name, Description) 
-    VALUES(
-      subjectNameToInsert,
-      subjectDescriptionToInsert
-    );
-END //
-DELIMITER ;
-
--- 4. delete subject
-DELIMITER //
-CREATE PROCEDURE Subject_DeleteSubject(
-  IN subjectIdToSearch INT
-)
-BEGIN
-  DELETE FROM Subject
-    WHERE SubjectId=subjectIdToSearch;
-END //
-DELIMITER ;
-
--- 5. get subject with subjectid
-DELIMITER //
-CREATE PROCEDURE Subject_GetSubject(
-  IN subjectIdToSearch INT
-)
-BEGIN
-  SELECT SubjectId, Name, Description, Hidden 
-    FROM Subject
-    WHERE SubjectId=subjectIdToSearch;
-END //
-DELIMITER ;
-
