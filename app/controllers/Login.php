@@ -9,8 +9,8 @@ class Login extends Controller{
       exit;
     }
 
-    $this->view("simple", [
-      "Page"        => "simple_login",
+    $this->view("simple2", [
+      "Page"        => "simple2_login",
       "title"       => "Đăng nhập - Thi trắc nghiệm trức tuyến"
     ]);
 
@@ -85,8 +85,8 @@ class Login extends Controller{
       }
   	}
 
-    $this->view("simple", [
-      "Page"        => "simple_login",
+    $this->view("simple2", [
+      "Page"        => "simple2_login",
       "title"       => "Đăng nhập - Thi trắc nghiệm trức tuyến",
       "error"      => $error
     ]);

@@ -5,8 +5,9 @@
     //Them mon hoc
     public function addSubject($subjectName, $subjectDescription){
     	$qr = "CALL Subject_InsertSubject('$subjectName', '$subjectDescription')";
-		print_r($qr);
+		
 		mysqli_next_result($this->con);
+		
 		if(mysqli_query($this->con, $qr)){
     		return true;
     	}

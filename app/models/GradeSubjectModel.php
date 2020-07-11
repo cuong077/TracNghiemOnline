@@ -21,6 +21,18 @@ class GradeSubjectModel extends DB
         return $result;
     }
 
+
+    public function getSubjectsByGradeId($GradeId){
+        $qr = "CALL GradeSubject_GetSubjectsWithGradeID($GradeId)";
+        // echo $qr;
+        $result = mysqli_query($this->con, $qr);
+
+        if(mysqli_num_rows($result) > 0)
+            return $result;
+
+        return null;
+    }
+
     public function updateGradeId($subjectId, $gradeId){
         $qr = "CALL GradeSubject_UpdateGradeIdBySubjectId($subjectId, $gradeId)";
         

@@ -39,7 +39,7 @@
 							</a>
 						</li>
 						<li class="li-sub-menu list-style-none">
-							<a href="#"> <i class="glyphicon glyphicon-folder-open icon-menu"></i><span>Thêm câu hỏi cho bài học</span>
+							<a href="Teacher/createQuestion"> <i class="glyphicon glyphicon-folder-open icon-menu"></i><span>Thêm câu hỏi cho bài học</span>
 							</a>
 						</li>
 						<li class="li-sub-menu list-style-none">
