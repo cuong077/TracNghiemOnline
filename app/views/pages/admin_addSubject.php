@@ -19,17 +19,21 @@
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form class="form-horizontal" method="post">
-                        <div class="box-body">
+                    <form class="form-horizontal " method="post">
+                        <div class="box-body text-center">
 
                             <div class="form-group">
                                 <label for="TenMon" class="col-sm-2 control-label">Tên Môn</label>
-                                <div class="col-sm-10 text-center  <?php if($error["subjectName"] != "") echo "has-error"; ?>">
+                                <div class="col-sm-10 text-center  <?php if($error["subjectName"] != "" || $error["subjectExists"] != "") echo "has-error"; ?>">
                                     <input type="text" class="form-control" id="TenMon" placeholder="Tên Môn"
                                         name="subjectName">
                                     <?php if(@$error["subjectName"] != ""){ ?>
-                                        <span class="help-block">Vui lòng nhập tên môn học.</span>
+                                        <span class="help-block"><?php echo @$error["subjectName"]?></span>
                                     <?php } ?>
+                                    <?php if(@$error["subjectExists"] != ""){ ?>
+                                        <span class="help-block"><?php echo @$error["subjectExists"]?></span>
+                                    <?php } ?>
+
                                 </div>
                             </div>
                             <div class="form-group">

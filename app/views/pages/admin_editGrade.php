@@ -1,4 +1,5 @@
-<?php $grade=$data["grade"];?>
+<?php $error = $data["error"];?>
+<?php $grade = $data["grade"];?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -22,25 +23,45 @@
                     <!-- form start -->
                     <form class="form-horizontal" method="post">
                         <div class="box-body">
+                            
                             <div hidden class="form-group">
                                 <label for="Makhoi" class="col-sm-2 control-label">Mã khối</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="Makhoi" name="grade_id" placeholder="Mã khối" value="<?php echo $grade["id"];?>" readonly>
+                                    <input type="text" class="form-control" id="Makhoi" name="grade_id"
+                                        placeholder="Mã khối" value="<?php echo $grade["id"];?>" readonly>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div hidden class="form-group">
+                                    <input type="text" class="form-control" name="oldGrade"
+                                       value="<?php echo $data["oldGrade"]?>" readonly>
+                            </div>
+                            <div
+                                class="form-group text-center <?php if(@$error["gradeName"] != "" || @$error["gradeExists"] != "") echo "has-error"; ?>">
                                 <label for="Tenkhoi" class="col-sm-2 control-label">Tên khối</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="Tenkhoi" name="grade_name" placeholder="Tên khối" value="<?php echo $grade["name"]?>">
+                                    <input type="text" class="form-control" id="Tenkhoi" name="gradeName"
+                                        placeholder="Tên khối" value="<?php echo $grade["name"]?>">
+                                    <?php if(@$error["gradeName"] != ""){ ?>
+                                    <span class="help-block"> <?php echo @$error["gradeName"]?></span>
+                                    <?php } ?>
+                                    <?php if(@$error["gradeExists"] != ""){ ?>
+                                    <span class="help-block"> <?php echo @$error["gradeExists"]?></span>
+                                    <?php } ?>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div
+                                class="form-group text-center <?php if(@$error["gradeDescription"] != "") echo "has-error"; ?>">
                                 <label for="MoTa" class="col-sm-2 control-label">Mô tả</label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="MoTa" name="description" placeholder="Mô tả" value="<?php echo $grade["description"]?>">
+                                    <input type="text" class="form-control" id="MoTa" name="description"
+                                        placeholder="Mô tả" value="<?php echo $grade["description"]?>">
+
+                                    <?php if(@$error["gradeDescription"] != ""){ ?>
+                                    <span class="help-block">Vui lòng nhập mô tả khối.</span>
+                                    <?php } ?>
                                 </div>
                             </div>
 

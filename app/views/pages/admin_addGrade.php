@@ -21,14 +21,17 @@
                     <!-- form start -->
                     <form class="form-horizontal" method="post">
                         <div class="box-body">
-                            <div class="form-group text-center <?php if(@$error["gradeName"] != "") echo "has-error"; ?>">
+                            <div class="form-group text-center <?php if(@$error["gradeName"] != "" || @$error["gradeExists"] != "") echo "has-error"; ?>">
                                 <label for="Tenkhoi" class="col-sm-2 control-label">Tên khối</label>
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="Tenkhoi" placeholder="Tên khối"
-                                        name="grade_name">
+                                        name="gradeName">
                                     <?php if(@$error["gradeName"] != ""){ ?>
-                                        <span class="help-block">Vui lòng nhập tên khối.</span>
+                                        <span class="help-block"> <?php echo @$error["gradeName"]?></span>
+                                    <?php } ?>
+                                    <?php if(@$error["gradeExists"] != ""){ ?>
+                                        <span class="help-block"> <?php echo @$error["gradeExists"]?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -38,7 +41,7 @@
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="Decription" placeholder="Mô tả"
                                         name="decription">
-                                        <?php if(@$error["gradeDescription"] != ""){ ?>
+                                    <?php if(@$error["gradeDescription"] != ""){ ?>
                                         <span class="help-block">Vui lòng nhập mô tả khối.</span>
                                     <?php } ?>
                                 </div>

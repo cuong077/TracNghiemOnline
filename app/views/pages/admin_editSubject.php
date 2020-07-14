@@ -1,4 +1,4 @@
-<?php $subject=$data["subject"]; $error = @$data["error"]; ?>
+<?php $subject=$data["subject"]; $error = @$data["error"]; print_r($error); ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -20,23 +20,28 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form class="form-horizontal" method="post">
-                        <div class="box-body">
+                        <div class="box-body text-center">
                             <div class="form-group">
                                 <label for="MaMon" class="col-sm-2 control-label">Mã môn học.</label>
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="MaMon" placeholder="Mã Môn"
                                         value="<?php echo $subject[0]?>" readonly>
+                                    <input type="text" name="oldSubjectName" value="<?php echo $data["oldSubjectName"]?>" hidden>
                                 </div>
+
                             </div>
-                            <div class="form-group <?php if(@$error["subjectName"] != "") {echo "has-error";}?>">
+                            <div class="form-group <?php if(@$error["subjectName"] != "" || @$error["subjectExists"]) {echo "has-error";}?>">
                                 <label for="subjectName" class="col-sm-2 control-label">Tên Môn</label>
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="subjectName" placeholder="Tên Môn"
                                         value="<?php echo $subject[1]?>" name="subjectName">
                                     <?php if(@$error["subjectName"] != ""){ ?>
-                                        <span class="help-block">Vui lòng nhập tên môn học.</span>
+                                        <span class="help-block"><?php echo @$error["subjectName"]?></span>
+                                    <?php } ?>
+                                    <?php if(@$error["subjectExists"] != ""){ ?>
+                                        <span class="help-block"><?php echo @$error["subjectExists"]?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -78,7 +83,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a type="submit" class="btn btn-default" href="Manager/ListSubjects">Hủy</a>
+                            <a type="submit" class="btn btn-default" href="Manager/ListSubjects">Quay lại</a>
                             <button type="submit" class="btn btn-info pull-right" name="updateSubject">Cập nhật</button>
                         </div>
                         <!-- /.box-footer -->
