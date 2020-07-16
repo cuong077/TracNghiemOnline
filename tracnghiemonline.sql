@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2020 at 02:05 PM
+-- Generation Time: Jul 16, 2020 at 04:04 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.11
 
@@ -26,6 +26,21 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Answer_GetAllAnswerOfQuestion` (IN `question_id` INT)  NO SQL
+BEGIN
+	SELECT * from answer WHERE QuestionId = question_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Answer_InsertAnswer` (IN `content` TEXT CHARSET utf8, IN `is_correct` TINYINT, IN `question_id` INT)  NO SQL
+BEGIN
+  INSERT answer(Content, Is_correct, QuestionId
+	)VALUES(
+      content,
+      is_correct,
+      question_id
+    );
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_GetListChapterWithGradeSubjectID` (IN `_GradeID` INT, IN `_SubjectID` INT)  NO SQL
 BEGIN
 	DECLARE _gradesubjectid INT;
@@ -86,9 +101,32 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_UpdateGrade` (IN `gradeIdToUp
     WHERE GradeId = gradeIdToUpdate;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Lesson_GetBreadcrumb` (IN `lesson_id` INT)  NO SQL
+BEGIN
+
+    SELECT concat(g.Name, ' > ' ,s.name, ' > ', c.name, ' > ', l.name) as fullname FROM lesson l JOIN chapter c on l.ChapterId = c.ChapterId JOIN gradesubject gs on c.GradeSubjectId = gs.GradeSubjectId join subject s on s.SubjectId = gs.SubjectId JOIN grade g on gs.GradeId = g.GradeId  where LessonId = lesson_id;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Lesson_GetListLessonWithChapterID` (IN `_ChapterID` INT)  NO SQL
 BEGIN
 	SELECT * FROM lesson WHERE ChapterID = _ChapterID;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Question_GetQuestionWithLessonAndUser` (IN `lesson_id` INT, IN `user_id` INT)  NO SQL
+BEGIN
+	SELECT * from question WHERE LessionId = lesson_id and UserId = user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Question_InsertQuestion` (IN `lesson_id` INT, IN `content` TEXT CHARSET utf8, IN `user_id` INT)  NO SQL
+BEGIN
+  INSERT question(LessionId, Content, UserId
+	)VALUES(
+        lesson_id,
+        content,
+        user_id
+    );
+select last_insert_id() as id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Role_GetListRole` ()  BEGIN
@@ -179,6 +217,20 @@ CREATE TABLE `answer` (
   `Is_correct` tinyint(4) NOT NULL,
   `QuestionId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `answer`
+--
+
+INSERT INTO `answer` (`AnswerId`, `Content`, `Is_correct`, `QuestionId`) VALUES
+(2, 'PHA+NDwvcD4NCg==', 1, 17),
+(3, 'PHA+NTwvcD4NCg==', 0, 17),
+(4, 'PHA+NjwvcD4NCg==', 0, 17),
+(5, 'PHA+NzwvcD4NCg==', 0, 17),
+(6, 'PHA+PG1hdGggeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTgvTWF0aC9NYXRoTUwiPjxtZnJhYyBiZXZlbGxlZD0idHJ1ZSI+PG1uPjE8L21uPjxtbj4yPC9tbj48L21mcmFjPjwvbWF0aD48L3A+DQo=', 0, 18),
+(7, 'PHA+YXNkPC9wPg0K', 1, 18),
+(8, 'PHA+MTIzPC9wPg0K', 0, 18),
+(9, 'PHA+NDQ0NTwvcD4NCg==', 0, 18);
 
 -- --------------------------------------------------------
 
@@ -356,6 +408,14 @@ CREATE TABLE `question` (
   `Content` text NOT NULL,
   `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `question`
+--
+
+INSERT INTO `question` (`QuestionId`, `LessionId`, `Content`, `UserId`) VALUES
+(17, 1, 'PHA+MisyPC9wPg==', 9),
+(18, 1, 'PHA+PHN0cm9uZz5hc2Rhc2QmbmJzcDs8L3N0cm9uZz48L3A+DQoNCjxwPjxzdHJvbmc+YXNkYXNkIGFzZCBhc2Q8L3N0cm9uZz48L3A+DQoNCjxwPjxzdHJvbmc+YXNkYXNkYXNkIGFzZCZuYnNwOzwvc3Ryb25nPjwvcD4=', 9);
 
 -- --------------------------------------------------------
 
@@ -605,7 +665,7 @@ ALTER TABLE `userclass`
 -- AUTO_INCREMENT for table `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `chapter`
@@ -665,7 +725,7 @@ ALTER TABLE `lesson`
 -- AUTO_INCREMENT for table `question`
 --
 ALTER TABLE `question`
-  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `result`
