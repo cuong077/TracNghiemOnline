@@ -22,6 +22,7 @@
 
 			$qr = "CALL User_CheckUsernameAndPasswordIsCorrect('$email', '$password')";
 
+			
 			$result = mysqli_query($this->con, $qr);
 			
 	    	return $result;
