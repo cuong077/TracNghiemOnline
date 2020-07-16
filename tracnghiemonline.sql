@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2020 at 02:05 PM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.11
+-- Generation Time: Jul 16, 2020 at 04:05 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.2.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,13 +18,35 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `new_test`
+-- Database: `tracnghiemonline`
 --
 
 DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_checkExistChapterByName` (IN `chapterNameToSearch` VARCHAR(255) CHARSET utf8, IN `gradeIdToSearch` INT, IN `subjectIdToSearch` INT)  NO SQL
+BEGIN
+	SELECT * FROM gradesubject gs JOIN subject s ON s.SubjectId = gs.SubjectId JOIN grade g ON g.GradeId = gs.GradeId JOIN chapter c ON c.GradeSubjectId = gs.GradeSubjectId WHERE c.Name=chapterNameToSearch AND g.GradeId=gradeIdToSearch AND s.SubjectId=subjectIdToSearch AND c.Hidden=0;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_CheckExistsChapter` (IN `chapterNameToSearch` VARCHAR(255) CHARSET utf8, IN `gradeSubjectIdToSearch` INT)  NO SQL
+BEGIN
+	SELECT ChapterId FROM chapter WHERE Name = chapterNameToSearch AND gradesubjectid=gradeSubjectIdToSearch AND Hidden=0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_GetChapterById` (IN `chapterIdToSearch` INT)  NO SQL
+BEGIN
+	SELECT * FROM chapter WHERE chapterId=chapterIdToSearch AND Hidden=0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_GetListChapterToShow` ()  NO SQL
+BEGIN
+SELECT c.ChapterId AS ChapterId, c.Name AS ChapterName, gs.GradeSubjectId, g.Name AS GradeName, s.Name AS SubjectName FROM chapter c JOIN gradesubject gs ON gs.GradeSubjectId = c.GradeSubjectId JOIN subject s ON s.SubjectId = gs.SubjectId JOIN grade g ON gs.GradeId = g.GradeId WHERE c.Hidden=0;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_GetListChapterWithGradeSubjectID` (IN `_GradeID` INT, IN `_SubjectID` INT)  NO SQL
 BEGIN
 	DECLARE _gradesubjectid INT;
@@ -33,14 +54,66 @@ BEGIN
     SELECT * FROM chapter WHERE gradesubjectid = _gradesubjectid;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_hiddenChapter` (IN `chapterIdToSearch` INT)  NO SQL
+BEGIN
+	UPDATE Chapter
+    	SET Hidden=1
+        WHERE ChapterId=chapterIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_InsertChapter` (IN `chapterNameToInsert` VARCHAR(255), IN `gradeSubjectIdToInsert` INT, IN `chapterDescriptionToInsert` VARCHAR(255))  NO SQL
+BEGIN
+	INSERT chapter(Name, GradeSubjectId, Description)  VALUES( chapterNameToInsert, gradeSubjectIdToInsert, chapterDescriptionToInsert);
+    SELECT LAST_INSERT_ID() AS ChapterId;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Chapter_updateChapter` (IN `chapterIdToSearch` INT, IN `chapterNameToUpdate` VARCHAR(255) CHARSET utf8, IN `chapterDescriptionToUpdate` VARCHAR(255) CHARSET utf8)  NO SQL
+BEGIN
+	UPDATE chapter
+    	SET Name=chapterNameToUpdate,
+        Description=chapterDescriptionToUpdate
+    WHERE ChapterId=chapterIdToSearch;
+    SELECT LAST_INSERT_ID() AS ChapterId;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Class_addClass` (IN `classNameToInsert` VARCHAR(255) CHARSET utf8, IN `classDescriptionToInsert` TEXT CHARSET utf8, IN `passwordToInsert` VARCHAR(255) CHARSET utf8, IN `userIdToInsert` INT, IN `gradeIdToInsert` INT)  NO SQL
+BEGIN
+	INSERT class(Name, Description, Password, UserId, GradeId) VALUES(classNameToInsert, classDescriptionToInsert, passwordToInsert, userIdToInsert, gradeIdToInsert);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Class_checkExistsClassByName` (IN `classNameToSearch` VARCHAR(255) CHARSET utf8, IN `gradeIdToSearch` INT)  NO SQL
+BEGIN
+	SELECT * FROM class WHERE Name=classNameToSearch AND gradeid=gradeIdToSearch;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_DeleteGradeBySubjectId` (IN `subjectIdToSearch` INT)  BEGIN
   DELETE FROM GradeSubject
     WHERE SubjectId = subjectIdToSearch;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_findGradeSubjectIdByGradeIdAndSubjectId` (IN `gradeIdToSearch` INT, IN `subjectIdToSearch` INT)  NO SQL
+BEGIN
+ SELECT GradeSubjectId FROM gradesubject WHERE GradeId = gradeIdToSearch AND SubjectId = subjectIdToSearch;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_GetGradeIdWithSubjectId` (IN `subjectIdToSearch` INT)  BEGIN
   SELECT GradeId FROM GradeSubject WHERE SubjectId=subjectIdToSearch;
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_getGradeSubjectById` (IN `gradeSubjectIdToSearch` INT)  NO SQL
+BEGIN
+	SELECT * FROM gradesubject WHERE GradeSubjectId=gradeSubjectIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_getListSubjectFilterByGrade` (IN `gradeIdToSearch` INT)  NO SQL
+BEGIN
+ SELECT gs.GradeId AS GradeId, gs.SubjectId as SubjectId, s.Name AS SubjectName  FROM gradesubject gs JOIN subject s ON s.SubjectId = gs.SubjectId WHERE gs.gradeId=gradeIdToSearch;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_GetListSubjectsByGradeId` (IN `gradeIdToSearch` VARCHAR(255))  NO SQL
+SELECT * FROM gradesubject WHERE GradeId=gradeIdToSearch$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_GetSubjectsWithGradeID` (IN `GradeID` INT)  NO SQL
 BEGIN
@@ -60,6 +133,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_UpdateGradeIdBySubject
     SET GradeId = gradeIdToUpdate
     WHERE SubjectId = subjectIdToSearch;
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GradeSubject_updateGradeSubjectById` (IN `gradeSubjectIdToSearch` INT, IN `gradeIdToUpdate` INT, IN `subjectIdToUpdate` INT)  NO SQL
+BEGIN
+	UPDATE gradesubject
+    SET GradeId=gradeIdToUpdate,
+    	SubjectId=subjectIdToUpdate
+    WHERE GradeSubjectId=gradeSubjectIdToSearch;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_CheckExistsGradeByName` (IN `gradeName` VARCHAR(255))  NO SQL
+SELECT Name,gradeId FROM grade WHERE Name=gradeName$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Grade_GetAllGrades` ()  BEGIN
 	SELECT GradeId, Name, Description FROM Grade WHERE Hidden!=true;
@@ -95,6 +180,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Role_GetListRole` ()  BEGIN
  	SELECT RoleId, Name, Description FROM Role;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_CheckExistsSubjectWithSubjectName` (IN `subjectNameToSearch` VARCHAR(255), IN `gradeIdToSearch` INT)  NO SQL
+BEGIN
+	SELECT s.SubjectId FROM gradesubject gs JOIN subject s ON s.SubjectId = gs.SubjectId WHERE gs.GradeId = gradeIdToSearch AND s.Name = subjectNameToSearch;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_DeleteSubject` (IN `subjectIdToSearch` INT)  BEGIN
   DELETE FROM Subject
     WHERE SubjectId=subjectIdToSearch;
@@ -117,11 +207,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_HiddenSubjectById` (IN `sub
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_InsertSubject` (IN `subjectNameToInsert` VARCHAR(255), IN `subjectDescriptionToInsert` VARCHAR(255))  BEGIN
-  INSERT Subject(Name, Description) 
+ 	INSERT Subject(Name, Description) 
     VALUES(
       subjectNameToInsert,
       subjectDescriptionToInsert
     );
+	SELECT LAST_INSERT_ID() AS SubjectId;    
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Subject_updateSubject` (IN `subjectIdToSearch` INT, IN `subjectNameToUpdate` VARCHAR(255), IN `subjectDescriptionToUpdate` VARCHAR(255))  NO SQL
+BEGIN
+	UPDATE subject
+    	SET Name=subjectNameToUpdate,
+        	Description=subjectDescriptionToUpdate
+        WHERE subjectId=subjectIdToSearch;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `User_CheckUsernameAndPasswordIsCorrect` (IN `emailToCheck` VARCHAR(255) CHARSET utf8, IN `passwordToCheck` VARCHAR(255) CHARSET utf8)  BEGIN
@@ -190,16 +289,18 @@ CREATE TABLE `chapter` (
   `ChapterId` int(11) NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `GradeSubjectId` int(11) NOT NULL
+  `GradeSubjectId` int(11) NOT NULL,
+  `Hidden` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `chapter`
 --
 
-INSERT INTO `chapter` (`ChapterId`, `Name`, `Description`, `GradeSubjectId`) VALUES
-(1, 'Chương 1 : Đồ thị hàm số', '', 1),
-(2, 'Chương 2 : Logarit', '', 1);
+INSERT INTO `chapter` (`ChapterId`, `Name`, `Description`, `GradeSubjectId`, `Hidden`) VALUES
+(10, 'Chương 1:', '', 35, 0),
+(11, 'Chương 2:', 'Test', 35, 0),
+(12, 'Văn học Việt Nam', 'Văn học Việt Nam', 37, 1);
 
 -- --------------------------------------------------------
 
@@ -212,8 +313,18 @@ CREATE TABLE `class` (
   `Name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Password` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `UserId` int(11) NOT NULL
+  `UserId` int(11) NOT NULL,
+  `GradeId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `class`
+--
+
+INSERT INTO `class` (`ClassId`, `Name`, `Description`, `Password`, `UserId`, `GradeId`) VALUES
+(1, 'Lớp 10a1', '456', '123', 3, 12),
+(2, 'Lớp 11a1', '123', '123', 3, 13),
+(3, 'Lớp 11a2', '123\r\n', '123', 3, 12);
 
 -- --------------------------------------------------------
 
@@ -289,7 +400,7 @@ CREATE TABLE `grade` (
   `GradeId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
-  `Hidden` tinyint(1) NOT NULL DEFAULT '0'
+  `Hidden` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -297,9 +408,9 @@ CREATE TABLE `grade` (
 --
 
 INSERT INTO `grade` (`GradeId`, `Name`, `Description`, `Hidden`) VALUES
-(7, 'Khối 11', 'Năm thứ 2 của cấp 3', 0),
-(8, 'Khối 10 ', 'Năm đầu tiên của cấp 3', 0),
-(9, 'Khối 12', 'Năm cuối cấp 3', 0);
+(12, 'Khối 10', 'Năm đầu tiên của cấp 3', 0),
+(13, 'Khối 11', 'Năm thứ hai cấp 3', 0),
+(14, 'Khối 12', 'Năm cuối cấp 3', 0);
 
 -- --------------------------------------------------------
 
@@ -318,8 +429,8 @@ CREATE TABLE `gradesubject` (
 --
 
 INSERT INTO `gradesubject` (`GradeSubjectId`, `GradeId`, `SubjectId`) VALUES
-(1, 8, 14),
-(2, 8, 28);
+(35, 12, 73),
+(37, 12, 74);
 
 -- --------------------------------------------------------
 
@@ -333,16 +444,6 @@ CREATE TABLE `lesson` (
   `Description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ChapterId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `lesson`
---
-
-INSERT INTO `lesson` (`LessonId`, `Name`, `Description`, `ChapterId`) VALUES
-(1, 'Bài 1 : Đồ thị 1', '', 1),
-(2, 'Bài 2 : Đồ thị 2', '', 1),
-(3, 'Bài 1 : Logarit 1', '', 2),
-(4, 'Bài 2 : Logarit 2', '', 2);
 
 -- --------------------------------------------------------
 
@@ -401,7 +502,7 @@ CREATE TABLE `subject` (
   `SubjectId` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
-  `Hidden` tinyint(1) NOT NULL DEFAULT '0'
+  `Hidden` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -409,8 +510,8 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`SubjectId`, `Name`, `Description`, `Hidden`) VALUES
-(14, 'Toán', '', 0),
-(28, 'Lý', NULL, 0);
+(73, 'Môn toán', 'Toán học', 0),
+(74, 'Văn', 'Văn học', 0);
 
 -- --------------------------------------------------------
 
@@ -427,7 +528,7 @@ CREATE TABLE `user` (
   `Phone` varchar(10) DEFAULT NULL,
   `Password` varchar(32) NOT NULL,
   `RoleId` int(11) NOT NULL,
-  `Active` tinyint(1) NOT NULL DEFAULT '1'
+  `Active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -435,8 +536,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`UserId`, `FullName`, `Email`, `Username`, `Birthday`, `Phone`, `Password`, `RoleId`, `Active`) VALUES
-(2, '', 'testemail@gmail.com', 'test', '0000-00-00 00:00:00', NULL, '098f6bcd4621d373cade4e832627b4f6', 1, 0),
-(3, 'quocha', 'quocha@gmail.com', 'quocha', '0000-00-00 00:00:00', NULL, 'a97afdb8a3eebaf49c033c75d25220c4', 1, 1),
+(2, '', 'testemail@gmail.com', 'test', '0000-00-00 00:00:00', NULL, '098f6bcd4621d373cade4e832627b4f6', 2, 0),
+(3, 'quocha', 'quocha@gmail.com', 'quocha', '0000-00-00 00:00:00', NULL, 'a97afdb8a3eebaf49c033c75d25220c4', 2, 1),
 (4, 'dinh', 'thanhdinh@gmail.com', 'tesst', '0000-00-00 00:00:00', NULL, '45eea262ec1d46cc5ee3817bc821e757', 2, 0),
 (5, 'Duy', 'buiduy@gmail.com', 'duy', '0000-00-00 00:00:00', NULL, '5dc6da3adfe8ccf1287a98c0a8f74496', 2, 0),
 (6, 'Bùi Đức Duy', 'ducduy23089@gmail.com', 'duy12', '0000-00-00 00:00:00', NULL, '202cb962ac59075b964b07152d234b70', 2, 1),
@@ -611,13 +712,13 @@ ALTER TABLE `answer`
 -- AUTO_INCREMENT for table `chapter`
 --
 ALTER TABLE `chapter`
-  MODIFY `ChapterId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ChapterId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `ClassId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ClassId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `document`
@@ -647,13 +748,13 @@ ALTER TABLE `examtype`
 -- AUTO_INCREMENT for table `grade`
 --
 ALTER TABLE `grade`
-  MODIFY `GradeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `GradeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `gradesubject`
 --
 ALTER TABLE `gradesubject`
-  MODIFY `GradeSubjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `GradeSubjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `lesson`
@@ -683,7 +784,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `SubjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `SubjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `user`
