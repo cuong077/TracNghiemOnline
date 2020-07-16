@@ -44,6 +44,10 @@ class Controller
         return @$_SESSION['userid'];
     }
 
+    public function showScript($msg){
+        echo `<script>showAlert({ 'content': '$msg'});`;
+    }
+
     public function is_Admin()
     {
         if (isset($_SESSION['username']) && $_SESSION['username'] != "" && $_SESSION['permission'] == 1) {
