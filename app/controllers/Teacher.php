@@ -530,6 +530,7 @@ class Teacher extends Controller{
 			"error"		=> $error
 		  ]);
 
+	}
 
 }
 
