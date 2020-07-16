@@ -2,7 +2,7 @@
   class ExamsModel extends DB
   {
     //Them exam vao database
-    public function addExams($description, $userId, $subjectId, $gradeId, $exam_time_id)
+    public function addExam($description, $userId, $subjectId, $gradeId, $exam_time_id)
     {
       $qr = "INSERT INTO exams(description, user_id, subject_id, grade_id, exam_time_id)
              VALUES ('$description', $userId, $subjectId, $gradeId, $exam_time_id)";
