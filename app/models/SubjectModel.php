@@ -7,15 +7,17 @@
     	$qr = "CALL Subject_InsertSubject('$subjectName', '$subjectDescription')";
 		
 		mysqli_next_result($this->con);
+		$result = mysqli_query($this->con, $qr);
+		$id = mysqli_fetch_assoc($result)["SubjectId"];
 		
-		if(mysqli_query($this->con, $qr)){
-    		return true;
-    	}
+		if($id != null){
+			return $id;
+		}
 
     	return false;
     }
 
-		//Xoa khoi hoc
+	//Xoa khoi hoc
 	public function hiddenSubject($subjectId)
 	{
 		$qr = "CALL Subject_HiddenSubjectById('$subjectId')";
@@ -28,11 +30,10 @@
 	}
 
     //Chinh sua ten khoi hoc
-	public function updateSubject($subjectId, $subjectName)
+	public function updateSubject($subjectId, $subjectName, $subjectDescription)
 	{
-		$qr = "UPDATE subject SET Name='$subjectName' WHERE SubjectId=$subjectId";
+		$qr = "CALL  Subject_updateSubject($subjectId, '$subjectName', '$subjectDescription')";
 		
-		// echo $qr;
 		if (mysqli_query($this->con, $qr)) {
 			return true;
 		}
@@ -50,18 +51,30 @@
 
 	public function getSubject($subjectId){
 		$qr = "CALL Subject_GetSubject($subjectId)";
+		mysqli_next_result($this->con);
 		$result = mysqli_query($this->con, $qr);
 
 		return $result;
 	}
 
+	public function checkSubjectExistBySubjectName($subjectName, $gradeId){
+		$subjectName = trim($subjectName);
+		$qr = "CALL Subject_CheckExistsSubjectWithSubjectName('$subjectName', $gradeId)";
+		$result = mysqli_query($this->con, $qr);
+
+		if(mysqli_num_rows($result) > 0){
+			return true;
+		}
+
+		return false;
+	}
+
 	public function insertedId(){
-        return mysqli_insert_id($this->con);
+		return mysqli_insert_id($this->con);
 	}
 	
 	public function deleteSubject($subjectId){
 		$qr = "CALL Subject_DeleteSubject($subjectId)";
-		// echo $qr;
 		mysqli_next_result($this->con);
 
 		if (mysqli_query($this->con, $qr)) {

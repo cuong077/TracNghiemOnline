@@ -115,12 +115,19 @@ class Manager extends Controller
 
 	public function HiddenSubject($subjectId)
     {
-        //check admin
         $this->checkIsAdminOrRedirect();
 		$subjectModel = $this->model("SubjectModel");        
 		$subjectResult = $subjectModel->hiddenSubject($subjectId);
 
 		$this->redirect("Manager/ListSubjects");
+    }
+
+    public function HiddenChapter($chapterId){
+        $this->checkIsAdminOrRedirect();
+		$chapterModel = $this->model("ChapterModel");        
+		$chapterResult = $chapterModel->hiddenChapter($chapterId);
+
+		$this->redirect("Manager/ListChapters");
     }
   
 	public function HiddenGrade($gradeId)
@@ -326,40 +333,56 @@ class Manager extends Controller
 
     public function EditGrade($gradeId)
     {
-        if (!isset($_POST["updateGrade"])) {
-            $this->checkIsAdminOrRedirect();
+        $this->checkIsAdminOrRedirect();
+		$error = [];
+        $gradeMode = $this->model("GradeModel");
+        $result = $gradeMode->getGrade($gradeId);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $grade["id"] = $gradeId;
+            $grade["name"] = $row["Name"];
+            $grade["description"] = $row["Description"];
+        }
 
-            $gradeMode = $this->model("GradeModel");
-            $result = $gradeMode->getGrade($gradeId);
+        $oldGrade = $grade["name"];
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                $grade["id"] = $gradeId;
-                $grade["name"] = $row["Name"];
-                $grade["description"] = $row["Description"];
-            }
-
-            $this->view("admin", [
-                "Page" => "admin_editGrade",
-                "title" => "Sửa thông tin khối",
-                "grade" => $grade,
-            ]);
-        } else {
-            $this->checkIsAdminOrRedirect();
-
-            $gradeName = $_POST["grade_name"];
+		if (isset($_POST["updateGrade"])) {
+            $gradeName = $_POST["gradeName"];
             $gradeDescription = $_POST["description"];
 
-            if (isset($gradeName) && $gradeName != "" && isset($gradeDescription) && $gradeDescription != "") {
-                $gradeMode = $this->model("GradeModel");
-                $result = $gradeMode->updateGrade($gradeId, $gradeName, $gradeDescription);
+            if(!isset($gradeName) || $gradeName == "" ) {
+				$error["gradeName"] = "Vui lòng nhập tên khối.";
+            } 
+            else{
+                $oldGrade = $_POST["oldGrade"];
 
+                if($gradeName != $oldGrade){
+                    $result = $gradeMode->checkExistsGradeName($gradeName);
+                    print_r($result);
+                    if($result == true){
+                        $error["gradeExists"] = "Khối lớp học đã bị tồn tại.";
+                    }
+                }
+            }
+
+			if(!isset($gradeDescription) || $gradeDescription == "") {
+                $error["gradeDescription"] = "Vui lòng nhập mô tả khối lớp học.";
+			}
+
+			if($error == []){
+                $result = $gradeMode->updateGrade($gradeId, $gradeName, $gradeDescription);
+	
                 $this->messageBox("Cập nhật thành công.");
                 $this->redirect("Manager/EditGrade/" . $gradeId);
-            } else {
-				$this->messageBox("Vui lòng nhập đầy đủ thông tin.");
-				$this->redirect("Manager/EditGrade/" . $gradeId);
-            }
-        }
+			}
+		}
+
+		$this->view("admin", [
+			"Page"      => "admin_editGrade",
+			"title"     => "Thêm khối lớp học",
+            "error"     => $error,
+            "grade"     => $grade,
+            "oldGrade"  => $oldGrade
+		]);
     }
 
     public function AddGrade()
@@ -368,12 +391,21 @@ class Manager extends Controller
 		$error = [];
 
 		if (isset($_POST["addGrade"])) {
-            $gradeName = $_POST["grade_name"];
+            $gradeName = $_POST["gradeName"];
             $gradeDescription = $_POST["decription"];
 
             if(!isset($gradeName) || $gradeName == "" ) {
 				$error["gradeName"] = "Vui lòng nhập tên khối.";
-			} 
+            } 
+            else{
+
+                $gradeMode = $this->model("GradeModel");
+                $result = $gradeMode->checkExistsGradeName($gradeName);
+                if($result == true){
+                    $error["gradeExists"] = "Khối lớp học đã bị tồn tại.";
+                }
+            }
+
 			if(!isset($gradeDescription) || $gradeDescription == "") {
                 $error["gradeDescription"] = "Vui lòng nhập mô tả khối lớp học.";
 			}
@@ -433,26 +465,32 @@ class Manager extends Controller
             $subjectName = $_POST["subjectName"];
             $subjectDescription = $_POST["subjectDescription"];
             $gradeId = $_POST["gradeSelect"];
+            $oldSubjectName = $_POST["oldSubjectName"];
 
             if (!isset($subjectName) || $subjectName == "") {
                 $error["subjectName"] = "Vui lòng nhập tên môn học.";
-            } 
-
-            if(!isset($subjectDescription) || $subjectDescription == ""){
-                $error["subjectDescription"] = "Vui lòng nhập mô tả môn học.";
+            }
+            else{
+                if($oldSubjectName != $subjectName){
+                    $subjectModel = $this->model("SubjectModel");
+                    $subjectResult = $subjectModel->checkSubjectExistBySubjectName(
+                        $subjectName, $gradeId
+                    );
+                    
+                    if($subjectResult == true){
+                        $error["subjectExists"] = "Môn học đã tồn tại trong khối.";
+                    }
+                }
             }
 
             if($error == []){
                 $subjectModel = $this->model("SubjectModel");
-                $subjectModel->updateSubject($subjectId, $subjectName);
+                $subjectModel->updateSubject($subjectId, $subjectName, $subjectDescription);
                 $gradeSubjectModel = $this->model("GradeSubjectModel");
                 $gradeSubjectResult = $gradeSubjectModel->updateGradeId($subjectId, $gradeId);
 
                 $this->messageBox("Cập nhật thành công.");
                 $this->redirect("Manager/ListSubjects");
-            }
-            else{
-                $this->messageBox("Vui lòng nhập đầy đủ thông tin.");
             }
         }
         
@@ -469,6 +507,7 @@ class Manager extends Controller
         $gradeSubjectResult = $gradeSubjectModel->getGradeIdBySubjectId($subjectId);
         $gradeRow = mysqli_fetch_assoc($gradeSubjectResult);
         $gradeId = $gradeRow["GradeId"];
+        $oldSubjectName = "";
 
         while ($row = mysqli_fetch_assoc($gradesList)) {
             $rowToAdd = [];
@@ -476,26 +515,27 @@ class Manager extends Controller
             array_push($rowToAdd, $row["GradeId"]);
             array_push($rowToAdd, $row["Name"]);
             array_push($rowToAdd, $row["Description"]);
-            
             $gradeToView[$index] = $rowToAdd;
             $index++;
         }
-
+        
         if ($result != null) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $subject[] .= $row["SubjectId"];
                 $subject[] .= $row["Name"];
                 $subject[] .= $row["Description"];
+                $oldSubjectName = $row["Name"];
             }
         }
 
         $this->view("admin", [
-            "Page"      => "admin_editSubject",
-            "title"     => "Sửa môn học.",
-            "subject"   => $subject,
-            "grades"    => $gradeToView,
-            "gradeId"   => $gradeId,
-            "error"     => $error
+            "Page"              => "admin_editSubject",
+            "title"             => "Sửa môn học.",
+            "subject"           => $subject,
+            "grades"            => $gradeToView,
+            "gradeId"           => $gradeId,
+            "oldSubjectName"    => $oldSubjectName,
+            "error"             => $error
         ]);
 
     }
@@ -513,6 +553,16 @@ class Manager extends Controller
             if(!isset($subjectName) || $subjectName == "") {
                $error["subjectName"] = "Vui lòng nhập tên môn.";
             }
+            else{
+                $subjectModel = $this->model("SubjectModel");
+                $subjectResult = $subjectModel->checkSubjectExistBySubjectName(
+                    $subjectName, $gradeId
+                );
+                
+                if($subjectResult == true){
+                    $error["subjectExists"] = "Môn học đã tồn tại trong khối.";
+                }
+            }
 
             if(!isset($subjectDescription) || $subjectDescription == "") {
                 $error["subjectDescription"] = "Vui lòng nhập mô tả môn.";
@@ -520,8 +570,7 @@ class Manager extends Controller
 
             if($error == []){
                 $subjectModel = $this->model("SubjectModel");
-                $subjectModel->addSubject($subjectName, $subjectDescription);
-                $subjectId = $subjectModel->insertedId();
+                $subjectId = $subjectModel->addSubject($subjectName, $subjectDescription);
                 $gradeSubjectModel = $this->model("GradeSubjectModel");
                 $resultInsertGradeSubject = $gradeSubjectModel->addGradeSubject($gradeId, $subjectId);
 
@@ -530,8 +579,8 @@ class Manager extends Controller
             }
         }
 
-        $gradeMode = $this->model("GradeModel");
-        $result = $gradeMode->getListGrades();
+        $gradeModel = $this->model("GradeModel");
+        $result = $gradeModel->getListGrades();
         $grades = [];
 
         while ($row = mysqli_fetch_array($result)) {
@@ -549,6 +598,214 @@ class Manager extends Controller
         ]);
     }
 
+    public function GetListSubjectWithAjax($gradeId){
+        $this->checkIsAdminOrRedirect();
+        $gradeSubjectModel = $this->model("GradeSubjectModel");
+        $gradeSubjectResult = $gradeSubjectModel->getListSubjectsByGradeId($gradeId);
+        $arr = [];
+        $subjectModel = $this->model("SubjectModel");
+        
+        while ($row = mysqli_fetch_assoc($gradeSubjectResult)) {
+            $subjectId = $row["SubjectId"];
+            $subjectResult = $subjectModel->getSubject($subjectId);            
+            $subjectName = mysqli_fetch_assoc($subjectResult)["Name"];
+            $tmp = array(
+                "Id"    => $subjectId,
+                "Name"  => $subjectName
+            );
+
+            array_push($arr, $tmp);
+        }
+
+        echo json_encode($arr);
+    }
+
+
+    public function AddChapter(){
+        $this->checkIsAdminOrRedirect();
+		$error = [];
+
+		if (isset($_POST["addChapter"])) {
+            $chapterName = $_POST["chapterName"];
+            $chapterDescription = $_POST["chapterDescription"];
+            $gradeId = $_POST["gradeSelect"];
+            $subjectId = @$_POST["subjectSelect"];
+            $gradeSubjectId = 0;
+
+            if(!isset($chapterName) || $chapterName == "" ) {
+				$error["chapterName"] = "Vui lòng nhập tên chương.";
+            } 
+            else{
+
+                $gradeSubjectModel = $this->model("GradeSubjectModel");
+                $gradeSubjectId = @$gradeSubjectModel->findGradeSubjectIdByGradeIdAndSubjectId($gradeId, $subjectId);
+
+                $chapterModel = $this->model("ChapterModel");
+                $result = @$chapterModel->checkExistsChapter($chapterName, $gradeSubjectId);
+
+                if($result == true){
+                    $error["chapterName"] = "Chương đã bị tồn tại.";
+                }
+            }
+            
+            if(!isset($subjectId) || $subjectId == "" ) {
+				$error["subjectError"] = "Vui lòng chọn khối lớp khác.";
+            } 
+
+			if($error == []){
+                $chapterModel = $this->model("ChapterModel");
+                // var_dump($chapterName, $gradeId, $subjectId, $chapterDescription);
+                
+				$chapterModel->addChapter($chapterName, $gradeSubjectId, $chapterDescription);
+	
+				$this->messageBox("Thêm chương thành công.");
+				$this->redirect("Manager/ListChapters");
+			}
+        }
+        
+        $gradeModel = $this->model("GradeModel");
+        $result = $gradeModel->getListGrades();
+        $grades = [];
+        // var_dump($result);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rowToAdd = [];
+            array_push($rowToAdd, $row["GradeId"]);
+            array_push($rowToAdd, $row["Name"]);
+            array_push($grades, $rowToAdd);
+        }
+
+        //var_dump($grades);
+
+		$this->view("admin", [
+			"Page"      => "admin_addChapter",
+			"title"     => "Thêm chương học",
+            "error"     => $error,
+            "grades"    => $grades
+		]);
+    }
+
+    public function EditChapter($chapterId){
+        $this->checkIsAdminOrRedirect();
+
+        $chapterModel = $this->model("ChapterModel");
+        $chapterResult = $chapterModel->getChapterById($chapterId);
+
+        $chapter = [];
+        $row = mysqli_fetch_assoc($chapterResult);
+        $chapter["chapterId"] = $row["ChapterId"];
+        $chapter["chapterName"] = $row["Name"];
+        $chapter["chapterDescription"] = $row["Description"];
+        $chapter["GradeSubjectId"] = $row["GradeSubjectId"];
+
+        $gradeSubjectModel = $this->model("GradeSubjectModel");
+        $gradeSubjectResult = $gradeSubjectModel->getGradeSubjectById($chapter["GradeSubjectId"]);
+        $row = mysqli_fetch_assoc($gradeSubjectResult);
+        $gradeId = $row["GradeId"];
+        $subjectId = $row["SubjectId"];
+
+        $gradeModel = $this->model("GradeModel");
+        $gradeResult = $gradeModel->getListGrades();
+        $grades = [];
+
+        while($row = mysqli_fetch_assoc($gradeResult)){
+            $rowToAdd = [];
+            array_push($rowToAdd, $row["GradeId"]);
+            array_push($rowToAdd, $row["Name"]);
+            array_push($grades, $rowToAdd);
+        }
+
+        $gradeSubjectResult = $gradeSubjectModel->getListSubjectFilterByGrade($gradeId);
+        $subjects = []; 
+
+        while ($row = mysqli_fetch_assoc($gradeSubjectResult)) {
+            $rowToAdd = [];
+            array_push($rowToAdd, $row["GradeId"]);
+            array_push($rowToAdd, $row["SubjectId"]);
+            array_push($rowToAdd, $row["SubjectName"]);
+            array_push($subjects, $rowToAdd);
+        }
+
+        // var_dump($gradeSubjectResult);
+        //update chapter
+        $error = [];
+        if (isset($_POST["updateChapter"])) {
+            // $gradeId = $_POST["gradeSelect"];
+            // $subjectId = $_POST["subjectSelect"];
+            $chapterName = $_POST["chapterName"];
+            $chapterDescription = $_POST["chapterDescription"];
+            // echo $subjectId;
+
+            if(!isset($chapterName) || $chapterName == "") {
+               $error["chapterName"] = "Vui lòng nhập tên chương.";
+            }
+            else{
+                $chapterResult = $chapterModel->checkExistChapterByName($chapterName, $gradeId, $subjectId);
+                                
+                if($chapterResult == true){
+                    //$this->messageBox("ton tai.");
+                    $error["chapterExists"] = "Chương đã tồn tại.";
+                }
+            }
+            
+            // if(!isset($subjectId) || $subjectId == "") {
+            //     $error["subjectId"] = "Vui lòng chọn khối và môn học.";
+            // }
+
+            if(!isset($chapterDescription) || $chapterDescription == "") {
+                $error["chapterDescription"] = "Vui lòng nhập mô tả.";
+            }
+
+            if($error == []){
+                // $chapterModel = $this->model("SubjectModel");
+                $chapterModel->updateChapter($chapterName, $chapterDescription, $chapterId);
+                $chapterResult = $chapterModel->getChapterById($chapterId);
+                // $chapter = mysqli_fetch_assoc($chapterResult);
+                // $gradeSubjectId = $chapter["GradeSubjectId"];
+                // // var_dump($chapterId, $gradeId, );
+                // $gradeSubjectResult = $gradeSubjectModel->updateGradeSubjectById($gradeSubjectId, $gradeId, $subjectId);
+                // $resultInsertGradeSubject = $gradeSubjectModel->addGradeSubject($gradeId, $subjectId);
+
+                $this->messageBox("Cập nhật chương thành công.");
+                $this->redirect("Manager/ListChapters");
+            }
+        }
+
+        $this->view("admin", [
+			"Page"          => "admin_editChapter",
+			"title"         => "Chỉnh sửa chương",
+            "chapter"       => $chapter,
+            "gradeId"       => $gradeId,
+            "grades"        => $grades,
+            "subjectId"     => $subjectId,
+            "subjects"      => $subjects
+		]);
+    }
+
+    public function ListChapters(){
+        $this->checkIsAdminOrRedirect();
+
+        $chapterModel = $this->model("ChapterModel");
+        $chapterResult = $chapterModel->getListChapters();
+        $chapters = [];
+
+        while($row = mysqli_fetch_assoc($chapterResult)){
+            $rowToAdd = [];
+            array_push($rowToAdd, $row["ChapterId"]);
+            array_push($rowToAdd, $row["ChapterName"]);
+            array_push($rowToAdd, $row["GradeName"]);
+            array_push($rowToAdd, $row["SubjectName"]);
+
+            array_push($chapters, $rowToAdd);
+        }
+
+        $this->view("admin", [
+			"Page"      => "admin_listChapters",
+			"title"     => "Danh sach chương",
+            "chapters"    => $chapters
+		]);
+    }
+
 
     public function DeleteSubject($subjectId){
         $this->checkIsAdminOrRedirect();
@@ -556,6 +813,7 @@ class Manager extends Controller
         $gradeSubjectResult = $gradeSubjectModel->deleteGradeBySubjectId($subjectId);
 
         $subjectModel = $this->model("SubjectModel");
+
         $subjectResult = $subjectModel->deleteSubject($subjectId);
         $this->redirect("Manager/ListSubjects");
     }

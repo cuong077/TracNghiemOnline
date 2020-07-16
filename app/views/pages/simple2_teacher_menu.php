@@ -1,7 +1,7 @@
 <section id="inner-headline">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-12 text-center">
 				<h2 class="pageTitle">Quản lí của giáo viên</h2>
 			</div>
 		</div>
@@ -47,7 +47,7 @@
 							</a>
 						</li>
 						<li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-							<a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo lớp</span>
+							<a href="Teacher/CreateClass"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo lớp</span>
 							</a>
 						</li>
 

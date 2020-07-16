@@ -33,8 +33,6 @@ class Teacher extends Controller{
 	}
 
 	public function createExamManualStep1(){
-
-
 		//load model
 		$grades_model = $this->model("GradeModel");
 		$exam_time_model = $this->model("ExamTimeModel");
@@ -52,9 +50,7 @@ class Teacher extends Controller{
 
 	public function createExamManualStep2(){
 
-		
 	    if(isset($_POST['step1'])){
-
 
 	    	$grade_id = $this->clear($_POST['gradeId']);
 	    	$subject_id = $this->clear($_POST['subjectId']);
@@ -418,6 +414,7 @@ class Teacher extends Controller{
 		exit;
 	}
 
+
 	public function getListQuestion(){
 
 		//load model
@@ -464,7 +461,75 @@ class Teacher extends Controller{
 
 		
 		echo json_encode($list_question);
+  }
+	//create class
+	public function CreateClass(){
+		$grades_model = $this->model("GradeModel");
+		$exam_time_model = $this->model("ExamTimeModel");
+		$subjects_model = $this->model("SubjectModel");
+
+		$error = [];
+
+		if(isset($_POST["addClass"])){
+
+			$gradeId = $_POST["gradeId"];
+			$className = $_POST["ClassName"];
+			$password = $_POST["PasswordJoinClass"];
+			$classDescription = $_POST["ClassDescription"];
+
+			if(!isset($gradeId)  || $gradeId==""){
+				$error["grade"] = "Vui lòng chọn khối lớp.";
+			}
+
+			if(!isset($className)  || $className==""){
+				$error["className"] = "Vui lòng nhập tên lớp.";
+			}
+			else{
+				//check class name exists
+				$classModel = $this->model("ClassModel");
+				$classResult = $classModel->checkExistsClassByName($className, $gradeId);
+
+				if($classResult == true){
+					$error["className"] = "Lớp học đã tồn tại.";
+				}
+			}
+			if(!isset($password)  || $password==""){
+				$error["password"] = "Vui lòng nhập mật khẩu.";
+			}
+			if(!isset($classDescription)  || $classDescription==""){
+				$error["description"] = "Vui lòng nhập mô tả lớp học.";
+			}
+
+			//add to db
+			if($error == []){
+				$userId = $this->getUserId();
+				$classModel = $this->model("ClassModel");
+				$classResult = $classModel->addClass($className, $classDescription, $password, $userId, $gradeId);
+				var_dump($className, $classDescription, $password, $userId, $gradeId);
+				$this->showScript('Thêm thành công.');
+				// $this->ListClasses();
+				$this->redirect("Teacher/ListClasses");
+			}
+		}
+
+		$this->view("simple2", [
+	      "Page"        => "simple2_createClass",
+	      "title"       => "Tạo lớp học",
+	      "grades"		=> $grades_model->getListGrades(),
+		  "menu"		=> "simple2_teacher_menu",
+		  "error"		=> $error
+	    ]);
 	}
+
+	public function ListClasses(){
+		$this->view("simple2", [
+			"Page"        => "simple2_listClasses",
+			"title"       => "Danh sách lớp học",
+			// "grades"		=> $grades_model->getListGrades(),
+			"menu"		=> "simple2_teacher_menu",
+			"error"		=> $error
+		  ]);
+
 
 }
 

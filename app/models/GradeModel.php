@@ -39,6 +39,18 @@ class GradeModel extends DB
         
         return false;
     }
+    
+    public function checkExistsGradeName($gradeName){
+        $gradeName = trim($gradeName);
+
+        $qr = "CALL Grade_CheckExistsGradeByName('$gradeName')";
+        mysqli_next_result($this->con);
+        if(mysqli_num_rows(mysqli_query($this->con, $qr))){
+            return true;
+        }
+
+        return false;
+    }
 
     public function hiddenGrade($gradeId){
         $qr = "CALL Grade_HiddenGrade('$gradeId')";
@@ -53,6 +65,7 @@ class GradeModel extends DB
     public function getListGrades()
     {
         $qr = "CALL Grade_GetAllGrades()";
+        mysqli_next_result($this->con);
         $result = mysqli_query($this->con, $qr);
         
         return $result;

@@ -132,11 +132,22 @@
                             <li><a href="Manager/AddSubject"><i class="fa fa-circle-o"></i> Thêm môn học</a></li>
                         </ul>
                     </li>
+
+                    <li class="treeview">
+                        <a href="Manager/ListChapters">
+                            <i class="fa fa-book"></i> <span>Chương học</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="Manager/ListChapters"><i class="fa fa-circle-o"></i> Danh sách chương</a></li>
+                            <li><a href="Manager/AddChapter"><i class="fa fa-circle-o"></i> Thêm chương</a></li>
+                        </ul>
+                    </li>
                     <?php }?>
 
                     <?php if(isset($_SESSION["permission"]) && $_SESSION["permission"]==2){?>
                     <li>
-                        <a href="#">
+                        <a href="Manager/ListSubjects">
                             <i class="fa fa-book"></i> <span>Môn học</span>
                             <i class="fa fa-angle-left pull-right"></i>
                         </a>

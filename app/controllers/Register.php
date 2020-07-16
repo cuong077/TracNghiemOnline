@@ -2,15 +2,22 @@
 
 class Register extends Controller{
 
-    function index(){
+    function RegisterStudent(){
 		$loginmodel = $this->model("UserModel");
 
-        $this->view("simple", [
-          "Page"        => "simple_register",
+        $this->view("simple2", [
+          "Page"        => "simple_registerStudent",
           "title"       => "Đăng ký - Thi trắc nghiệm trức tuyến"
         ]);
+	}
 
+	function RegisterTeacher(){
+		$loginmodel = $this->model("UserModel");
 
+        $this->view("simple2", [
+          "Page"        => "simple_registerTeacher",
+          "title"       => "Đăng ký - Thi trắc nghiệm trức tuyến"
+        ]);
     }
 
     public function process(){
