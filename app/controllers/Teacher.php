@@ -57,11 +57,18 @@ class Teacher extends Controller{
 	    	$exam_name = $this->clear($_POST['exam_name']);
 	    	$exam_num_of_question = $this->clear($_POST['examNumOfQuestion']);
 	    	$exam_time = $this->clear($_POST['durationOfTime']);
+	    	$exam_datetime_start = $this->clear($_POST['datetimeStart']);
+
+	    	if($grade_id == "" || $subject_id == "" || $exam_name == "" || $exam_num_of_question == "" || $exam_time == "" || $exam_datetime_start == ""){
+
+	    		$this->redirect("Teacher/createExamManualStep1");
+    			exit;
+
+	    	}
 
 	    	$grade_name = $this->clear($_POST['grade_name']);
 	    	$subject_name = $this->clear($_POST['subject_name']);
 	    	$exam_time_name = $this->clear($_POST['exam_time_name']);
-
 
 
 	    	//load model 
@@ -109,7 +116,10 @@ class Teacher extends Controller{
 		      "grade_name"			=> $grade_name,
 		      "subject_name"		=> $subject_name,
 		      "exam_time_name"		=> $exam_time_name,
-		      "number_of_questions"	=> $exam_num_of_question
+		      "number_of_questions"	=> $exam_num_of_question,
+		      "exam_name"			=> $exam_name,
+		      "exam_datetime_start"	=> $exam_datetime_start,
+		      "exam_time_id"		=> $exam_time
 		      
 		    ]);
 	    
@@ -214,8 +224,10 @@ class Teacher extends Controller{
 							$answer->is_error = false;
 							$answer->content = $_POST['question_'.$i.'_answer_'.$j];
 
-							if($_POST['question_'.$i.'_answer_'.$j] == "")
+							if($_POST['question_'.$i.'_answer_'.$j] == ""){
 								$answer->is_error = true;
+								$errors["list_questions"] = true;
+							}
 
 							if($answer_pos_correct == $j)
 								$answer->is_correct = true;
@@ -249,6 +261,7 @@ class Teacher extends Controller{
 
 			*/
 
+
 			if(count($errors) > 0){
 
 				$this->view("simple2", [
@@ -269,6 +282,7 @@ class Teacher extends Controller{
 			    exit;
 
 			}else{
+
 
 				$question_model = $this->model("QuestionModel");
 				$answer_model = $this->model("AnswerModel");
@@ -461,7 +475,43 @@ class Teacher extends Controller{
 
 		
 		echo json_encode($list_question);
-  }
+  	}
+
+  	public function createExam(){
+
+
+  		$json = file_get_contents('php://input');
+
+		$data = json_decode($json);
+
+		$user_id = $this->getUserId();
+
+
+		//load model
+		$exam_question_model = $this->model("ExamQuestionModel");
+		$exam_model = $this->model("ExamsModel");
+
+		$exam_time_start_reformat = new DateTime($data->exam_time_start);
+  		$exam_time_start_reformat = $exam_time_start_reformat->format('Y-m-d H:i:s');
+
+		$exam_id = $exam_model->addExam($data->exam_name, $data->exam_description, date('Y-m-d H:i:s'), $data->exam_amount_of_question,$exam_time_start_reformat , $user_id, 1, $data->exam_time_id, 'null');
+
+		foreach ($data->list_question_id as $question_id) {
+			$exam_question_model->addExamQuestion($exam_id, $question_id);
+		}
+
+		if($exam_id != false)
+			echo '{"status" : "success", "message" : "Thành công"}';
+		else
+			echo '{"status" : "fail", "message" : "Thất bại"}';
+
+  	}
+
+  	public function test(){
+  		$date = new DateTime("2020-07-17T23:42");
+  		echo $date->format('Y-m-d H:i:s');
+  	}
+
 	//create class
 	public function CreateClass(){
 		$grades_model = $this->model("GradeModel");

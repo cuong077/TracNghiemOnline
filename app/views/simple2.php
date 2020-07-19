@@ -444,8 +444,57 @@
         text-align: center;
         background-color: #0D47A1;
     }
+
+    #button{
+        display:block;
+        margin:20px auto;
+        padding:10px 30px;
+        background-color:#eee;
+        border:solid #ccc 1px;
+      cursor: pointer;
+    }
+    #overlay{   
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        height:100%;
+        display: none;
+        background: rgba(0,0,0,0.6);
+    }
+    .cv-spinner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;  
+    }
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px #ddd solid;
+        border-top: 4px #2e93e6 solid;
+        border-radius: 50%;
+        animation: sp-anime 0.8s infinite linear;
+    }
+    @keyframes sp-anime {
+        100% { 
+            transform: rotate(360deg); 
+        }
+    }
+    .is-hide{
+        display:none;
+    }
     </style>
     <script>
+
+    $(document).ajaxSend(function(){
+
+        if(window.location.href.search("Student/doExam") > -1)
+            return;
+        
+        $("#overlay").fadeIn(300);　
+    });
+
     function showAlert(options) {
         var close = 'Đóng';
         var ok = 'Tiếp tục';
@@ -497,6 +546,11 @@
         }
     }
     </script>
+    <div id="overlay">
+        <div class="cv-spinner">
+            <span class="spinner"></span>
+        </div>
+    </div>
     <!-- Your customer chat code -->
     <div class="fb-customerchat" attribution=setup_tool page_id="150549311785593"
         logged_in_greeting="Xin chào, Trường học thông minh 789.vn có thể giúp gì cho bạn?"
