@@ -32,17 +32,8 @@
                                 Viên</span>
                         </li>
                         <li class="li-sub-menu list-style-none">
-                            <a href="#"> <i class="glyphicon glyphicon-briefcase icon-menu"></i><span>Tạo bài học</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none">
                             <a href="Teacher/createQuestion"> <i
                                     class="glyphicon glyphicon-folder-open icon-menu"></i><span>Thêm câu hỏi cho bài
-                                    học</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none">
-                            <a href="#"> <i class="glyphicon glyphicon-phone icon-menu"></i><span>Danh sách các bài
                                     học</span>
                             </a>
                         </li>
