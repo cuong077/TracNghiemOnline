@@ -949,6 +949,7 @@ iframe.fancybox-iframe {
 	border-radius: 4px;
 	width: 50%;
 	text-align: center;
+	margin: 0px;
 }
 
 .ul-class>li {

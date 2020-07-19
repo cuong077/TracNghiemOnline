@@ -96,7 +96,6 @@ class Manager extends Controller
 				
                 $users[$index] = $rowToAdd;
                 $index++;
-                //print_r($row);
             }
 
         } else {
@@ -726,7 +725,6 @@ class Manager extends Controller
             array_push($subjects, $rowToAdd);
         }
 
-        // var_dump($gradeSubjectResult);
         //update chapter
         $error = [];
         if (isset($_POST["updateChapter"])) {
@@ -743,29 +741,18 @@ class Manager extends Controller
                 $chapterResult = $chapterModel->checkExistChapterByName($chapterName, $gradeId, $subjectId);
                                 
                 if($chapterResult == true){
-                    //$this->messageBox("ton tai.");
                     $error["chapterExists"] = "Chương đã tồn tại.";
                 }
             }
             
-            // if(!isset($subjectId) || $subjectId == "") {
-            //     $error["subjectId"] = "Vui lòng chọn khối và môn học.";
-            // }
-
             if(!isset($chapterDescription) || $chapterDescription == "") {
                 $error["chapterDescription"] = "Vui lòng nhập mô tả.";
             }
 
             if($error == []){
-                // $chapterModel = $this->model("SubjectModel");
                 $chapterModel->updateChapter($chapterName, $chapterDescription, $chapterId);
                 $chapterResult = $chapterModel->getChapterById($chapterId);
-                // $chapter = mysqli_fetch_assoc($chapterResult);
-                // $gradeSubjectId = $chapter["GradeSubjectId"];
-                // // var_dump($chapterId, $gradeId, );
-                // $gradeSubjectResult = $gradeSubjectModel->updateGradeSubjectById($gradeSubjectId, $gradeId, $subjectId);
-                // $resultInsertGradeSubject = $gradeSubjectModel->addGradeSubject($gradeId, $subjectId);
-
+             
                 $this->messageBox("Cập nhật chương thành công.");
                 $this->redirect("Manager/ListChapters");
             }
@@ -849,15 +836,13 @@ class Manager extends Controller
 
     private function checkIsAdminOrRedirect()
     {
-        
-            if ($this->is_Login()) {
-                if (!$this->is_Admin()) {
-                    $this->redirect("Home");
-                }
-            } else {
-                $this->redirect("Login");
+        if ($this->is_Login()) {
+            if (!$this->is_Admin()) {
+                $this->redirect("Home");
             }
-        
+        } else {
+            $this->redirect("Login");
+        }
     }
 
     private function getGradeNameBySubjectId($subjectId)

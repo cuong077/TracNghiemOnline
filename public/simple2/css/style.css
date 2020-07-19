@@ -316,6 +316,9 @@ select.selectmenu {
     color: #5C8479;
     margin: 30px 0 3px;
     display: inline-block;
+
+    /* append */
+   
 }
 
 #featured {

@@ -246,8 +246,8 @@
 
                             <?php if(!isset($_SESSION['username'])){ ?>
                             <li><a href="Login">Đăng nhập</a></li>
-                            <li><a href="Register/RegisterStudent">Đăng ký học sinh</a></li>
-                            <li><a href="Register/RegisterTeacher">Đăng ký giáo viên</a></li>
+                            <li><a href="Register">Đăng ký tài khoản</a></li>
+                            <!-- <li><a href="Register/RegisterTeacher">Đăng ký giáo viên</a></li> -->
 
                             <?php }else{ ?>
 
@@ -259,6 +259,8 @@
 
                             <?php  }
                                 elseif((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 3)) {?>
+                            <!-- <li><a href="Student/ListClass">Danh sách lớp học</li> -->
+                            <li><a href="Student/ListClasses">Danh sách lớp học</a></li>
                             <li><a href="#">Xem lớp học đã tham gia</a></li>
                             <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
                             <li><a href="#">Xem lịch sử thi</a></li>
@@ -530,3 +532,7 @@
 </body>
 
 </html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src "https://cdn.datatables.net/plug-ins/1.10.15/sorting/stringMonthYear.js"></script>

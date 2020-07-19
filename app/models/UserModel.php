@@ -37,14 +37,22 @@
 			return $result;
 		}
 
-		//Thêm user mới với quyền mặc định là 1
-		public function addUser($username, $password, $email, $fullname, $role_id = 1){
-			$password = md5($password);
+		public function getListUserRequestJoinClass($classId){
+			$qr = "CALL UserClass_getListUserRequestJoinClass($classId)";
+			mysqli_next_result($this->con);
+			$result = mysqli_query($this->con, $qr);
 
+			return $result;			
+		}
+
+		//Thêm user mới với quyền mặc định là 3 (student)
+		public function addUser($username, $password, $email, $fullname, $role_id = 3, $phoneNumber, $birthday, $gradeSelect){
+			$password = md5($password);
 			mysqli_next_result($this->con);
 
-			$qr = "CALL User_InsertUser('$username', '$password', '$email', '$fullname', $role_id);";
-
+			$qr = "CALL User_InsertUser('$username', '$password', '$email', '$fullname', $role_id, '$phoneNumber', '$birthday', $gradeSelect);";
+			// echo $qr;
+			// exit;
 			if(mysqli_query($this->con, $qr)){
 				return true;
 			}
