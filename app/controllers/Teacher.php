@@ -1,4 +1,6 @@
 <?php
+// Report simple running errors
+
 class Teacher extends Controller{
     
 
@@ -543,9 +545,11 @@ class Teacher extends Controller{
 					$error["className"] = "Lớp học đã tồn tại.";
 				}
 			}
+
 			if(!isset($password)  || $password==""){
 				$error["password"] = "Vui lòng nhập mật khẩu.";
 			}
+			
 			if(!isset($classDescription)  || $classDescription==""){
 				$error["description"] = "Vui lòng nhập mô tả lớp học.";
 			}
@@ -557,7 +561,6 @@ class Teacher extends Controller{
 				$classResult = $classModel->addClass($className, $classDescription, $password, $userId, $gradeId);
 				var_dump($className, $classDescription, $password, $userId, $gradeId);
 				$this->showScript('Thêm thành công.');
-				// $this->ListClasses();
 				$this->redirect("Teacher/ListClasses");
 			}
 		}
@@ -572,16 +575,214 @@ class Teacher extends Controller{
 	}
 
 	public function ListClasses(){
+		$classModel = $this->model("ClassModel");
+		$userClassModel = $this->model("UserClassModel");
+
+		$userId = $this->getUserId();
+		$classResult = $classModel->getListClasses($userId);
+		$classes = [];
+
+		while ($row = mysqli_fetch_assoc($classResult)) {
+			$classId = (int)$row["ClassId"];
+			$total = $userClassModel->getTotalUserJoinedClass($classId);
+			$row["total"] = $total;
+			array_push($classes, $row);
+		}
+
+		$gradeModel = $this->model("GradeModel");
+		$gradeResult = $gradeModel->getListGrades();
+		$grades = [];
+
+		while ($row = mysqli_fetch_assoc($gradeResult)) {
+			array_push($grades, $row);
+		}
+
+		// print_r($grades);
+
 		$this->view("simple2", [
-			"Page"        => "simple2_listClasses",
-			"title"       => "Danh sách lớp học",
-			// "grades"		=> $grades_model->getListGrades(),
-			"menu"		=> "simple2_teacher_menu",
-			"error"		=> $error
+			"Page"        	=> "simple2_listClasses",
+			"title"       	=> "Danh sách lớp học",
+			"classes"		=> $classes,
+			"grades"		=> $grades,
+			"menu"			=> "simple2_teacher_menu"
 		  ]);
+	}
+
+	public function EditClass($classId){
+		$classModel = $this->model("ClassModel");
+		$classResult = $classModel->getClassById($classId);
+		$class = mysqli_fetch_assoc($classResult);
+		$gradeModel = $this->model("GradeModel");
+		$gradeResult = $gradeModel->getGrade((int)$class["GradeId"]);
+		$grade = mysqli_fetch_assoc($gradeResult);
+		$error = [];
+		$oldClassName = $class["Name"];
+
+		if(isset($_POST["updateClass"])){
+
+			$gradeId = (int)$class["GradeId"];
+			echo $gradeId;
+			$className = $_POST["ClassName"];
+			$password = $_POST["PasswordJoinClass"];
+			$classDescription = $_POST["ClassDescription"];
+
+			if(!isset($className)  || $className==""){
+				$error["className"] = "Vui lòng nhập tên lớp.";
+			}
+			else{
+				//check class name exists
+				if ($oldClassName != $className) {
+					$classModel = $this->model("ClassModel");
+					$classResult = $classModel->checkExistsClassByName($className, $gradeId);
+
+					if($classResult == true){
+						$error["className"] = "Lớp học đã tồn tại.";
+					}
+				}
+			}
+			if(!isset($password)  || $password==""){
+				$error["password"] = "Vui lòng nhập mật khẩu.";
+			}
+			if(!isset($classDescription)  || $classDescription==""){
+				$error["description"] = "Vui lòng nhập mô tả lớp học.";
+			}
+
+			//add to db
+			if($error == []){
+				$userId = $this->getUserId();
+				// $classModel = $this->model("ClassModel");
+				$classResult = $classModel->updateClass($className, $classDescription, $password, $classId);
+
+				$this->showScript('Cập nhật thành công.');
+				$this->redirect("Teacher/ListClasses");
+			}
+		}
+
+		$this->view("simple2", [
+			"Page"        	=> "simple2_editClass",
+			"title"      	=> "Chỉnh sửa lớp học",
+			"menu"			=> "simple2_teacher_menu",
+			"error"			=> $error,
+			"grade"			=> $grade,
+			"class"			=> $class
+		]);
+
 
 	}
 
+	public function ListStudentsRequest(){
+		$teacherId = $this->getUserId();
+		$classModel = $this->model("ClassModel");
+		$gradeModel = $this->model("GradeModel");
+		$userModel = $this->model("UserModel");
+
+		$classResult = $classModel->getListClasses($teacherId);
+		$classes =  [];
+		$grades = [];
+		$listRequestedFromStudent = [];
+		
+		//get userclass
+		$userClassModel = $this->model("UserClassModel");
+		
+		while($class = mysqli_fetch_assoc($classResult)){
+			$rowRequestToAdd = [];
+			
+			$classId = $class["ClassId"];
+			
+			//get info class from grade
+			$gradeId = $class["GradeId"];
+			$gradeResult = $gradeModel->getGrade($gradeId);
+			$grade = mysqli_fetch_assoc($gradeResult);
+			
+			array_push($rowRequestToAdd, $gradeId);
+			array_push($rowRequestToAdd, $grade["Name"]);
+
+			//get list student
+			$userClassResult = $userClassModel->getListUserRequestJoinClass($classId);
+			
+			$rowListStudents = [];
+			// $indexStudent = 0;
+
+			while($userClass = mysqli_fetch_assoc($userClassResult)){
+				$tmp = [];
+				$studentId = $userClass["UserId"];
+
+				$studentResult = $userModel->getUser($studentId);
+				
+				if(mysqli_num_rows($studentResult) > 0){
+					$student = mysqli_fetch_assoc($studentResult);
+					// $rowListStudents["studentId"] = $studentId;
+					// $rowListStudents["studentName"] = $student["FullName"];
+					// $tmp[] 
+					$tmp["StudentId"] = $studentId;
+					$tmp["StudentName"] = $student["FullName"];
+
+					$rowListStudents["Student_".$studentId] = $tmp;
+					// var_dump($tmp);
+					// var_dump($student);
+				}
+			}
+			// var_dump($rowListStudents[0]);
+
+			if($rowListStudents != []){
+				array_push($rowRequestToAdd, $classId); 
+				array_push($rowRequestToAdd, $class["Name"]); 
+				$rowRequestToAdd["listStudents"] = $rowListStudents;
+				array_push($listRequestedFromStudent, $rowRequestToAdd);
+			}
+		}
+
+		$this->view("simple2", [
+			"Page"        		=> "simple2_listStudentRequest",
+			"title"       		=> "Danh sách lớp học",
+			"listRequested"		=> $listRequestedFromStudent,
+			"menu"				=> "simple2_teacher_menu"
+		]);
+	}
+
+
+	public function ApproveStudent($classId, $studentId){
+		$userClassModel = $this->model("UserClassModel");
+		$userClassResult = $userClassModel->approveStudentJoinClass($classId, $studentId);
+		$this->redirect("Teacher/ListStudentsRequest");
+	}
+
+
+	public function ListStudentsClass($classId){
+		$userClassModel= $this->model("UserClassModel");
+		$userModel = $this->model("UserModel");
+
+		$userClassResult = $userClassModel->getListStudentJoinClass($classId);
+		$listStudents = [];
+
+		while ($student = mysqli_fetch_assoc($userClassResult)) {
+			$rowToAdd = [];
+
+			$studentId = $student["UserId"];
+			$dateJoin = $student["DateJoin"];
+			// echo gettype($dateJoin);
+			$phpdate = strtotime( $dateJoin );
+			$formatDateJoin = date ('Y-m-d H:i:s', $phpdate);
+			// $formatDateJoin = $formatDateJoin->format("d-m-Y");
+
+			$userResult = $userModel->getUser($studentId);
+			$user = mysqli_fetch_assoc($userResult);
+			array_push($rowToAdd, $userId);
+			array_push($rowToAdd, $user["Username"]);
+			array_push($rowToAdd, $user["Email"]);
+			array_push($rowToAdd, $formatDateJoin);
+
+			$listStudents["UsersId_".$studentId] = $rowToAdd;
+		}
+
+		$this->view("simple2", [
+			"Page"        		=> "simple2_listStudentsClass",
+			"title"       		=> "Danh sách học sinh lớp học",
+			"listStudents"		=> $listStudents,
+			"menu"				=> "simple2_teacher_menu"
+		]);
+	}
+	
 }
 
 

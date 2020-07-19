@@ -1,31 +1,130 @@
 <?php
 
 class Student extends Controller{
-
+  
     public function __construct() {
         if(!$this->is_Student()){
             //$this->redirect("Home");
             //exit;
         }
     }
+    
+    public function ListClasses(){
+
+        $classModel = $this->model("ClassModel");
+        $userId = $this->getUserId();
+        $classResult = $classModel->getListClasses($userId);
+        $classes = [];
+
+        $gradeModel = $this->model("GradeModel");
+        $gradeResult = $gradeModel->getListGrades();
+        $grades = [];
+        $userClassModel = $this->model("UserClassModel");
+        $total = 0;
+        
+        while ($row = mysqli_fetch_assoc($classResult)) {
+            $classId = (int)$row["ClassId"];
+            $joinClass = $userClassModel->checkUserJoinClass($userId, $classId);
+            $total = $userClassModel->getTotalUserJoinedClass($classId);
+
+            if($joinClass == true){
+                $row["joined"] = "true";
+            }
+            else{
+                $row["joined"] = "false";
+            }
+
+            // array_push($row, $joinClass);
+            array_push($classes, $row);
+        }
+
+    while ($row = mysqli_fetch_assoc($gradeResult)) {
+      array_push($grades, $row);
+    }
+
+        $this->view("simple2", [
+            "Page"                           => "simple2_student_listclasses",
+            "title"                          => "Danh sách lớp học",
+      "classes"                      => $classes,
+      "grades"                       => $grades,
+            "menu"                       => "simple2_student_menu",
+            "totalUserJoinedClass"           => $total 
+          ]);
+    }
+
+    public function JoinClass($classId){
+        $error = [];
+        $classModel = $this->model("ClassModel");
+        $classResult = $classModel->getClassById($classId);
+        $class = mysqli_fetch_assoc($classResult);
+        $classId = $class["ClassId"];
+        $teacherId = $class["UserId"];
+        $password = $class["Password"];
+
+        $userClassModel = $this->model("UserClassModel");
+        $userId = $this->getUserId();
+        $isRequested = $userClassModel->isRequestJoinClass($userId, $classId);
+        $isShowRequestForm = "true";
+        
+        if($isRequested == true){
+            $isShowRequestForm = "false";
+        }
+
+        // $isShowRequestForm = "false";
+
+        $gradeModel = $this->model("GradeModel");
+        $gradeResult = $gradeModel->getGradeNameWithClassId($classId);
+        $grade = mysqli_fetch_assoc($gradeResult);
+        $gradeName = $grade["Name"];
+        
+        $userModel = $this->model("UserModel");
+        $userResult = $userModel->getUser((int)$teacherId);
+        $user = mysqli_fetch_assoc($userResult);
+        $teacherName = $user["FullName"];
+
+        if(isset($_POST["joinClass"])){
+            // insert info about join class for user.
+            $passwordInput = $_POST["PasswordJoinClass"];
+            if(strtolower($passwordInput) != strtolower($password)){
+                $error["password"] = "Mật khẩu nhập không chính xác.";
+            }
+
+            if($error == []){
+                $userClassResult = $userClassModel->insertUserClass($userId, $classId);
+                // $this->redirect("Student/JoinClass/" + $classId);
+            }
+        }
+
+        $this->view("simple2", [
+            "Page"                           => "simple2_student_joinClass",
+            "title"                          => "Join class",
+            "menu"                       => "simple2_student_menu",
+            "class"                      => $class,
+            "error"                      => $error,
+            "grade"                      => $gradeName,
+            "teacher"                        => $teacherName,
+            "isShowRequestForm"              => $isShowRequestForm
+        ]);
+    }
+
 
 
     public function joinExam($exam_id){
 
-    	// Khi join vào bài thi hệ thống sẽ kiểm tra người này đã làm bài thi này lần nào chưa?
+      // Khi join vào bài thi hệ thống sẽ kiểm tra người này đã làm bài thi này lần nào chưa?
         // Nếu chưa thì tạo mới và chuyển sang trang làm bài thi
         // Nếu có rồi thì kiểm tra là bài thi này đã làm xong chưa?
         // Nếu đã làm xong thì tạo bài thi mới và chuyển sang làm bài thi
         // Nếu chưa làm xong thì chuyển sang trang làm bài tiếp tục
 
-    	$userid = $this->getUserId();
+      $userid = $this->getUserId();
 
 
         //Load model
 
-    	$examResultModel = $this->model("ExamResultsModel");
+      $examResultModel = $this->model("ExamResultsModel");
 
-    	$examModel = $this->model("ExamsModel");
+      $examModel = $this->model("ExamsModel");
 
         $userAnswerModel = $this->model("UserAnswerModel");
 
@@ -35,28 +134,28 @@ class Student extends Controller{
         
 
 
-    	$is_joined = false;
-    	$is_completed = false;
+      $is_joined = false;
+      $is_completed = false;
 
 
-    	$examresult_result = $examResultModel->getExamResultWithID($exam_id, $userid);
+      $examresult_result = $examResultModel->getExamResultWithID($exam_id, $userid);
 
 
-    	if(mysqli_num_rows($examresult_result) > 0){
-    		$result_fetch = mysqli_fetch_array($examresult_result);
+      if(mysqli_num_rows($examresult_result) > 0){
+        $result_fetch = mysqli_fetch_array($examresult_result);
 
-    		$is_joined = true;
-    		$is_completed = (bool)$result_fetch["Is_completed"];
-    		$examResultID = $result_fetch["ResultId"];
-    	}
-    	
-    	
-    	if($is_joined != true){
+        $is_joined = true;
+        $is_completed = (bool)$result_fetch["Is_completed"];
+        $examResultID = $result_fetch["ResultId"];
+      }
+      
+      
+      if($is_joined != true){
 
-    		//chưa tham gia thì cho tham gia mới từ đầu
+        //chưa tham gia thì cho tham gia mới từ đầu
 
-    		$date = date('Y-m-d H:i:s');
-    		$newExamResultID = $examResultModel->addExamResult($date, $userid, $exam_id, 0);
+        $date = date('Y-m-d H:i:s');
+        $newExamResultID = $examResultModel->addExamResult($date, $userid, $exam_id, 0);
 
             //add câu trả lời rỗng cho user
             $ArrQuestions = $this->getAllQuestionOfExam($questionModel, $answerModel, $exam_id);
@@ -70,16 +169,16 @@ class Student extends Controller{
 
             exit;
 
-    	}else if($is_joined == true && $is_completed != true){
+      }else if($is_joined == true && $is_completed != true){
 
-    		//đã tham gia nhưng chưa làm xong thì cho làm tiếp
+        //đã tham gia nhưng chưa làm xong thì cho làm tiếp
 
             $this->redirect("Student/doExam/" . $examResultID);
             exit;
 
         }else{
 
-        	//đã tham gia và đã làm xong thì cho đi xem kết quả :)))
+          //đã tham gia và đã làm xong thì cho đi xem kết quả :)))
 
         }
     }
@@ -153,9 +252,9 @@ class Student extends Controller{
             "Page"                  => "simple2_joining_exam",
             "title"                 => "Đang thi....",
             "all_question"          => $ArrQuestions,
-            "exam_name"   			=> $exam["Name"],
+            "exam_name"         => $exam["Name"],
             "time_left"             => $timeWork - $timePassed,
-            "result_id"        		=> $result_id
+            "result_id"           => $result_id
         ]);
 
     }
@@ -176,10 +275,10 @@ class Student extends Controller{
 
     public function test(){
 
-    	$this->view("simple2", [
-	      "Page"        => "simple2_joining_exam",
-	      "title"       => "Tạo đề thi"
-	    ]);
+      $this->view("simple2", [
+        "Page"        => "simple2_joining_exam",
+        "title"       => "Tạo đề thi"
+      ]);
 
     }
 

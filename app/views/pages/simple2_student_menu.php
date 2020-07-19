@@ -28,54 +28,21 @@
                 </style>
                 <div class="my-account">
                     <ul class="ul-sub-menu" style="padding-left: 15px;">
-                        <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase">Giáo
-                                Viên</span>
-                        </li>
-                        <li class="li-sub-menu list-style-none">
-                            <a href="#"> <i class="glyphicon glyphicon-briefcase icon-menu"></i><span>Tạo bài học</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none">
-                            <a href="Teacher/createQuestion"> <i
-                                    class="glyphicon glyphicon-folder-open icon-menu"></i><span>Thêm câu hỏi cho bài
-                                    học</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none">
-                            <a href="#"> <i class="glyphicon glyphicon-phone icon-menu"></i><span>Danh sách các bài
-                                    học</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/CreateClass"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo lớp</span>
-                            </a>
+                        <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase">Học
+                                sinh</span>
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/ListClasses"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách
-                                    lớp</span>
+                            <a href="Student/ListClasses"> <i
+                                class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Danh sách lớp</span>
                             </a>
                         </li>
-
-
+                        
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/createExamSelection"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo đề thi</span>
+                            <a href="Student/JoinClasses"> <i
+                                class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
                             </a>
                         </li>
-
-                        <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách đề
-                                    thi</span>
-                            </a>
-                        </li>
-
-                        <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/ListStudentsRequest"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Duyệt học sinh vào lớp</span>
-                            </a>
-                        </li>
-
 
                         <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase">Tài
                                 khoản</span>

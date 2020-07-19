@@ -15,6 +15,14 @@ class GradeModel extends DB
         return false;
     }
 
+    public function getGradeNameWithClassId($classId){
+        $qr = "CALL Grade_getGradeNameWithClassId($classId)";
+        mysqli_next_result($this->con);
+        $result = mysqli_query($this->con, $qr);
+
+        return $result;
+    }
+
     //Xoa khoi hoc
     public function deleteGrade($gradeId)
     {
@@ -53,7 +61,7 @@ class GradeModel extends DB
     }
 
     public function hiddenGrade($gradeId){
-        $qr = "CALL Grade_HiddenGrade('$gradeId')";
+        $qr = "CALL Grade_HiddenGrade($gradeId)";
         
         if(mysqli_query($this->con, $qr)){
             return true;
@@ -73,7 +81,7 @@ class GradeModel extends DB
 
     public function getGrade($gradeId)
     {
-        $qr = "CALL Grade_GetGrade('$gradeId')";
+        $qr = "CALL Grade_GetGrade($gradeId)";
         $result = mysqli_query($this->con, $qr);
 
         return $result;

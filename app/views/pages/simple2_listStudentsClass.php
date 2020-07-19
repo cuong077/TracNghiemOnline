@@ -8,8 +8,7 @@
 
     <section id=" text-center" style="margin-bottom:20px;">
         <div class="text-center">
-
-            <h2 class="pageTitle" style="">Danh sách lớp học</h2>
+            <h2 class="pageTitle" style="">Danh sách học sinh</h2>
         </div>
     </section>
 
@@ -18,50 +17,41 @@
         <table class="table table-bordered table-responsive">
             <thead>
                 <tr class="text-center">
-                    <th class="col-lg-1 text-center">STT</th>
-                    <th class="col-lg-3 text-center">Tên lớp học</th>
-                    <th class="col-lg-4 text-center">Mô tả</th>
-                    <th class="col-lg-2 text-center">Khối lớp</th>
-                    <th class="col-lg-1 text-center">Password</th>
-                    <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-1 text-center">Chỉnh sửa</th>
+                    <th class="col-lg-2 text-center">STT</th>
+                    <th class="col-lg-2 text-center">Tên</th>
+                    <th class="col-lg-2 text-center">Email</th>
+                    <th class="col-lg-4 text-center">Ngày tham gia</th>
                 </tr>
             </thead>
             <tbody>
-                <?php  
-                    @$classes = $data["classes"];
-                    // @$grades = $data["grades"];
-                    @$grades = $data["grades"];
-                    $index = 0;
-                    // $index = 0;
+                <?php 
+                    @$listStudents = $data["listStudents"];
 
-                    foreach($classes as $row) {
-                        $index += 1;
+                    if(count($listStudents) > 0){
+                        $index = 0;
+                        foreach($listStudents as $student){
+                            $index += 1;
                 ?>
-                <tr id="Class_<?php echo $row["ClassId"];?>">
-                    <td class="text-center"><?php echo $index;?></td>
-                    <td class="text-center">
-                        <?php echo $row["Name"];?>
-                    </td>
-                    <td class="text-center"><?php echo $row["Description"];?></td>
-                    <td class="text-center">
-                        <?php 
-                        foreach ($grades as $grade) {
-                            if($grade["GradeId"]==$row["GradeId"]){
-                                echo $grade["Name"];
-                            }
-                        }
-                    ?>
-                    </td>
-                    <td class="text-center"><?php echo $row["Password"]; ?></td>
-                    <td class="text-center"><?php echo $row["total"]; ?></td>
-                    <td class="text-center">
-                        <a class='btn btn-success btn-md' href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
-                            <span class="glyphicon glyphicon-edit"></span> Sửa
-                        </a>
-                    </td>
+                <tr class="text-center">
+                    <td> <?php echo $index;?> </td>
+                    <td> <?php echo $student[1];?> </td>
+                    <td> <?php echo $student[2];?> </td>
+                    <td> <?php echo $student[3];?> </td>
                 </tr>
-                <?php } ?>
+                <?php       
+                        
+                        }
+                    }
+                    else{
+
+                        ?>
+
+                <tr class="text-center">
+                    <td colspan="4"><span class="text text-info">Chưa có học sinh nào tham gia lớp học.</span> </td>
+                </tr>
+                <?php    }
+                
+                ?>
             </tbody>
         </table>
     </div>
@@ -513,21 +503,6 @@ $(document).ready(function() {
             scrollTop: 0
         });
         return false;
-    });
-
-    // $("tr")
-
-    $("tr").click(function() {
-
-        $rowId = $(this).attr("id");
-        $arr = $rowId.split("Class_");
-        $classId = $arr[1];
-        
-        $arr = $(location).attr("href").split("/");
-        $index = $arr.indexOf("Teacher");
-        $url = $arr.slice(0, $index + 1).join("/") + "/ListStudentsClass/" + $classId;
-        location.replace($url);
-        // console.log($url);
     });
 
 });

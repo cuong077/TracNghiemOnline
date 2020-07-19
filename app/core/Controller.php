@@ -1,7 +1,7 @@
 <?php
+error_reporting(E_ERROR );
 class Controller
 {
-
     public function model($model)
     {
         require_once "./app/models/" . $model . ".php";
@@ -68,7 +68,7 @@ class Controller
 
     public function is_Student()
     {
-        if (isset($_SESSION['username']) && $_SESSION['username'] != "" && $_SESSION['permission'] == 1) {
+        if (isset($_SESSION['username']) && $_SESSION['username'] != "" && $_SESSION['permission'] == 3) {
             return true;
         } else {
             return false;

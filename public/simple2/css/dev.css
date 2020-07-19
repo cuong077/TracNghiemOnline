@@ -948,6 +948,7 @@ iframe.fancybox-iframe {
 	background: linear-gradient(45deg, #318cca 0, rgb(85, 147, 29) 100%);
 	border-radius: 4px;
 	text-align: center;
+	margin: 0px;
 }
 
 .ul-class>li {

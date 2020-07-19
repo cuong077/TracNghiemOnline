@@ -8,8 +8,7 @@
 
     <section id=" text-center" style="margin-bottom:20px;">
         <div class="text-center">
-
-            <h2 class="pageTitle" style="">Danh sách lớp học</h2>
+            <h2 class="pageTitle" style="">Danh sách yêu cầu</h2>
         </div>
     </section>
 
@@ -18,50 +17,58 @@
         <table class="table table-bordered table-responsive">
             <thead>
                 <tr class="text-center">
-                    <th class="col-lg-1 text-center">STT</th>
-                    <th class="col-lg-3 text-center">Tên lớp học</th>
-                    <th class="col-lg-4 text-center">Mô tả</th>
-                    <th class="col-lg-2 text-center">Khối lớp</th>
-                    <th class="col-lg-1 text-center">Password</th>
-                    <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-1 text-center">Chỉnh sửa</th>
+                    <th class="col-lg-2 text-center">STT</th>
+                    <th class="col-lg-2 text-center">Khối</th>
+                    <th class="col-lg-2 text-center">Lớp</th>
+                    <th class="col-lg-4 text-center">Tên học sinh</th>
+                    <th class="col-lg-2 text-center">Duyệt</th>
                 </tr>
             </thead>
             <tbody>
-                <?php  
-                    @$classes = $data["classes"];
-                    // @$grades = $data["grades"];
-                    @$grades = $data["grades"];
-                    $index = 0;
-                    // $index = 0;
+                <?php 
+                    $listRequested = $data["listRequested"];
+                    if(count($listRequested) > 0){
+                        // var_dump($listRequested["listStudents"]);
+                        foreach($listRequested as $requested){
+                            // var_dump($requested);
+                            $index = 0;
+                            $gradeName  = $requested[1];
+                            $classId    = $requested[2];
+                            $className  = $requested[3];
+                            //var_dump($requested["listStudents"]);
 
-                    foreach($classes as $row) {
-                        $index += 1;
+                            foreach ($requested["listStudents"] as $student) {
+                                $index += 1;
+                                //var_dump($requested["listStudents"]);
                 ?>
-                <tr id="Class_<?php echo $row["ClassId"];?>">
-                    <td class="text-center"><?php echo $index;?></td>
-                    <td class="text-center">
-                        <?php echo $row["Name"];?>
-                    </td>
-                    <td class="text-center"><?php echo $row["Description"];?></td>
-                    <td class="text-center">
-                        <?php 
-                        foreach ($grades as $grade) {
-                            if($grade["GradeId"]==$row["GradeId"]){
-                                echo $grade["Name"];
-                            }
-                        }
-                    ?>
-                    </td>
-                    <td class="text-center"><?php echo $row["Password"]; ?></td>
-                    <td class="text-center"><?php echo $row["total"]; ?></td>
-                    <td class="text-center">
-                        <a class='btn btn-success btn-md' href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
-                            <span class="glyphicon glyphicon-edit"></span> Sửa
+                <tr class="text-center">
+                    <td> <?php echo $index;?> </td>
+                    <td> <?php echo $gradeName;?> </td>
+                    <td> <?php echo $className;?> </td>
+                    <td> <?php echo $student["StudentName"];
+                    // var_dump($student);
+                ?> </td>
+
+                    <td>
+                        <a class="btn btn-success"
+                            href="Teacher/ApproveStudent/<?php echo $classId . "/". $student["StudentId"]; ?>">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            Duyệt
                         </a>
-                    </td>
                 </tr>
-                <?php } ?>
+                <?php       }  
+                        }
+                    }
+                    else{
+
+                        ?>
+
+                <tr class="text-center">
+                    <td colspan="5"><span class="text text-info">Không có yêu cầu tham gia lớp mới.</span> </td>
+                </tr>
+                <?php    }
+                
+                ?>
             </tbody>
         </table>
     </div>
@@ -513,21 +520,6 @@ $(document).ready(function() {
             scrollTop: 0
         });
         return false;
-    });
-
-    // $("tr")
-
-    $("tr").click(function() {
-
-        $rowId = $(this).attr("id");
-        $arr = $rowId.split("Class_");
-        $classId = $arr[1];
-        
-        $arr = $(location).attr("href").split("/");
-        $index = $arr.indexOf("Teacher");
-        $url = $arr.slice(0, $index + 1).join("/") + "/ListStudentsClass/" + $classId;
-        location.replace($url);
-        // console.log($url);
     });
 
 });

@@ -67,47 +67,40 @@ function ClearCookie() {
     <div class="text-center" id="borderForm" sytle="border:2px solid black; border-radius:4px;">
         <div class="row">
             <div class="text-center">
-                <h2 class="pageTitle text-center">Tạo lớp học</h2>
+                <h2 class="pageTitle text-center">Yêu cầu vào lớp học</h2>
             </div>
+            <?php 
+                $isShowRequestForm = $data["isShowRequestForm"];
+                if($isShowRequestForm=="true"){
+            ?>
 
             <form class="form-horizontal" method="post" style="margin-top: 30px;">
                 <!--Start General Info-->
 
-                <div class="form-group">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8" style="color:red;font-weight:bold;">
-
-                    </div>
-                </div>
+                <?php $grade = $data["grade"]; ?>
                 <!-- chon khoi -->
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for=""><i class="glyphicon glyphicon-question-sign"></i>
-                        Khối lớp<sub style="color: red;">*</sub></label>
-                    <div class="col-sm-8 <?php if(isset($error["grade"])) echo "has-error";?>">
-                        <input type="hidden" name="grade_name" />
-                        <select id="gradeId" name="gradeId" class="form-control valid" aria-required="true"
-                            aria-invalid="false" required>
-                            <option value="">Chọn khối</option>
-
-                            <?php while ($row = mysqli_fetch_array($data["grades"])) { ?>
-
-                            <option value="<?php echo $row["GradeId"]; ?>"><?php echo $row["Name"]; ?></option>
-
-                            <?php } ?>
-
-                        </select>
-                        <?php if(@$error["grade"] != ""){ ?>
-                        <span class="help-block"><?php echo @$error["grade"]?></span>
+                    <label class="col-sm-2 text-center control-label" for=""><i class="glyphicon glyphicon-question-sign"></i>
+                        Khối lớp</label>
+                  
+                    <div class="col-sm-8 text-center">
+                        <input type="text"  disabled id="Title" name="ClassName" class="form-control text-center"
+                            value="<?php echo $grade;?>">
+                        <?php if(@$error["className"] != ""){ ?>
+                        <span class="help-block"><?php echo @$error["className"]?></span>
                         <?php } ?>
                     </div>
                 </div>
 
+                <?php $class = $data["class"]; ?>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for=""><i class="glyphicon glyphicon-question-sign"></i>
-                        Tên<sub style="color: red;">*</sub></label>
+                    <label class="col-sm-2 text-center control-label" for="">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        Tên lớp
+                    </label>
                     <div class="col-sm-8 <?php if(isset($error["className"])) echo "has-error";?>">
-                        <input type="text" id="Title" name="ClassName" class="form-control" value="" required
-                            placeholder="Tên lớp học.">
+                        <input type="text"  disabled id="Title" name="ClassName" class="form-control text-center"
+                            value="<?php echo $class["Name"];?>" placeholder="Tên lớp học.">
                         <?php if(@$error["className"] != ""){ ?>
                         <span class="help-block"><?php echo @$error["className"]?></span>
                         <?php } ?>
@@ -115,41 +108,43 @@ function ClearCookie() {
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for=""><i class="glyphicon glyphicon-barcode"></i> Mật
-                        khẩu<sub style="color: red;">*</sub></label>
+                    <label class="col-sm-2 text-center control-label" for=""><i class="glyphicon glyphicon-info-sign"></i> Thông
+                        tin lớp</label>
+                    <div class="col-sm-8 <?php if(isset($error["description"])) echo "has-error";?>">
+                        <textarea disabled id="Description" name="ClassDescription" class="form-control text-center" ><?php echo $class["Description"]; ?></textarea>
+                        <?php if(@$error["description"] != ""){ ?>
+                        <span class="help-block"><?php echo @$error["description"]?></span>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 text-center control-label" for="">
+                        <i class="glyphicon glyphicon-barcode"></i> Mật khẩu
+                    </label>
                     <div class="col-sm-8 <?php if(isset($error["password"])) echo "has-error";?>">
-                        <input type="password" id="PasswordJoinClass" name="PasswordJoinClass" class="form-control"
-                            value="" required placeholder="Mật khẩu vào lớp.">
+                        <input type="password"  id="PasswordJoinClass" name="PasswordJoinClass" class="form-control text-center"
+                          required  placeholder="Mật khẩu vào lớp.">
                         <?php if(@$error["password"] != ""){ ?>
                         <span class="help-block"><?php echo @$error["password"]?></span>
                         <?php } ?>
                     </div>
                 </div>
 
-                <input type="hidden" id="Contact_phone" name="Contact_phone" class="form-control" value="0123123123">
-                <input type="hidden" id="Contact_email" name="Contact_email" class="form-control" value="lophoc@789.vn">
-
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for=""><i class="glyphicon glyphicon-info-sign"></i> Thông
-                        tin lớp<sub style="color: red;">*</sub></label>
-                    <div class="col-sm-8 <?php if(isset($error["description"])) echo "has-error";?>">
-                        <textarea id="Description" name="ClassDescription" class="form-control" cols="40"
-                            rows="3"></textarea>
-                        <?php if(@$error["description"] != ""){ ?>
-                        <span class="help-block"><?php echo @$error["description"]?></span>
-                        <?php } ?>
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2" for=""></label>
+                    <label class="col-sm-2 text-center" for=""></label>
                     <div class="col-sm-8 text-center">
-                        <button class="btn btn-primary" type="submit" name="addClass">Lưu</button>
+                        <button class="btn btn-primary" type="submit" name="joinClass">Yêu cầu</button>
                         <a class="btn btn-primary" href="Home">Trở về</a>
                     </div>
                 </div>
+            </form>
+
+            <?php }
+                else{ ?>
+                <h3 class="alert alert-warning" role="alert"> Vui lòng đợi giáo viên cho phép vào lớp.</h3>
+            <?php } ?>
         </div>
-        </form>
         <!--End General Info-->
     </div>
 </div>
