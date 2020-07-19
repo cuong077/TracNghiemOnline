@@ -28,6 +28,20 @@ class QuestionModel extends DB{
         return false;
     }
 
+    public function getAllQuestionOfExam($exam_id){
+
+		$qr = "CALL Question_getAllQuestionOfExam('$exam_id')";
+        mysqli_next_result($this->con);
+        $result = mysqli_query($this->con, $qr);
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+	}
+
+
+
 	public function deleteQuestion($questionId)
 	{
 		$qr = "DELETE FROM questions WHERE id='$questionId'";
@@ -61,14 +75,9 @@ class QuestionModel extends DB{
 		return $row["id"];
 	}
 
-	public function getAllQuestionOfExam($examId){
+	
 
-		$qr = "SELECT * FROM questions WHERE exam_id=$examId";
-	    $result = mysqli_query($this->con, $qr);
 
-	    return $result;
-
-	}
 }
 
 

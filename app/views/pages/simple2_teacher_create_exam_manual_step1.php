@@ -48,6 +48,14 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="TDCaption"> <span class="CaptionInputCSS">Thời gian bắt đầu (<span class="required"
+                                        aria-required="true">*</span>)</span>
+                            </td>
+                            <td class="TDInput">
+                                <input type="datetime-local" name="datetimeStart" required>
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="TDCaption"> <span class="CaptionInputCSS">Khối (<span class="required"
                                         aria-required="true">*</span>)</span>
                             </td>
@@ -116,6 +124,10 @@ $(document).ready(function() {
                         field.subject_name + `</option>`);
                 });
 
+            }).always(function(){
+
+                $("#overlay").fadeOut(300);
+                
             });
 
         $("input[name = 'grade_name']").val($("#gradeId option:selected").text());
@@ -135,6 +147,8 @@ $(document).ready(function() {
             .text());
 
     });
+
+    
 
 });
 
