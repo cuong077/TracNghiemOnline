@@ -74,9 +74,7 @@ class Examination extends Controller{
             $ArrQuestions = $this->getAllQuestionOfExam($questionModel, $answerModel, $exam_id);
 
             foreach ($ArrQuestions as $question){
-
                 $userAnswerModel->addUserAnswer($question->id, $userid, "NULL", $newExamResultID);
-
             }
 
 
@@ -171,6 +169,9 @@ class Examination extends Controller{
         $this->redirect("Examination/viewResultExam/".$exam_result_id);
         exit;
     }
+
+
+    
 
     public function viewResultExam($exam_result_id){
 
@@ -421,7 +422,6 @@ class Examination extends Controller{
         }
 
         return $ArrQuestions;
-
     }
     
 

@@ -1,11 +1,12 @@
 <?php
+
 class Student extends Controller{
-    public function __construct(){
-        // echo $this->getUserId();
-    	if(!$this->is_Student()){
-    		$this->redirect("Home");
-    		exit;
-    	}
+  
+    public function __construct() {
+        if(!$this->is_Student()){
+            //$this->redirect("Home");
+            //exit;
+        }
     }
     
     public function ListClasses(){
@@ -16,8 +17,8 @@ class Student extends Controller{
         $classes = [];
 
         $gradeModel = $this->model("GradeModel");
-		$gradeResult = $gradeModel->getListGrades();
-		$grades = [];
+        $gradeResult = $gradeModel->getListGrades();
+        $grades = [];
         $userClassModel = $this->model("UserClassModel");
         $total = 0;
         
@@ -37,26 +38,25 @@ class Student extends Controller{
             array_push($classes, $row);
         }
 
-		while ($row = mysqli_fetch_assoc($gradeResult)) {
-			array_push($grades, $row);
-		}
+    while ($row = mysqli_fetch_assoc($gradeResult)) {
+      array_push($grades, $row);
+    }
 
         $this->view("simple2", [
             "Page"                           => "simple2_student_listclasses",
-            "title"       	                 => "Danh sách lớp học",
-			"classes"	                     => $classes,
-			"grades"	                     => $grades,
-            "menu"			                 => "simple2_student_menu",
+            "title"                          => "Danh sách lớp học",
+      "classes"                      => $classes,
+      "grades"                       => $grades,
+            "menu"                       => "simple2_student_menu",
             "totalUserJoinedClass"           => $total 
           ]);
     }
 
     public function JoinClass($classId){
         $error = [];
-
         $classModel = $this->model("ClassModel");
-		$classResult = $classModel->getClassById($classId);
-		$class = mysqli_fetch_assoc($classResult);
+        $classResult = $classModel->getClassById($classId);
+        $class = mysqli_fetch_assoc($classResult);
         $classId = $class["ClassId"];
         $teacherId = $class["UserId"];
         $password = $class["Password"];
@@ -97,11 +97,11 @@ class Student extends Controller{
 
         $this->view("simple2", [
             "Page"                           => "simple2_student_joinClass",
-            "title"       	                 => "Join class",
-            "menu"			                 => "simple2_student_menu",
-            "class"			                 => $class,
-            "error"			                 => $error,
-            "grade"			                 => $gradeName,
+            "title"                          => "Join class",
+            "menu"                       => "simple2_student_menu",
+            "class"                      => $class,
+            "error"                      => $error,
+            "grade"                      => $gradeName,
             "teacher"                        => $teacherName,
             "isShowRequestForm"              => $isShowRequestForm
         ]);

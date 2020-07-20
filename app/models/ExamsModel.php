@@ -2,12 +2,20 @@
   class ExamsModel extends DB
   {
     //Them exam vao database
-    public function addExam($description, $userId, $subjectId, $gradeId, $exam_time_id)
+    public function addExam($exam_name, $exam_description, $exam_created_date, $exam_amount_of_question, $exam_time_start, $user_id, $exam_type_id, $exam_time_id, $class_id)
     {
-      $qr = "INSERT INTO exams(description, user_id, subject_id, grade_id, exam_time_id)
-             VALUES ('$description', $userId, $subjectId, $gradeId, $exam_time_id)";
+      $qr = "CALL Exam_InsertExam('$exam_name', '$exam_description', '$exam_created_date', $exam_amount_of_question, '$exam_time_start', $user_id, $exam_type_id, $exam_time_id, $class_id)";
 
-      mysqli_query($this->con, $qr);
+
+      mysqli_next_result($this->con);
+
+      $result = mysqli_query($this->con, $qr);
+      
+      if ($result) {
+          return mysqli_fetch_array($result)["ExamId"];
+      }
+
+      return false;
     }
 
     //lay n exams trong database
@@ -21,11 +29,22 @@
     }
 
     //lay 1 exam trong database
-    public function getExam($examId)
+    public function getExam($exam_id)
     {
-      $qr = "SELECT et.time, e.id, e.description, s.name as subject_name, g.name as grade_name, u.fullname as teacher_name FROM exams e join exam_time et on e.exam_time_id = et.id join subjects s on s.id = e.subject_id join grades g on g.id = e.grade_id join users u on u.id = e.user_id WHERE e.id=$examId ";
+
+      $qr = "CALL Exam_getExam($exam_id)";
+      mysqli_next_result($this->con);
+
       $result = mysqli_query($this->con, $qr);
-      return $result;
+
+      if ($result){
+
+          return $result;
+
+      }
+
+      return false;
+
     }
 
     //xoa exam trong database voi id

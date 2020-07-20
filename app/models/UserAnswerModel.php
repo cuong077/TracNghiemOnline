@@ -2,36 +2,44 @@
   class UserAnswerModel extends DB
   {
     //Them exam vao database
-    public function addUserAnswer($question_id, $user_id, $answer_id, $exam_result_id)
+    public function addUserAnswer($result_id, $question_id, $answer_id)
     {
-      $qr = "INSERT INTO user_answers( question_id, user_id, answer_id, exam_result_id)
-             VALUES ($question_id, $user_id, $answer_id, $exam_result_id)";
+      $qr = "CALL UserAnswerQuestion_addUserAnswerQuestion($result_id, $question_id, $answer_id)";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
 
-      if (mysqli_query($this->con, $qr)) {
-        return mysqli_insert_id($this->con);
+      if ($result) {
+          return true;
       }
 
       return false;
     }
 
     //lay 1 exam trong database
-    public function getAnswerOfUser($exam_result_id, $user_id, $question_id)
+    public function getAnswerOfUser($result_id, $question_id)
     {
-      $qr = "SELECT * FROM user_answers WHERE exam_result_id=$exam_result_id and user_id = $user_id and question_id = $question_id  LIMIT 1";
-      $result = mysqli_query($this->con, $qr);
+      $qr = "CALL UserAnswerQuestion_getUserAnswerQuestion('$result_id', '$question_id')";
+        mysqli_next_result($this->con);
 
-      return $result;
+        $result = mysqli_query($this->con, $qr);
+        if ($result) {
+            return $result;
+        }
+
+        return false;
     }
 
 
-    public function updateAnswer($exam_result_id, $question_id, $answer_id){
-      $qr = "UPDATE user_answers set answer_id = $answer_id where exam_result_id = $exam_result_id and question_id = $question_id";
+    public function updateAnswer($result_id, $question_id, $answer_id){
+      $qr = "CALL UserAnswerQuestion_UpdateAnswer('$result_id', '$question_id', '$answer_id')";
+        mysqli_next_result($this->con);
+        echo $qr;
+        $result = mysqli_query($this->con, $qr);
+        if ($result) {
+            return true;
+        }
 
-      if(mysqli_query($this->con, $qr)){
-        return true;
-      }
-
-      return false;
+        return false;
     }
 
   }

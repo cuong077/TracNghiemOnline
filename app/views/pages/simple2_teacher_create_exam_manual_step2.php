@@ -6,6 +6,15 @@
         <h3 style="margin-top: 0;color:#55518a">Chương</h3>
 
 
+        <input type="hidden" name="exam_name" value="<?php echo $data["exam_name"]; ?>" />
+        <input type="hidden" name="exam_description" value="<?php echo $data["subject_name"]." - ".$data["grade_name"]." - ".$data["exam_time_name"]; ?>" />
+        <input type="hidden" name="exam_amount_of_question" value="<?php echo $data["number_of_questions"]; ?>" />
+        <input type="hidden" name="exam_time_start" value="<?php echo $data["exam_datetime_start"]; ?>" />
+        <input type="hidden" name="exam_time_id" value="<?php echo $data["exam_time_id"]; ?>" />
+
+
+
+
         <?php if(count($data["chapters_and_lessons"]) <= 0){ ?>
 
         <p style="color: red;">Không tồn tại chương và bài học nào !</p>
@@ -65,7 +74,7 @@
         <?php } ?>
         <button class="btn btn-primary cssPreview" type="button" id="loadQuestion">Tải câu hỏi</button>
 
-        <button class="btn btn-primary cssPreview" type="button" onclick="generateQuestion('/Api/GenerateQuestionV2', '#classId','#subjectId','#chapterId','#lessionId','#questionRegion', '#ofme');">Tạo đề thi</button>
+        <button class="btn btn-primary cssPreview" type="button" id="createExam">Tạo đề thi</button>
 
 
     </div>
@@ -124,6 +133,7 @@
         $("#loadQuestion").click(function(){
 
             $("#questionRegion").empty();
+            removeAllRight();
 
             var searchLessonIDs = $("input[name = 'lesson[]']:checked").map(function(){
                 return $(this).val();
@@ -149,6 +159,7 @@
                         createQuestionTemplate(data[i].question_id, data[i].content, data[i].breadcrum, data[i].list_answer[0].content, data[i].list_answer[1].content, data[i].list_answer[2].content, data[i].list_answer[3].content);
                     }
 
+                    $("#overlay").fadeOut(300);　
                 }
                 
             });
@@ -162,6 +173,38 @@
             }else{
                 $(this).parent("li").next("li").find("input[type = 'checkbox']").prop('checked', false);
             }
+        });
+
+        $("#createExam").click(function(){
+
+            var data = buildData();
+
+            if(data.list_question_id.length != data.exam_amount_of_question){
+                showAlert({ 'content': 'Phải chọn đúng số lượng câu hỏi. Nếu chưa có câu hỏi giáo viên vui lòng thêm câu hỏi vào các bài học sau đó quay lại tạo đề !'});
+                return;
+            }
+
+            $.ajax({
+
+                url: "<?php echo Config::$base_url; ?>Teacher/createExam",
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (data) {
+                    $("#overlay").fadeOut(300);
+                    
+                    if(data.status == "success"){
+                        showAlert({ 'content': 'Đã tạo thành công !'});
+                    }else{
+                        showAlert({ 'content': 'Tạo thật bại !'});
+                    }
+                    
+                }
+                
+            });
+
+
         });
 
         function createQuestionTemplate(question_id, question_content, breadcrumb, answer_1, answer_2, answer_3, answer_4){
@@ -196,6 +239,24 @@
                     </li>
 
             `);
+        }
+
+
+        function buildData(){
+
+            var data = {};
+
+            data.exam_name = $("input[name = 'exam_name']").val();
+            data.exam_description = $("input[name = 'exam_description']").val();
+            data.exam_amount_of_question = $("input[name = 'exam_amount_of_question']").val();
+            data.exam_time_start = $("input[name = 'exam_time_start']").val();
+            data.exam_time_id = $("input[name = 'exam_time_id']").val();
+
+            data.list_question_id = $("input[name = 'questions[]']").map(function(){
+                return $(this).val();
+            }).toArray();
+
+            return data;
         }
 
 
@@ -424,14 +485,14 @@
             //$('#classId').prop("disabled", true);
             //$('#subjectId').prop("disabled", true);
             //$('#ofme').prop("ofme", true);
-            ennableSave();
+            //ennableSave();
         }
         function removeQuestion(id) {
             $('#li_' + id).removeClass('q-selected');
             $('#li_selected_' + id).remove();
             totalQuestion--;
             $('#totalSelected').html(totalQuestion);
-            ennableSave();
+            //ennableSave();
         }
         function getChapter(url, class_id, subject_id, jId) {
             if (empty(subject_id) || subject_id <= 0 || empty(class_id) || class_id <= 0) {
@@ -513,7 +574,7 @@
                             $('#questionRegionSelected').append(li);
                             $('#totalSelected').html(totalQuestion);
                             $('#li_' + id).addClass('q-selected');
-                            ennableSave();
+                            //ennableSave();
                             index++;
                         }
                     }
@@ -526,7 +587,7 @@
             $('#totalSelected').html(totalQuestion);
             $('#questionRegionSelected').html('');
             $('#questionRegion li').removeClass('q-selected');
-            ennableSave();
+            //ennableSave();
         }
 </script>
 

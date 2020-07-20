@@ -147,12 +147,17 @@
                           $("#subjectId").append(`<option value="`+field.subject_id+`">`+field.subject_name+`</option>`);
                         });
 
+                    }).always(function(){
+
+                        $("#overlay").fadeOut(300);
+                        
                     });
 
                     $("#chapterId").empty();
                     $("#chapterId").append(`<option value="">Chọn chương</option>`);
                     $("#lessonId").empty();
                     $("#lessonId").append(`<option value="">Chọn bài</option>`);
+
                 });
 
 
@@ -171,6 +176,11 @@
                           $("#chapterId").append(`<option value="`+field.chapter_id+`">`+field.chapter_name+`</option>`);
                         });
 
+
+                    }).always(function(){
+
+                        $("#overlay").fadeOut(300);
+                        
                     });
 
                     $("#lessonId").empty();
@@ -191,6 +201,12 @@
                           //$("div").append(field + " ");
                           $("#lessonId").append(`<option value="`+field.lesson_id+`">`+field.lesson_name+`</option>`);
                         });
+
+                        
+
+                    }).always(function(){
+
+                        $("#overlay").fadeOut(300);
 
                     });
                 });
