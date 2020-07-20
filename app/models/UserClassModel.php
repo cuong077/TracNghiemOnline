@@ -3,7 +3,8 @@ class UserClassModel extends DB{
 
     public function checkUserJoinClass($userId, $classId){
 
-        $qr = "UserClass_checkUserJoinClass($userId, $classId)";
+        $qr = "CALL UserClass_checkUserJoinClass($userId, $classId)";
+        // echo $qr;
         mysqli_next_result($this->con);
 
         if(mysqli_num_rows(mysqli_query($this->con, $qr)) > 0 ){

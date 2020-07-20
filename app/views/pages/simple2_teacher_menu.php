@@ -53,7 +53,8 @@
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/ListClasses"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách
+                            <a href="Teacher/ListClasses"> <i
+                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách
                                     lớp</span>
                             </a>
                         </li>
@@ -72,7 +73,9 @@
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/ListStudentsRequest"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Duyệt học sinh vào lớp</span>
+                            <a href="Teacher/ListStudentsRequest"> <i
+                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Duyệt học sinh vào
+                                    lớp</span>
                             </a>
                         </li>
 
@@ -81,17 +84,14 @@
                                 khoản</span>
                         </li>
                         <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
-                            <a href="#"> <i class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thông tin tài
+                            <a href="Profile/EditProfile"> <i
+                                    class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thông tin tài
                                     khoản</span>
                             </a>
                         </li>
-                        <li class="li-sub-menu list-style-none" id="cap-nhat-tai-khoan">
-                            <a href="#"> <i class="glyphicon glyphicon-edit icon-menu"></i><span>Cập nhật</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none" id="doi-mat-khau">
-                            <a href="#"> <i class="glyphicon glyphicon glyphicon-lock icon-menu"></i><span>Đổi mật
-                                    khẩu</span>
+                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
+                            <a href="Profile/ChangePassword"> <i
+                                    class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thay đổi mật khẩu</span>
                             </a>
                         </li>
                     </ul>

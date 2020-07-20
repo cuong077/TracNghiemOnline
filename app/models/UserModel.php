@@ -17,11 +17,8 @@
 
 		//Kiểm tra user và password có đúng ko
 		public function checkUserAndPasswordIsCorrect($email, $password){
-
 			$password = md5($password);
-
 			$qr = "CALL User_CheckUsernameAndPasswordIsCorrect('$email', '$password')";
-
 			
 			$result = mysqli_query($this->con, $qr);
 			
@@ -98,6 +95,17 @@
 			}
 		}
 
+		public function updateProfile($username, $fullname, $phoneNumber, $birthday, $userId){
+			$qr = "CALL User_updateProfile('$username', '$fullname', '$phoneNumber', '$birthday', $userId)";
+			mysqli_next_result($this->con);
+
+			if(mysqli_query($this->con, $qr)){
+				return true;
+			}
+
+			return false;
+		}
+
 		public function getListUsersWithoutCurrentUser($currentUserId){
 			$qr = "CALL User_GetUserWithoutCurrentUser($currentUserId)";
 			//echo $qr;
@@ -137,6 +145,42 @@
 
 			return false;
 		}
+
+		public function updatePassword($userId, $password){
+			$password = trim($password);
+			$password = md5($password);
+			$qr = "CALL User_updatePassword($userId, '$password')";
+			mysqli_next_result($this->con);
+			
+			if(mysqli_query($this->con, $qr)){
+				return true;
+			}
+
+			return false;
+		}
+
+		public function checkIsCorrectPassword($userId, $password){
+			$password = trim($password);
+			$password = md5($password);
+			$qr = "CALL User_checkIsCorrectPassword($userId, '$password')";
+			// echo $qr;
+			mysqli_next_result($this->con);
+
+			$result = mysqli_query($this->con, $qr);
+			// $isCorrect = mysqli_fetch_assoc($result);
+
+			if(mysqli_num_rows($result) > 0){
+				return true;
+			}
+
+			return false;
+		}
+
+		// public function isCorrectGrade($userId, $classId){
+		// 	$result = $this->getUser($userId);
+		// 	$user = mysqli_fetch_assoc($result);
+		// 	$
+		// }
 	}
 
 ?>
