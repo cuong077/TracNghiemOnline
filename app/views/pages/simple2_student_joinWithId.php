@@ -67,76 +67,59 @@ function ClearCookie() {
     <div class="text-center" id="borderForm" sytle="border:2px solid black; border-radius:4px;">
         <div class="row">
             <div class="text-center">
-                <h2 class="pageTitle text-center">Chỉnh sửa lớp học</h2>
+                <h2 class="pageTitle text-center">Yêu cầu vào lớp học</h2>
             </div>
+            <?php 
+
+                // var_dump($data);
+                $isShowRequestForm = $data["isShowRequestForm"];
+                if($isShowRequestForm=="true"){
+            ?>
 
             <form class="form-horizontal" method="post" style="margin-top: 30px;">
                 <!--Start General Info-->
 
-                <?php $grade = $data["grade"]; ?>
                 <!-- chon khoi -->
-                <div class="form-group text-center">
-                    <label class="col-sm-2 control-label" for=""><i class="glyphicon glyphicon-question-sign"></i>
-                        Khối lớp<sub style="color: red;">*</sub></label>
-                    <div class="col-sm-8">
-                        <input type="hidden" name="grade_name" />
-                        <select id="gradeId" name="gradeId" class="form-control valid" aria-required="true"
-                            aria-invalid="false" disabled>
-                            <option value="<?php echo $grade["GradeId"];?>" selected><?php echo $grade["Name"];?>
-                            </option>
-                        </select>
-                    </div>
-                </div>
-
-                <?php $class = $data["class"]; ?>
-                <div class="form-group text-center">
-                    <label class="col-sm-2 control-label" for="">
-                        <i class="glyphicon glyphicon-question-sign"></i>
-                        Tên<sub style="color: red;">*</sub>
-                    </label>
-                    <div class="col-sm-8 <?php if(isset($error["className"])) echo "has-error";?>">
-                        <input type="text" id="Title" name="ClassName" class="form-control"
-                            value="<?php echo $class["Name"];?>" required placeholder="Tên lớp học.">
-                        <?php if(@$error["className"] != ""){ ?>
-                        <span class="help-block"><?php echo @$error["className"]?></span>
+                <div class="form-group">
+                    <label class="col-sm-2 text-center control-label" for=""><i class="glyphicon glyphicon-question-sign"></i>
+                        ID lớp học</label>
+                  
+                    <div class="col-sm-8 text-center  <?php if(@$error["classId"] != "") echo "has-error"; ?>">
+                        <input type="text" id="Title" name="classId" class="form-control text-center"
+                            value="" required placeholder="ID lớp học.">
+                        <?php if(@$error["classId"] != ""){ ?>
+                        <span class="help-block"><?php echo @$error["classId"]?></span>
                         <?php } ?>
                     </div>
                 </div>
 
-                <div class="form-group text-center">
-                    <label class="col-sm-2 control-label" for="">
-                        <i class="glyphicon glyphicon-barcode"></i> Mật khẩu<sub style="color: red;">*</sub>
+                <div class="form-group">
+                    <label class="col-sm-2 text-center control-label" for="">
+                        <i class="glyphicon glyphicon-barcode"></i> Mật khẩu
                     </label>
                     <div class="col-sm-8 <?php if(isset($error["password"])) echo "has-error";?>">
-                        <input type="text" id="PasswordJoinClass" name="PasswordJoinClass" class="form-control"
-                            value="<?php echo $class["Password"]; ?>" required placeholder="Mật khẩu vào lớp.">
+                        <input type="password"  id="PasswordJoinClass" name="PasswordJoinClass" class="form-control text-center"
+                          required  placeholder="Mật khẩu vào lớp.">
                         <?php if(@$error["password"] != ""){ ?>
                         <span class="help-block"><?php echo @$error["password"]?></span>
                         <?php } ?>
                     </div>
                 </div>
 
-                <div class="form-group text-center">
-                    <label class="col-sm-2 control-label" for=""><i class="glyphicon glyphicon-info-sign"></i> Thông
-                        tin lớp<sub style="color: red;">*</sub></label>
-                    <div class="col-sm-8 <?php if(isset($error["description"])) echo "has-error";?>">
-                        <textarea id="Description" name="ClassDescription" class="form-control" cols="40"
-                            rows="3"><?php echo $class["Description"]; ?></textarea>
-                        <?php if(@$error["description"] != ""){ ?>
-                        <span class="help-block"><?php echo @$error["description"]?></span>
-                        <?php } ?>
-                    </div>
-                </div>
-
-                <div class="form-group text-center">
-                    <label class="col-sm-2" for=""></label>
+                <div class="form-group">
+                    <label class="col-sm-2 text-center" for=""></label>
                     <div class="col-sm-8 text-center">
-                        <button class="btn btn-primary" type="submit" name="updateClass">Lưu</button>
-                        <a class="btn btn-primary" href="Teacher">Trở về</a>
+                        <button class="btn btn-primary" type="submit" name="joinClass">Yêu cầu</button>
+                        <a class="btn btn-primary" href="Student">Trở về</a>
                     </div>
                 </div>
+            </form>
+
+            <?php }
+                else{ ?>
+                <h3 class="alert alert-warning" role="alert"> Vui lòng đợi giáo viên cho phép vào lớp.</h3>
+            <?php } ?>
         </div>
-        </form>
         <!--End General Info-->
     </div>
 </div>
