@@ -9,8 +9,8 @@ class Login extends Controller{
       exit;
     }
 
-    $this->view("simple", [
-      "Page"        => "simple_login",
+    $this->view("simple2", [
+      "Page"        => "simple2_login",
       "title"       => "Đăng nhập - Thi trắc nghiệm trức tuyến"
     ]);
 
@@ -31,6 +31,7 @@ class Login extends Controller{
     }
 
     $loginmodel = $this->model("UserModel");
+   
 
   	$error = "";
 
@@ -51,38 +52,44 @@ class Login extends Controller{
         }else{
 
           if($error == ""){
+            //check block
+            //
             $result = $loginmodel->checkUserAndPasswordIsCorrect($email, $password);
 
             if(mysqli_num_rows($result) == 0){
               $error = "Email hoặc mật khẩu sai.";
             }
             else{
-              $row = mysqli_fetch_array($result);
-              $this->addSessionValue("username", $row["username"]);
-              $this->addSessionValue("permission", $row["role_id"]);
-              $this->addSessionValue("userid", $row["id"]);
-              $this->redirect("Home");
-              exit;
+
+              $blockResult = $loginmodel->isBlock($email);
+              $blockRow = mysqli_fetch_assoc($blockResult);
+              $isBlock = !(bool)$blockRow["Active"];
+              
+              if($isBlock == false){
+
+                $row = mysqli_fetch_assoc($result);
+                $this->addSessionValue("username", $row["Username"]);
+                $this->addSessionValue("permission", $row["RoleId"]);
+                $this->addSessionValue("userid", $row["UserId"]);
+                $this->addSessionValue("email", $row["Email"]);
+                
+                $this->redirect("Home");
+                exit;
+              }
+              else{
+                $error = "User đang bị khóa.";
+              }
             }
           }
-
         }
-
       }
   	}
 
-  	
-
-  	
-
-  	
-
-    $this->view("simple", [
-      "Page"        => "simple_login",
+    $this->view("simple2", [
+      "Page"        => "simple2_login",
       "title"       => "Đăng nhập - Thi trắc nghiệm trức tuyến",
       "error"      => $error
     ]);
-
   }
 }
 ?>

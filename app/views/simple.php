@@ -8,12 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <base href="<?php echo Config::$base_url; ?>">
-    <title>Trang Chủ</title>
+    <title><?php echo $data['title']; ?></title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
+    <script src="public/simple/js/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="public/simple/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="public/simple/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="public/simple/css/elegant-icons.css" type="text/css">
@@ -28,6 +29,7 @@
 </head>
 
 <body>
+
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -46,25 +48,27 @@
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
-                                <li class="active"><a href="#">Trang chủ</a></li>
-                                <li><a href="#">Tra cứu kết quả</a></li>
-                                <li><a href="#">Liên Hệ</a></li>
+
+                                <li class=""><a href="Home">Trang chủ</a></li>
+
                                 <?php if(!isset($_SESSION['username'])){ ?>
                                 <li><a href="Login">Đăng nhập</a></li>
                                 <li><a href="Register">Đăng ký</a></li>
+
                                 <?php }else{ ?>
+
+                                <?php if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 1)) {?>
+                                <li><a href="Manager">Quản lý</a></li>
+                                <?php  } 
+                                    elseif((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 2)) {?>
+                                <li><a href="Teacher">Xem danh sách bài thi</a></li>
+
+                                <?php  } ?>
+                                <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
+                                <li><a href="Examination/findExam">Tham gia bài thi bằng ID</a></li>
                                 <li><a href="Logout">Đăng xuất</a></li>
                                 <?php } ?>
-                            <!--
-                                <li><a href="login.html">Đăng Nhập</a>
-                                    <ul class="dropdown">
-                                        <li>
-                                        <a href="#">Xem hồ sơ</a> </li>
-                                        <li><a href="#">Đăng xuất</a></li>
-                                    </ul>
-                                </li>
 
-                            -->
                             </ul>
                         </nav>
                     </div>
@@ -77,11 +81,7 @@
 
 
 
-<?php require_once "./app/views/pages/".$data["Page"].".php" ?>
-
-
-
-  
+    <?php require_once "./app/views/pages/".$data["Page"].".php" ?>
 
     <!-- Footer Section Begin -->
     <footer class="footer">
@@ -144,9 +144,16 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                        <div class="footer__copyright__text">
+                            <p>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;<script>
+                                document.write(new Date().getFullYear());
+                                </script> All rights reserved | This template is made with <i class="fa fa-heart"
+                                    aria-hidden="true"></i> by <a href="https://colorlib.com"
+                                    target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
                         </div>
                         <div class="footer__copyright__links">
                             <a href="#">Terms</a>
@@ -161,7 +168,7 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="public/simple/js/jquery-3.3.1.min.js"></script>
+
     <script src="public/simple/js/bootstrap.min.js"></script>
     <script src="public/simple/js/jquery.nice-select.min.js"></script>
     <script src="public/simple/js/jquery-ui.min.js"></script>

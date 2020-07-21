@@ -27,7 +27,7 @@
                     <div class="categories__item__list">
                         <a href="#">
                             <div class="categories__item">
-                                <img src="public/simple/img/categories/cat-2.png" alt="">
+                                <img src="./public/simple/img/categories/cat-2.png" alt="">
                                 <h5>Khối 10</h5>
                                 <span>Hiển thị số bài thi ở đây nha</span>
                             </div>

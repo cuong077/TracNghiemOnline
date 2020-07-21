@@ -1,18 +1,74 @@
 <?php
   class ExamResultsModel extends DB
   {
-    //Them exam vao database
-    public function addExamResult($user_id, $exam_id, $time_join, $is_completed=2)
-    {
-      $qr = "INSERT INTO exam_results( user_id, exam_id, time_join, is_completed)
-             VALUES ($user_id, $exam_id, '$time_join', $is_completed)";
 
-             echo $qr;
-      if (mysqli_query($this->con, $qr)) {
-        return true;
+    public function getExamResultWithID($exam_id, $user_id){
+
+      $qr = "CALL Result_GetResultByExamIDAndUserID($exam_id, $user_id)";
+      mysqli_next_result($this->con);
+
+      $result = mysqli_query($this->con, $qr);
+
+      if ($result){
+
+          return $result;
+
       }
 
       return false;
+
+    }
+
+    public function getExamResult($result_id){
+
+      $qr = "CALL Result_getResult($result_id)";
+      mysqli_next_result($this->con);
+
+      $result = mysqli_query($this->con, $qr);
+
+      if ($result){
+
+          return $result;
+
+      }
+
+      return false;
+    }
+
+    public function addExamResult($time_join, $user_id, $exam_id, $is_completed)
+    {
+      $qr = "CALL Result_InsertResult('$time_join', $user_id, $exam_id, $is_completed)";
+
+
+      mysqli_next_result($this->con);
+
+      $result = mysqli_query($this->con, $qr);
+      
+      if ($result) {
+          return mysqli_fetch_array($result)["ResultId"];
+      }
+
+      return false;
+    }
+
+
+
+    //
+    public function updateStatusExamResult($result_id, $status){
+
+      $qr = "CALL Result_updateStatusResult($result_id, $status)";
+      mysqli_next_result($this->con);
+
+      $result = mysqli_query($this->con, $qr);
+
+      if ($result){
+
+          return $result;
+
+      }
+
+      return false;
+
     }
 
     //lay n exams trong database
@@ -28,7 +84,6 @@
         return null;
       }
     }
-
 
 
     public function getTimePassed($exam_result_id, $time_current){
@@ -70,13 +125,24 @@
       }
     }
 
-    //lay 1 exam trong database
-    public function getExam($examId)
+
+
+    public function getAllExamResultOfUser($user_id)
     {
-      $qr = "SELECT * FROM exams WHERE id=$examId LIMIT 1";
+      $qr = "SELECT er.id, er.is_completed, er.time_join, e.description, g.name as grade_name, s.name as subject_name FROM exam_results er join exams e on er.exam_id = e.id join subjects s on e.subject_id = s.id join grades g on g.id = e.grade_id  WHERE er.user_id=$user_id order by er.id desc";
+      $result = mysqli_query($this->con, $qr);
+      return $result;
+    }
+
+    public function checkUserDoingExam($user_id){
+      $qr = "SELECT * FROM exam_results WHERE user_id=$user_id and is_completed = 2 LIMIT 1";
+     
       $result = mysqli_query($this->con, $qr);
 
-      return $result;
+
+      if(mysqli_num_rows($result) > 0)
+        return true;
+      return false;
     }
 
     //xoa exam trong database voi id

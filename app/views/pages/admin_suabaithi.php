@@ -1,110 +1,238 @@
-
- <!-- Content Wrapper. Contains page content -->
- <div class="content-wrapper">
+<?php $exam = $data["exam"]; echo($exam[3])?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Danh sách User
-       
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Forms</a></li>
-        <li class="active">Danh sách user đã chọn</li>
-      </ol>
+
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="row">
-        <!-- left column -->
-        <div class="col-lg-12">
-            <!-- form start -->
-  <!-- Horizontal Form -->
-  <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Danh sách bài thi đã chọn</h3>
+        <div class="row">
+            <!-- left column -->
+            <div class="col-lg-12">
+                <!-- form start -->
+                <!-- Horizontal Form -->
+                <form class="form-horizontal" method="post">
+                    <div class="box box-info">
+                        <div class="box-header with-border text-center">
+                            <h3 class="box-title"><b style="color:#3c8dbc;">Chính sửa bài thi đã chọn</b></h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <table class="table table-striped text-center">
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaBaiThi" class="control-label">Mã bài thi</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MaBaiThi" placeholder="Mã bài thi"
+                                        value="<?php echo $exam[0];?>" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaGiaoVien" class="control-label">Mã giáo viên</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MaGiaoVien" placeholder="Mã giáo viên"
+                                        value="<?php echo $exam[2];?>" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaThoiGian" class="control-label">Mã thời gian</label>
+                                </th>
+                                <td>
+                                    <!-- <input type="text" class="form-control" id="MaThoiGian" placeholder="Mã thời gian"
+                                        value="<?php echo $exam[4];?>" readonly> -->
+
+                                    <select class="browser-default custom-select form-control" name="examTimeSelect">
+                                        <?php $examTimes=$data["examTimes"]; 
+                                                // print_r($roles);
+
+                                                for ($index=0; $index < count($examTimes); $index++) { 
+                                                    $row = $examTimes[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$exam[4] == $row[0]) echo "selected"; ?>><?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <th class="text-center col-sm-2">
+                                    <label for="MaKhoi" class="control-label">Mã khối</label>
+                                </th>
+                                <td>
+
+                                    <select class="browser-default custom-select form-control" name="gradeSelected">
+                                        <?php $grades=$data["grades"]; 
+
+                                                for ($index=0; $index < count($grades); $index++) { 
+                                                    $row = $grades[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$row["id"] == $exam[3]) echo "selected";?>>
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MaMon" class="control-label">Mã môn</label>
+                                </th>
+                                <td>
+                                    <select class="browser-default custom-select form-control" name="gradeSelected">
+                                        <?php $subjects=$data["subjects"]; 
+
+                                                for ($index=0; $index < count($subjects); $index++) { 
+                                                    $row = $subjects[$index];
+                                        ?>
+
+                                        <option value="<?php echo $row[0];?>"
+                                            <?php if((int)$row["id"] == $exam[5]) echo "selected";?>>
+                                            <?php echo $row[1];?>
+                                        </option>
+
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-center col-sm-2">
+                                    <label for="MoTaBaiThi" class="control-label">Mô tả bài thi</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="MoTaBaiThi" placeholder="Mô tả bài thi"
+                                        value="<?php echo $exam[1];?>" name="exam_description">
+                                </td>
+                            </tr>
+
+
+                        </table>
+
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <a href="Manager/danhsachbaithi" class="btn btn-default">Cancel</a>
+                            <button type="submit" class="btn btn-info pull-right">Update</button>
+                        </div>
+                        <!-- /.box-footer -->
+                </form>
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form class="form-horizontal">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="MaThoiGian" class="col-sm-2 control-label">Mã thời gian</label>
+            <!-- Horizontal Form -->
 
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MaThoiGian" placeholder="Mã thời gian">
-                  </div>
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title"><b style="color:#3c8dbc;"> Câu hỏi của bài thi. <b> </h3>
                 </div>
-                <div class="form-group">
-                  <label for="MaGiaoVien" class="col-sm-2 control-label">Mã giáo viên</label>
+                <!-- /.box-header -->
+                <!-- form start -->
 
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MaGiaoVien" placeholder="Mã giáo viên">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="MaKhoi" class="col-sm-2 control-label">Mã khối</label>
+                <div class="list-questions" id="list-questions">
 
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MaKhoi" placeholder="Mã khối">
-                  </div>
+                    
+                    <div class="question pad">
+                        <input type="text" name="nameQuestion_` + counter + `" class="form-control" value="` +
+        counter + `. ">
+                        <div class="col-xs-12 col-md-6 row pad">
+                            <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="1">
+                            <input type="text" class="w-75 form-control col-xs-11" name="_radio`+counter+`_1">
+                        </div>
+                        <div class="col-xs-12 col-md-6 row pad">
+                            <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="2">
+                            <input type="text" class="w-75 form-control col-xs-11" name="answers_`+counter+`_2">
+                        </div>
+                        <div class="col-xs-12 col-md-6 row pad">
+                            <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="3">
+                            <input type="text" class="w-75 form-control col-xs-11" name="answers_`+counter+`_3">
+                        </div>
+                        <div class="col-xs-12 col-md-6 row pad">
+                            <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="4">
+                            <input type="text" class="w-75 form-control col-xs-11" name="answers_`+counter+`_4">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label for="MaBaiThi" class="col-sm-2 control-label">Mã bài thi</label>
 
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MaBaiThi" placeholder="Mã bài thi">
-                  </div>
+                <!-- /.box-body -->
+                <div class="box-footer text-center">
+                    <a onclick="addQuestion();" class="btn btn-info" name="addQuestion">Thêm câu hỏi</a>
                 </div>
-                <div class="form-group">
-                  <label for="MaMon" class="col-sm-2 control-label">Mã môn</label>
-
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MaMon" placeholder="Mã môn">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="MoTaBaiThi" class="col-sm-2 control-label">Mô tả bài thi</label>
-
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="MoTaBaiThi" placeholder="Mô tả bài thi">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="ThoiGianBatDau" class="col-sm-2 control-label">Thời gian bắt đầu</label>
-
-                  <div class="col-sm-10">
-                    <input type="time" class="form-control" id="ThoiGianBatDau" placeholder="Thời gian bắt đầu">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="ThoiGianKetThuc" class="col-sm-2 control-label">Thời gian kết thúc</label>
-
-                  <div class="col-sm-10">
-                    <input type="time" class="form-control" id="ThoiGianKetThuc" placeholder="Thời gian kết thúc">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                  </div>
-                </div>
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">update</button>
-              </div>
-              <!-- /.box-footer -->
-            </form>
-          </div>
-           <!-- Horizontal Form -->
-         
-          </div>
+                <!-- /.box-footer -->
+                <input type="hidden" name="counter_questions" id="counter" value="">
+                </form>
+            </div>
 
         </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<script>
+let counter = 0;
+
+function addQuestion() {
+    counter += 1;
+
+    let blockHTML = `<div class="question pad">
+                                <input type="text" name="nameQuestion_` + counter + `" class="form-control" value="` +
+        counter + `. ">
+                                <div class="col-xs-12 col-md-6 row pad">
+                                    <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="1">
+                                    <input type="text" class="w-75 form-control col-xs-11" name="_radio` + counter + `_1">
+                                </div>
+                                <div class="col-xs-12 col-md-6 row pad">
+                                    <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="2">
+                                    <input type="text" class="w-75 form-control col-xs-11" name="answers_` + counter + `_2">
+                                </div>
+                                <div class="col-xs-12 col-md-6 row pad">
+                                    <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="3">
+                                    <input type="text" class="w-75 form-control col-xs-11" name="answers_` + counter + `_3">
+                                </div>
+                                <div class="col-xs-12 col-md-6 row pad">
+                                    <input type="radio" name="answers_radio_` + counter + `" class="col-xs-1" value="4">
+                                    <input type="text" class="w-75 form-control col-xs-11" name="answers_` + counter + `_4">
+                                </div>
+                            </div>`;
+
+    let block = document.createElement("div");
+    block.innerHTML = blockHTML;
+
+    document.getElementById("list-questions").append(block);
+    document.getElementById("counter").value = counter;
+}
+</script>
+
+<style>
+.w-75 {
+    width: 80%;
+    /* margin: 15px; */
+}
+
+.rounded {
+    border-radius: 5px;
+}
+
+.pad {
+    padding: 15px;
+}
+</style>
