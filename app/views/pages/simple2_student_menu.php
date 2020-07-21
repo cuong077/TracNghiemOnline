@@ -34,11 +34,16 @@
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Student/ListClasses"> <i
+<<<<<<< HEAD
                                  class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Danh sách lớp</span>
+=======
+                                class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Danh sách lớp</span>
+>>>>>>> origin/master
                             </a>
                         </li>
                         
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
+<<<<<<< HEAD
                             <a href="Student/JoinClassWithId"> <i
                                 class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
                             </a>
@@ -46,21 +51,34 @@
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Student/JoinClassWithId"> <i
                                     class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tham gia lớp với ID</span>
+=======
+                            <a href="Student/JoinClasses"> <i
+                                class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
+>>>>>>> origin/master
                             </a>
                         </li>
 
                         <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase">Tài
                                 khoản</span>
                         </li>
+<<<<<<< HEAD
                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
                             <a href="Profile/EditProfile"> <i
                                     class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thông tin tài
+=======
+                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
+                            <a href="#"> <i class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thông tin tài
+>>>>>>> origin/master
                                     khoản</span>
                             </a>
                         </li>
-                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
-                            <a href="Profile/ChangePassword"> <i
-                                    class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thay đổi mật khẩu</span>
+                        <li class="li-sub-menu list-style-none" id="cap-nhat-tai-khoan">
+                            <a href="#"> <i class="glyphicon glyphicon-edit icon-menu"></i><span>Cập nhật</span>
+                            </a>
+                        </li>
+                        <li class="li-sub-menu list-style-none" id="doi-mat-khau">
+                            <a href="#"> <i class="glyphicon glyphicon glyphicon-lock icon-menu"></i><span>Đổi mật
+                                    khẩu</span>
                             </a>
                         </li>
                     </ul>
