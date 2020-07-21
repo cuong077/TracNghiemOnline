@@ -218,7 +218,7 @@ class Student extends Controller{
             ]);
     }
 
-    public function JoinClasses($classId){
+    public function JoinClass($classId){
         $error = [];
         $classModel = $this->model("ClassModel");
         $classResult = $classModel->getClassById($classId);
