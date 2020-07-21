@@ -132,7 +132,7 @@ function ClearCookie() {
                     <label class="col-sm-2" for=""></label>
                     <div class="col-sm-8 text-center">
                         <button class="btn btn-primary" type="submit" name="updateClass">Lưu</button>
-                        <a class="btn btn-primary" href="Teacher">Trở về</a>
+                        <a class="btn btn-primary" href="Home">Trở về</a>
                     </div>
                 </div>
         </div>

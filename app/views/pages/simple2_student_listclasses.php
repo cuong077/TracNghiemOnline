@@ -56,7 +56,7 @@
                     ?>
                     </td>
                     <td class="text-center"><input type="checkbox" name="joinedClass" id="<?php echo $row["ClassId"];?>" <?php if($row["joined"]=="true"){ echo "checked"; } ?> disabled > </td>
-                    <td class="text-center"><?php echo $row["total"]; ?></td>
+                    <td class="text-center"><?php echo $data["totalUserJoinedClass"]; ?></td>
                 </tr>
                 <?php } ?>
             </tbody>
