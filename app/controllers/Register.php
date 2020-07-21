@@ -5,7 +5,11 @@ class Register extends Controller{
     public function Register(){
 		// $loginmodel = $this->model("UserModel");
 		if(isset($_POST["register"])){
+<<<<<<< HEAD
+			$userModel  = $this->model("UserModel");
+=======
 			$loginmodel = $this->model("UserModel");
+>>>>>>> origin/master
 
 			$error = [];
 			$success = "";
@@ -24,6 +28,14 @@ class Register extends Controller{
 			}else{
 				if (!preg_match('/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/', $email, $matches)){
 					$error["email"] = "Không phải là email.";
+<<<<<<< HEAD
+
+				}else{	
+					if($userModel->checkExistedUser($email)){	
+						$error["email"] = "Email đã tồn tại.";	
+					}
+=======
+>>>>>>> origin/master
 				}
 			}
 
