@@ -14,7 +14,7 @@
 
 
     <div class="row">
-        <table class="table table-bordered table-responsive" >
+        <table class="table table-bordered table-responsive">
             <thead>
                 <tr class="text-center">
                     <th class="col-lg-2 text-center">STT</th>

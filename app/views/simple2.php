@@ -260,11 +260,8 @@
                             <?php  }
                                 elseif((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 3)) {?>
                             <!-- <li><a href="Student/ListClass">Danh sách lớp học</li> -->
-                            <li><a href="Student/ListClasses">Danh sách lớp học</a></li>
-                            <li><a href="#">Xem lớp học đã tham gia</a></li>
-                            <li><a href="Examination/viewListResultExam">Tra cứu kết quả</a></li>
-                            <li><a href="#">Xem lịch sử thi</a></li>
-                            <li><a href="Examination/findExam">Tham gia bài thi bằng ID</a></li>
+                            <li><a href="Student/ListClasses">Học Sinh</a></li>
+                            
                             <?php }?>
                             
                             <li><a href="Logout">Đăng xuất</a></li>

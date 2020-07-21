@@ -506,7 +506,6 @@ class Teacher extends Controller{
 			echo '{"status" : "success", "message" : "Thành công"}';
 		else
 			echo '{"status" : "fail", "message" : "Thất bại"}';
-
   	}
 
   	public function test(){
@@ -597,15 +596,14 @@ class Teacher extends Controller{
 			array_push($grades, $row);
 		}
 
-		// print_r($grades);
+		//print_r($classes);
 
 		$this->view("simple2", [
 			"Page"        	=> "simple2_listClasses",
 			"title"       	=> "Danh sách lớp học",
 			"classes"		=> $classes,
 			"grades"		=> $grades,
-			"menu"			=> "simple2_teacher_menu",
-			"totalUserJoinedClass"           => $total 
+			"menu"			=> "simple2_teacher_menu"
 		  ]);
 	}
 
@@ -667,8 +665,6 @@ class Teacher extends Controller{
 			"grade"			=> $grade,
 			"class"			=> $class
 		]);
-
-
 	}
 
 	public function ListStudentsRequest(){
