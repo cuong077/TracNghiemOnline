@@ -5,11 +5,7 @@ class Register extends Controller{
     public function Register(){
 		// $loginmodel = $this->model("UserModel");
 		if(isset($_POST["register"])){
-<<<<<<< HEAD
 			$userModel  = $this->model("UserModel");
-=======
-			$loginmodel = $this->model("UserModel");
->>>>>>> origin/master
 
 			$error = [];
 			$success = "";
@@ -17,7 +13,7 @@ class Register extends Controller{
 			$fullname = $this->clear((isset($_POST['fullname'])?$_POST['fullname']:""));
 
 			if($fullname == ""){
-				$error["fullname"] = "Tên đầy đủ không được để trống.";
+				$error["fullname"] = "Họ và tên không được để trống.";
 			}
 
 
@@ -28,14 +24,11 @@ class Register extends Controller{
 			}else{
 				if (!preg_match('/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/', $email, $matches)){
 					$error["email"] = "Không phải là email.";
-<<<<<<< HEAD
 
 				}else{	
 					if($userModel->checkExistedUser($email)){	
 						$error["email"] = "Email đã tồn tại.";	
 					}
-=======
->>>>>>> origin/master
 				}
 			}
 
@@ -47,10 +40,6 @@ class Register extends Controller{
 			else{
 				if (!preg_match('/^[0-9A-Za-z_]+$/', $username, $matches)){
 					$error["username"] = "Tài khoản không được chứa kí tự đặc biệt.";
-				}else{
-					if($loginmodel->checkExistedUser($email)){
-						$error["email"] = "Email đã tồn tại.";
-					}
 				}
 			}
 
