@@ -603,8 +603,7 @@ class Teacher extends Controller{
 			"title"       	=> "Danh sách lớp học",
 			"classes"		=> $classes,
 			"grades"		=> $grades,
-			"menu"			=> "simple2_teacher_menu",
-			"totalUserJoinedClass"           => $total 
+			"menu"			=> "simple2_teacher_menu"
 		  ]);
 	}
 
