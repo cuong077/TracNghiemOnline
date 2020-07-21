@@ -34,16 +34,15 @@
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Student/ListClasses"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Danh sách lớp</span>
+                                 class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Danh sách lớp</span>
                             </a>
                         </li>
-
+                        
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Student/JoinClasses"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
+                            <a href="Student/JoinClassWithId"> <i
+                                class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
                             </a>
                         </li>
-
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Student/JoinClassWithId"> <i
                                     class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tham gia lớp với ID</span>
@@ -53,7 +52,7 @@
                         <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase">Tài
                                 khoản</span>
                         </li>
-                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
+                       <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
                             <a href="Profile/EditProfile"> <i
                                     class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thông tin tài
                                     khoản</span>

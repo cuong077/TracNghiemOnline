@@ -5,7 +5,7 @@ class Register extends Controller{
     public function Register(){
 		// $loginmodel = $this->model("UserModel");
 		if(isset($_POST["register"])){
-			$userModel = $this->model("UserModel");
+			$userModel  = $this->model("UserModel");
 
 			$error = [];
 			$success = "";
@@ -16,6 +16,7 @@ class Register extends Controller{
 				$error["fullname"] = "Họ và tên không được để trống.";
 			}
 
+
 			$email = $this->clear((isset($_POST['email'])?$_POST['email']:""));
 
 			if($email == ""){
@@ -23,9 +24,10 @@ class Register extends Controller{
 			}else{
 				if (!preg_match('/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/', $email, $matches)){
 					$error["email"] = "Không phải là email.";
-				}else{
-					if($userModel->checkExistedUser($email)){
-						$error["email"] = "Email đã tồn tại.";
+
+				}else{	
+					if($userModel->checkExistedUser($email)){	
+						$error["email"] = "Email đã tồn tại.";	
 					}
 				}
 			}

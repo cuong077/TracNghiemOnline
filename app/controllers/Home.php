@@ -15,7 +15,7 @@ class Home extends Controller{
             // "subjects"      => $subjects,
             // "exams"         => $exams
         ]);
-            
+
     }
 
     private function getExamsToView(){
