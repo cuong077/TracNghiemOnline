@@ -55,5 +55,27 @@ class ClassModel extends DB{
 
         return false;
     }
+
+    public function getListClassesForStudent($userId){ 
+        $qr = "CALL Class_getListClassesForStudent($userId)";   
+        // echo $qr;    
+        mysqli_next_result($this->con); 
+        $result = mysqli_query($this->con, $qr);    
+
+        return $result; 
+    }   
+
+    public function isCorrectGrade($classId, $gradeId){ 
+        $qr = "CALL Class_isCorrectGrade($classId, $gradeId)";  
+        echo $qr;   
+        mysqli_next_result($this->con); 
+        $result = mysqli_query($this->con, $qr);    
+
+        if(mysqli_num_rows($result) > 0){   
+            return true;    
+        }   
+
+        return false;   
+    }
 }
 ?>
