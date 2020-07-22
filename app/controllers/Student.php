@@ -18,20 +18,20 @@ class Student extends Controller{
         // Nếu đã làm xong thì tạo bài thi mới và chuyển sang làm bài thi
         // Nếu chưa làm xong thì chuyển sang trang làm bài tiếp tục
 
-      $userid = $this->getUserId();
+    $userid = $this->getUserId();
 
 
         //Load model
 
-      $examResultModel = $this->model("ExamResultsModel");
+    $examResultModel = $this->model("ExamResultsModel");
 
-      $examModel = $this->model("ExamsModel");
+    $examModel = $this->model("ExamsModel");
 
-        $userAnswerModel = $this->model("UserAnswerModel");
+    $userAnswerModel = $this->model("UserAnswerModel");
 
-        $questionModel = $this->model("QuestionModel");
+    $questionModel = $this->model("QuestionModel");
 
-        $answerModel = $this->model("AnswerModel");
+    $answerModel = $this->model("AnswerModel");
         
 
 
@@ -80,7 +80,8 @@ class Student extends Controller{
         }else{
 
           //đã tham gia và đã làm xong thì cho đi xem kết quả :)))
-
+            $this->redirect("Student/viewExamResult/" . $examResultID);
+            exit;
         }
     }
 
@@ -161,6 +162,7 @@ class Student extends Controller{
     }
 
     public function submitExam($result_id){
+
         //Nộp bài
 
         $result_id = $this->clear($result_id);
@@ -168,8 +170,131 @@ class Student extends Controller{
         $examResultModel = $this->model("ExamResultsModel");
         $examResultModel->updateStatusExamResult($result_id, 1);
 
-        $this->redirect("Examination/viewResultExam/".$result_id);
+        $this->redirect("Student/viewExamResult/".$result_id);
         exit;
+    }
+
+    public function viewExamResult($result_id){
+
+
+        //Load model
+
+        $examResultModel = $this->model("ExamResultsModel");
+
+        $examModel = $this->model("ExamsModel");
+
+        $question_model = $this->model("QuestionModel");
+
+        $answer_model = $this->model("AnswerModel");
+
+        $user_answer_model = $this->model("UserAnswerModel");
+
+
+        $result_id = $this->clear($result_id);
+
+        $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
+
+
+        $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
+
+        $total_answer_right = 0;
+        $total_answer_wrong = 0;
+        $total_question_not_answer = 0;
+        $total_question = count($ArrQuestions);
+
+        foreach ($ArrQuestions as $questions) {
+            
+            if($questions->Is_have_answer_choosed == false){
+                $total_question_not_answer++;
+                continue;
+            }
+
+            $flag = false;
+
+            for($i = 0; $i <= 3; $i++){
+                if($questions->listAnswerOfQuestion[$i]->is_Correct == true && $questions->listAnswerOfQuestion[$i]->is_UserChoose){
+                    $total_answer_right++;
+                    $flag = true;
+                    break;
+                }
+            }
+
+            if($flag == false)
+                $total_answer_wrong++;
+        }
+
+
+        $this->view("simple2", [
+            "Page"                  => "simple2_student_view_result_exam",
+            "title"                 => "Xem kết quả",
+            "result_id"             => $result_id,
+            "total_answer_right"    => $total_answer_right,
+            "total_answer_wrong"    => $total_answer_wrong,
+            "total_question_not_answer" =>  $total_question_not_answer,
+            "total_question"        => $total_question,
+            "exam_name"             => $exam_result["Name"],
+            "exam_description"      => $exam_result["Description"]
+        ]);
+    }
+
+    public function viewExamResultAnswer($result_id){
+        //Load model
+
+        $examResultModel = $this->model("ExamResultsModel");
+
+        $examModel = $this->model("ExamsModel");
+
+        $question_model = $this->model("QuestionModel");
+
+        $answer_model = $this->model("AnswerModel");
+
+        $user_answer_model = $this->model("UserAnswerModel");
+
+
+
+        $result_id = $this->clear($result_id);
+
+        $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
+
+        $is_completed = (bool)$exam_result["Is_completed"];
+
+
+
+        $time_join_parsed = strtotime($exam_result["TimeJoin"]);
+
+        $time_current_parsed = strtotime(date('Y-m-d H:i:s'));
+
+        $timePassed = (int)($time_current_parsed - $time_join_parsed);
+
+
+
+        $exam = mysqli_fetch_array($examModel->getExam($exam_result["ExamId"]));
+
+        $timeWork = ((int)$exam["Time"]) * 60;
+
+        if(($timeWork - $timePassed) <= 0){
+        //lúc này là hết thời gian
+
+            if($is_completed == false){
+                $this->redirect("Student/submitExam/" . $result_id);
+                exit;
+            }
+        
+        }else if(($timeWork - $timePassed) > 0 && $is_completed == false){
+            $this->redirect("Student/doExam/" . $result_id);
+            exit;
+        }
+
+        $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
+
+
+        $this->view("simple2", [
+            "Page"                  => "simple2_student_view_result_answer",
+            "title"                 => "Xem đáp án",
+            "all_question"          => $ArrQuestions,
+            "exam_name"         => $exam["Name"],
+            "result_id"           => $result_id
+        ]);
 
     }
 
