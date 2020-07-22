@@ -158,7 +158,6 @@ class Student extends Controller{
             "time_left"             => $timeWork - $timePassed,
             "result_id"           => $result_id
         ]);
-
     }
 
     public function submitExam($result_id){
@@ -167,15 +166,57 @@ class Student extends Controller{
 
         $result_id = $this->clear($result_id);
 
+        //load model
+
         $examResultModel = $this->model("ExamResultsModel");
+
+        $examModel = $this->model("ExamsModel");
+
+        $question_model = $this->model("QuestionModel");
+
+        $answer_model = $this->model("AnswerModel");
+
+        $user_answer_model = $this->model("UserAnswerModel");
+
+        $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
+
+        $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
+
+        $total_answer_right = 0;
+        $total_answer_wrong = 0;
+        $total_question_not_answer = 0;
+        $total_question = count($ArrQuestions);
+
+        foreach ($ArrQuestions as $questions) {
+            
+            if($questions->Is_have_answer_choosed == false){
+                $total_question_not_answer++;
+                continue;
+            }
+
+            $flag = false;
+
+            for($i = 0; $i <= 3; $i++){
+                if($questions->listAnswerOfQuestion[$i]->is_Correct == true && $questions->listAnswerOfQuestion[$i]->is_UserChoose){
+                    $total_answer_right++;
+                    $flag = true;
+                    break;
+                }
+            }
+
+            if($flag == false)
+                $total_answer_wrong++;
+        }
+
         $examResultModel->updateStatusExamResult($result_id, 1);
+
+        $examResultModel->updateScoreExamResult($result_id, round($total_answer_right * (10 / $total_question), 2));
 
         $this->redirect("Student/viewExamResult/".$result_id);
         exit;
     }
 
     public function viewExamResult($result_id){
-
 
         //Load model
 
@@ -194,6 +235,7 @@ class Student extends Controller{
 
         $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
 
+        $exam = mysqli_fetch_array($examModel->getExam($exam_result["ExamId"]));
 
         $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
 
@@ -232,8 +274,10 @@ class Student extends Controller{
             "total_answer_wrong"    => $total_answer_wrong,
             "total_question_not_answer" =>  $total_question_not_answer,
             "total_question"        => $total_question,
-            "exam_name"             => $exam_result["Name"],
-            "exam_description"      => $exam_result["Description"]
+            "exam_name"             => $exam["Name"],
+            "exam_description"      => $exam["Description"],
+            "exam_time"             => $exam["TimeName"],
+            "exam_amount_of_question"   => $exam["AmountOfQuestion"]
         ]);
     }
 
@@ -255,6 +299,8 @@ class Student extends Controller{
         $result_id = $this->clear($result_id);
 
         $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
+
+        $exam = mysqli_fetch_array($examModel->getExam($exam_result["ExamId"]));
 
         $is_completed = (bool)$exam_result["Is_completed"];
 
@@ -293,9 +339,49 @@ class Student extends Controller{
             "title"                 => "Xem đáp án",
             "all_question"          => $ArrQuestions,
             "exam_name"         => $exam["Name"],
-            "result_id"           => $result_id
+            "result_id"           => $result_id,
+            "exam_time"             => $exam["TimeName"],
+            "total_question"        => count($ArrQuestions),
+            "exam_description"      => $exam["Description"]
         ]);
+    }
 
+    public function viewListExamJoined(){
+
+        //load model
+
+        $exam_result_model = $this->model("ExamResultsModel");
+
+
+
+        $user_id = $this->getUserId();
+
+
+        $exam_result_with_userid = $exam_result_model->getResultWithUserId($user_id);
+
+        $list_result = [];
+
+        while ($row = mysqli_fetch_array($exam_result_with_userid)){
+            $result = new Result();
+
+            $result->exam_name = $row["exam_name"];
+            $result->class_name = $row["class_name"];
+            $result->time_join = $row["time_join"];
+            $result->time_name = $row["time_name"];
+            $result->score = $row["score"];
+            $result->result_id = $row["result_id"];
+            $result->is_completed = $row["is_completed"];
+
+            $list_result[] = $result;
+
+        }
+
+        $this->view("simple2", [
+            "Page"                           => "simple2_student_view_list_exam_joined",
+            "title"                          => "Lịch sử thi",
+            "menu"                       => "simple2_student_menu",
+            "list_result"                   => $list_result
+        ]);
     }
 
 
@@ -599,7 +685,6 @@ class Question{
     public $Is_have_answer_choosed = false;
 }
 
-
 class Answer{
 
     public $id;
@@ -618,7 +703,23 @@ class UserAnswer{
     public $is_Correct;
 
     public $is_UserChoose;
+}
 
+class Result{
+
+    public $exam_name;
+
+    public $class_name;
+
+    public $time_join;
+
+    public $time_name;
+
+    public $score;
+
+    public $result_id;
+
+    public $is_completed;
 }
 
 ?>

@@ -27,7 +27,7 @@
                                         ĐIỂM THI
                                     </strong><br>
                                     <strong style="font-size:40px">
-                                        <?php echo $data["total_answer_right"]; ?>
+                                        <?php echo round($data["total_answer_right"] * (10 / $data["total_question"]), 2); ?>
                                     </strong>
                                 </h3>
                             </div>
@@ -78,12 +78,12 @@
                 <div class="pricing-box-item">
                     <div class="pricing-terms">
                         <h6>Kiểm tra:  <span id=""><?php echo $data["exam_name"]; ?></span></h6>
-                        <h6>Thời gian làm bài: <span id="">15 phút</span></h6>
+                        <h6>Thời gian làm bài: <span id=""><?php echo $data["exam_time"]; ?></span></h6>
                         <h6>Tổng số câu hỏi: <span id=""><?php echo $data["total_question"]; ?> câu</span></h6>
                         <!-- <h6>Đã thi hết: <span id="">0,95 phút</span></h6> -->
                     </div>
                     <div class="pricing-action">
-                        <a href="#" class="btn btn-medium btn-theme" style="color: white;">Xem đáp án</a>
+                        <a href="<?php echo Config::$base_url; ?>Student/viewExamResultAnswer/<?php echo $data["result_id"]; ?>" class="btn btn-medium btn-theme" style="color: white;">Xem đáp án</a>
                         <!--<a href="https://www.789.vn/xem-dap-an.html" class="btn btn-medium btn-theme">Xem gợi ý bài giải</a>-->
                     </div>
                 </div>

@@ -122,9 +122,10 @@
                         <div class="col-lg-4">
                             <div class="pricing-box-item left-center-box text-center" style="background: darkslategrey;">
                                 <div class="pricing-terms">
-                                        <h6>Bài thi:  <span id=""><?php echo $data["exam_name"]; ?></span></h6>
-                                    <h6>Thời gian làm bài: <span id="">50 phút</span></h6>
-                                    <h6>Tổng số câu hỏi: <span id="">36 câu</span></h6>
+                                        <h6>Tên :  <span id=""><?php echo $data["exam_name"]; ?></span></h6>
+                                        <h6>Mô tả :  <span id=""><?php echo $data["exam_description"]; ?></span></h6>
+                                    <h6>Thời gian làm bài: <span id=""><?php echo $data["exam_time"]; ?></span></h6>
+                                    <h6>Tổng số câu hỏi: <span id=""><?php echo $data["total_question"]; ?> câu</span></h6>
                                 </div>
 
 
@@ -136,8 +137,7 @@
         </section>
 
         <script>
-            var totalQuestion = parseInt('<?php echo count($data["all_question"]); ?>');
-            var totalDuration = parseInt('2');
+
             var qArr = Array();
 
             <?php
@@ -151,7 +151,6 @@
         
             $(function () {
                 activeQuestion(qArr[0]);
-                
             });
 
             function next(nextOrPre) {
