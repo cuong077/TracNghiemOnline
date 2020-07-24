@@ -66,7 +66,7 @@ function ClearCookie() {
 
     <div class="text-center" id="borderForm" sytle="border:2px solid black; border-radius:4px;">
         <div class="row">
-            <div class="text-center" style="margin-bottom: 30px; ">
+            <div class="text-center">
                 <h2 class="pageTitle text-center">Yêu cầu vào lớp học</h2>
             </div>
             <?php 
@@ -74,7 +74,7 @@ function ClearCookie() {
                 if($isShowRequestForm=="true"){
             ?>
 
-            <form class="form-horizontal" method="post"  style="padding-top: 30px; border: 1px solid black;border-radius: 4px;">
+            <form class="form-horizontal" method="post" style="margin-top: 30px;">
                 <!--Start General Info-->
 
                 <?php $grade = $data["grade"]; ?>

@@ -1,4 +1,3 @@
-<?php //var_dump($data["listRequested"]);?>
 <div id="wrapper" class="menu-wrapper">
     <!-- start header -->
     <style>
@@ -612,3 +611,35 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 </script>
+<!-- Your customer chat code -->
+<div class="fb-customerchat" attribution=setup_tool page_id="150549311785593"
+    logged_in_greeting="Xin chào, Trường học thông minh 789.vn có thể giúp gì cho bạn?"
+    logged_out_greeting="Xin chào, Trường học thông minh 789.vn có thể giúp gì cho bạn?"></div>
+<div id="myPopup" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">...</div>
+    </div>
+</div>
+<div id="ajax-loading" class="modal-backdrop fade in hidden">
+    <img src="https://cdn.789.vn/Content/nganhangdethi/img/loading.gif" />
+    <div>
+        <label>Nhấp double chuột để hủy.</label>
+    </div>
+</div>
+<div class="modal fade" id="tinyPopup" tabindex="-1" role="dialog" aria-labelledby="tinyPopupLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="tinyPopupLabel">[Title]</h4>
+            </div>
+            <div class="modal-body" id="tinyPopupBody">[body]</div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
