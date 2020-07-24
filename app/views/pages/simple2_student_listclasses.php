@@ -5,8 +5,9 @@
     .ban-tin-789 {
         background-color: #212121;
     }
-    .same-width{
-        width: 100px;
+
+    tr {
+        cursor: pointer;
     }
     </style>
 
@@ -23,11 +24,10 @@
                 <tr class="text-center">
                     <th class="col-lg-1 text-center">Mã lớp</th>
                     <th class="col-lg-3 text-center">Tên lớp học</th>
-                    <th class="col-lg-3 text-center">Mô tả</th>
+                    <th class="col-lg-4 text-center">Mô tả</th>
                     <th class="col-lg-2 text-center">Khối lớp</th>
                     <th class="col-lg-1 text-center">Tham gia</th>
                     <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-1 text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,18 +57,6 @@
                     </td>
                     <td class="text-center"><input type="checkbox" name="joinedClass" id="<?php echo $row["ClassId"];?>" <?php if($row["joined"]=="true"){ echo "checked"; } ?> disabled > </td>
                     <td class="text-center"><?php echo $row["total"]; ?></td>
-
-                    <td class="text-center">
-                        <?php if($row["joined"]=="true"){ ?>
-                            <a href="Student/ListResourceClass/<?php echo $row["ClassId"]?>" class="btn btn-success same-width">Xem</a>    
-                        <?php }
-                        else{
-                            ?>
-                            <a href="Student/JoinClass/<?php echo $row["ClassId"]?>" class="btn btn-warning same-width">Tham gia</a>    
-                        <?php
-                        }?>
-                    </td>
-
                 </tr>
                 <?php } ?>
             </tbody>
@@ -239,6 +227,24 @@ $(document).ready(function() {
         });
         return false;
     });
+
+    $("tr").click(function(){
+
+        $classId = $(this).find("input[type=checkbox]").attr("id");
+        $checked = $(this).find("input[type=checkbox]").attr("checked");
+        $arr = $(location).attr("href").split("/");
+        $index = $arr.indexOf("Student");
+            
+        if( typeof $checked === "undefined" ){
+            $url = $arr.slice(0,$index+1).join("/") + "/JoinClass/" + $classId;
+            location.replace($url);
+        }
+        else{
+            $url = $arr.slice(0,$index+1).join("/") + "/ListExamOfClass/" + $classId;
+            location.replace($url);
+        }
+    });
+   
 });
 </script>
 <style>
