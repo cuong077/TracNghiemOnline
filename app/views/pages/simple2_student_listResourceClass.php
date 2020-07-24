@@ -9,69 +9,83 @@
 
     <section id=" text-center" style="margin-bottom:20px;">
         <div class="text-center">
-            <h2 class="pageTitle" style="">Danh sách yêu cầu</h2>
+            <h2 class="pageTitle" style="">Danh sách </h2>
         </div>
     </section>
 
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"
+        id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
-    <div class="row">
-        <table class="table table-bordered table-responsive">
-            <thead>
-                <tr class="text-center">
-                    <th class="col-lg-2 text-center">STT</th>
-                    <th class="col-lg-2 text-center">Khối</th>
-                    <th class="col-lg-2 text-center">Lớp</th>
-                    <th class="col-lg-4 text-center">Tên học sinh</th>
-                    <th class="col-lg-2 text-center">Duyệt</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php 
-                    $listRequested = $data["listRequested"];
-                    if(count($listRequested) > 0){
-                        // var_dump($listRequested["listStudents"]);
-                        foreach($listRequested as $requested){
-                            // var_dump($requested);
-                            $index = 0;
-                            $gradeName  = $requested[1];
-                            $classId    = $requested[2];
-                            $className  = $requested[3];
-                            //var_dump($requested["listStudents"]);
+    <div class="row" style="margin-left: 30px;">
+        <!-- <div > -->
+        <?php $examinations=$data["examinations"];
+            $examinations["test"] = "test";
+        ?>
+        <div class="menu" id="examinations">
+            <div class="accordion">
+                <!-- Áreas -->
+                <div class="accordion-group">
+                    <!-- Área -->
+                    <div class="accordion-heading area">
+                        <a class="accordion-toggle text-center" data-toggle="collapse" href="#area1">Danh sách bài thi</a>
+                    </div><!-- /Área -->
 
-                            foreach ($requested["listStudents"] as $student) {
-                                $index += 1;
-                                //var_dump($requested["listStudents"]);
-                ?>
-                <tr class="text-center">
-                    <td> <?php echo $index;?> </td>
-                    <td> <?php echo $gradeName;?> </td>
-                    <td> <?php echo $className;?> </td>
-                    <td> <?php echo $student["StudentName"];
-                    // var_dump($student);
-                ?> </td>
 
-                    <td>
-                        <a class="btn btn-success"
-                            href="Teacher/ApproveStudent/<?php echo $classId . "/". $student["StudentId"]; ?>">
-                            <i class="fa fa-check" aria-hidden="true"></i>
-                            Duyệt
-                        </a>
-                </tr>
-                <?php       }  
-                        }
-                    }
-                    else{
+                    <?php if(count($examinations) > 0){?>
+                    <div class="accordion-body collapse" id="area1">
+                        <div class="accordion-inner">
+                            <div class="accordion" id="equipamento1">
+                                <!-- Equipamentos -->
 
-                        ?>
+                                <div class="accordion-group">
+                                    <div class="accordion-heading equipamento">
+                                        <a class="accordion-toggle" data-parent="#equipamento1-1" data-toggle="collapse"
+                                            href="#ponto1-1">Bài thi toán...</a>
+                                    </div><!-- Pontos -->
 
-                <tr class="text-center">
-                    <td colspan="5"><span class="text text-info">Không có yêu cầu tham gia lớp mới.</span> </td>
-                </tr>
-                <?php    }
-                
-                ?>
-            </tbody>
-        </table>
+                                    <div class="accordion-body collapse" id="ponto1-1">
+                                        <div class="accordion-inner">
+                                            <div class="accordion" id="servico1">
+                                                <div class="accordion-group">
+                                                    <div class="accordion-heading ponto">
+                                                        <a class="accordion-toggle" data-parent="#servico1-1-1"
+                                                            data-toggle="collapse" href="#servico1-1-1">Thực hiện bài
+                                                            thi</a>
+                                                    </div><!-- Serviços -->
+                                                    <div class="accordion-heading ponto">
+                                                        <a class="accordion-toggle" data-parent="#servico1-1-1"
+                                                            data-toggle="collapse" href="#servico1-1-1">Xem kết quả
+                                                            thi</a>
+                                                    </div><!-- Serviços -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /Pontos -->
+                                </div><!-- /Equipamentos -->
+                            </div>
+                        </div>
+                    </div>
+                    <?php } else{?>
+                    <!-- show alert 0 examinations -->
+                    <div class="accordion-body collapse" id="area1">
+                        <div class="accordion-inner">
+                            <div class="accordion" id="equipamento1">
+                                <!-- Equipamentos -->
+
+                                <div class="accordion-group">
+                                    <div class="accordion-heading equipamento text-center">
+                                        <span class="text text-warning">Không có bài thi nào trong lớp.</span>
+                                    </div><!-- Pontos -->
+
+                                </div><!-- /Equipamentos -->
+                            </div>
+                        </div>
+                    </div>
+                    <?php }?>
+                </div>
+            </div><!-- /accordion -->
+        </div>
     </div>
 </div>
 
@@ -127,6 +141,32 @@
     display: inline-block;
     width: 30%;
     cursor: pointer !important;
+}
+
+.menu .accordion-heading {
+    position: relative;
+}
+
+.menu .accordion-heading .edit {
+    position: absolute;
+    top: 8px;
+    right: 30px;
+}
+
+.menu .area {
+    border-left: 4px solid #f38787;
+}
+
+.menu .equipamento {
+    border-left: 4px solid #65c465;
+}
+
+.menu .ponto {
+    border-left: 4px solid #98b3fa;
+}
+
+.menu .collapse.in {
+    overflow: visible;
 }
 </style>
 

@@ -659,7 +659,7 @@ class Teacher extends Controller{
 				$userId = $this->getUserId();
 				$classModel = $this->model("ClassModel");
 				$classResult = $classModel->addClass($className, $classDescription, $password, $userId, $gradeId);
-				var_dump($className, $classDescription, $password, $userId, $gradeId);
+				// var_dump($className, $classDescription, $password, $userId, $gradeId);
 				$this->showScript('Thêm thành công.');
 				$this->redirect("Teacher/ListClasses");
 			}
@@ -722,7 +722,7 @@ class Teacher extends Controller{
 		if(isset($_POST["updateClass"])){
 
 			$gradeId = (int)$class["GradeId"];
-			echo $gradeId;
+			// echo $gradeId;
 			$className = $_POST["ClassName"];
 			$password = $_POST["PasswordJoinClass"];
 			$classDescription = $_POST["ClassDescription"];
@@ -792,9 +792,11 @@ class Teacher extends Controller{
 			$gradeId = $class["GradeId"];
 			$gradeResult = $gradeModel->getGrade($gradeId);
 			$grade = mysqli_fetch_assoc($gradeResult);
+			$gradeName = $grade["Name"];
+			// var_dump($grade);
 			
 			array_push($rowRequestToAdd, $gradeId);
-			array_push($rowRequestToAdd, $grade["Name"]);
+			array_push($rowRequestToAdd, $gradeName);
 
 			//get list student
 			$userClassResult = $userClassModel->getListUserRequestJoinClass($classId);
@@ -845,6 +847,7 @@ class Teacher extends Controller{
 		$userClassResult = $userClassModel->approveStudentJoinClass($classId, $studentId);
 		$this->redirect("Teacher/ListStudentsRequest");
 	}
+
 
 
 	public function ListStudentsClass($classId){
