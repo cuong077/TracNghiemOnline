@@ -34,16 +34,16 @@ function examNow(subjectId) {
                     </ul>
                 </div> <br>
                 <?php $success = $data["success"];
-                    // $success = "test";
+                    $success = "test";
                     if(isset($success) && $success != ""){
                 ?>
                 <div class="inner text-center">
                     <div style="text-align">
-                        <h1 class="pageTitle">Đăng kí thành công</h1>
+                        <h1 class="text text-info">Đăng kí thành công</h1>
                     </div>
 
                     <div style="text-align; margin: 30px;">
-                        <a href="Login" class=""><h1 class="pageTitle">Đăng nhập</h1></a>
+                        <a href="Login" class=""><h1 class="pageTitle"  style="width: 30%;">Đăng nhập</h1></a>
                     </div>
                 </div>
                 <?php

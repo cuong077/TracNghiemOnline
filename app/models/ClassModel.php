@@ -45,7 +45,7 @@ class ClassModel extends DB{
 
     public function updateClass($className, $classDescription, $password, $classId){
         $qr = "CALL Class_updateClass('$className', '$classDescription', '$password', $classId)";
-        echo $qr;
+        // echo $qr;
         
         mysqli_next_result($this->con);
 
@@ -67,7 +67,7 @@ class ClassModel extends DB{
 
     public function isCorrectGrade($classId, $gradeId){ 
         $qr = "CALL Class_isCorrectGrade($classId, $gradeId)";  
-        echo $qr;   
+        // echo $qr;   
         mysqli_next_result($this->con); 
         $result = mysqli_query($this->con, $qr);    
 

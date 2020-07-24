@@ -3,7 +3,7 @@
 class Register extends Controller{
 
     public function Register(){
-		// $loginmodel = $this->model("UserModel");
+		$loginmodel = $this->model("UserModel");
 		if(isset($_POST["register"])){
 			$userModel  = $this->model("UserModel");
 

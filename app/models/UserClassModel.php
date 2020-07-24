@@ -71,4 +71,11 @@ class UserClassModel extends DB{
         return false;
     }
 
+    public function getListClassJoinedForStudent($userId){
+        $qr = "CALL UserClass_getListClassJoinedForStudent($userId)";
+        mysqli_fetch_assoc($this->con);
+        $result = mysqli_query($this->con, $qr);
+        return $result;
+    }
+
 }?>

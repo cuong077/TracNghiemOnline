@@ -1,19 +1,19 @@
-
 <div id="wrapper" class="menu-wrapper">
     <!-- start header -->
     <style>
     .ban-tin-789 {
         background-color: #212121;
     }
-    .same-width{
-        width: 100px;
-    }
+
+    /* 
+    tr {
+        cursor: pointer;
+    } */
     </style>
 
     <section id=" text-center" style="margin-bottom:20px;">
         <div class="text-center">
-
-            <h2 class="pageTitle" style="">Danh sách lớp học</h2>
+            <h2 class="pageTitle" style="">Lớp đã tham gia</h2>
         </div>
     </section>
 
@@ -21,54 +21,53 @@
         <table class="table table-bordered table-responsive">
             <thead>
                 <tr class="text-center">
-                    <th class="col-lg-1 text-center">Mã lớp</th>
-                    <th class="col-lg-3 text-center">Tên lớp học</th>
-                    <th class="col-lg-3 text-center">Mô tả</th>
+                    <th class="col-lg-1 text-center">STT</th>
+                    <th class="col-lg-2 text-center">Tên lớp học</th>
+                    <th class="col-lg-2 text-center">Mô tả</th>
                     <th class="col-lg-2 text-center">Khối lớp</th>
-                    <th class="col-lg-1 text-center">Tham gia</th>
+                    <th class="col-lg-2 text-center">Giáo viên</th>
                     <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-1 text-center">Hành động</th>
+                    <th class="col-lg-2 text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody>
                 <?php  
                     @$classes = $data["classes"];
-                    @$grades = $data["grades"];
 
-                    foreach ($classes as $row){
+                    if(count($classes) > 0){
+                    $index=0;
+
+                    foreach ($classes as $class){
+                        $index++;
                 ?>
 
-                <tr id="Class_<?php echo $row["ClassId"];?>">
-                    <td class="text-center"><?php echo $row["ClassId"];?></td>
+                <tr id="Class_<?php echo $class[0];?>">
+                    <td class="text-center"><?php echo $index;?></td>
                     <td class="text-center">
-                        <a href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
-                            <?php echo $row["Name"];?>
-                        </a>
+                        <?php echo $class[1];?>
                     </td>
-                    <td class="text-center"><?php echo $row["Description"];?></td>
+                    <td class="text-center"><?php echo $class[2];?></td>
                     <td class="text-center">
-                        <?php 
-                        foreach ($grades as $grade) {
-                            if($grade["GradeId"]==$row["GradeId"]){
-                                echo $grade["Name"];
-                            }
-                        }
+                        <?php
+                        echo $class[3];
                     ?>
                     </td>
-                    <td class="text-center"><input type="checkbox" name="joinedClass" id="<?php echo $row["ClassId"];?>" <?php if($row["joined"]=="true"){ echo "checked"; } ?> disabled > </td>
-                    <td class="text-center"><?php echo $row["total"]; ?></td>
+                    <td class="text-center"> <?php echo $class[4]; ?> </td>
+                    <td class="text-center"><?php echo $class[5]; ?></td>
                     <td class="text-center">
-                        <?php if($row["joined"]=="true"){ ?>
-                            <a href="Student/ListResourceClass/<?php echo $row["ClassId"]?>" class="btn btn-success same-width">Xem</a>    
-                        <?php }
-                        else{
-                            ?>
-                            <a href="Student/JoinClass/<?php echo $row["ClassId"]?>" class="btn btn-warning same-width">Tham gia</a>    
-                        <?php
-                        }?>
+                        <a href="Student/viewListExaminationExerciseDocument/<?php echo $class[0]; ?>"
+                            class="btn btn-success">Xem</a>
                     </td>
                 </tr>
-                <?php } ?>
+                <?php }} else{
+                    ?>
+                <tr>
+                    <td colspan="7">
+                        <span class="text text-info">Chưa tham gia lớp học nào.</span>
+                    </td>
+                </tr>
+                <?php
+                } ?>
             </tbody>
         </table>
     </div>
@@ -79,10 +78,11 @@
 .li-classexam {
     border-bottom: 1px solid #ccc;
     list-style: none;
-    
+
 }
+
 input[type="checkbox"][readonly] {
-  pointer-events: none;
+    pointer-events: none;
 }
 
 .td-task1 {
@@ -237,6 +237,7 @@ $(document).ready(function() {
         });
         return false;
     });
+
 });
 </script>
 <style>
@@ -368,4 +369,3 @@ window.fbAsyncInit = function() {
         </div>
     </div>
 </div>
-
