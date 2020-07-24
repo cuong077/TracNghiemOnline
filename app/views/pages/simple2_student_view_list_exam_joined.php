@@ -20,6 +20,7 @@
                                 <tr>
                                 	<th>STT</th>
                                     <th>Tên bài thi</th>
+                                    <th>Loại</th>
                                     <th>Lớp</th>
                                     <th>Ngày tham gia</th>
                                     <th>Thời gian</th>
@@ -39,6 +40,7 @@
 								<tr>
 									<td><?php echo $stt + 1; ?></td>
                                     <td><?php echo $result->exam_name; ?></td>
+                                    <td><?php echo $result->type_name; ?></td>
                                     <td><?php echo $result->class_name; ?></td>
                                     <td><?php echo $result->time_join; ?></td>
                                     <td><?php echo $result->time_name; ?></td>

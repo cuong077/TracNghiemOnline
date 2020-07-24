@@ -371,6 +371,7 @@ class Student extends Controller{
             $result->score = $row["score"];
             $result->result_id = $row["result_id"];
             $result->is_completed = $row["is_completed"];
+            $result->type_name = $row["exam_type_name"];
 
             $list_result[] = $result;
 
@@ -379,7 +380,7 @@ class Student extends Controller{
         $this->view("simple2", [
             "Page"                           => "simple2_student_view_list_exam_joined",
             "title"                          => "Lịch sử thi",
-            "menu"                       => "simple2_student_menu",
+            "menu"                          => "simple2_student_menu",
             "list_result"                   => $list_result
         ]);
     }
@@ -720,6 +721,8 @@ class Result{
     public $result_id;
 
     public $is_completed;
+
+    public $type_name;
 }
 
 ?>
