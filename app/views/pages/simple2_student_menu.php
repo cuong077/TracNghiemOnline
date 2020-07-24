@@ -39,7 +39,7 @@
                         </li>
                         
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Student/JoinClassWithId"> <i
+                            <a href="Student/JoinClasses"> <i
                                 class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
                             </a>
                         </li>

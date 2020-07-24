@@ -18,6 +18,15 @@
       return false;
     }
 
+    public function getListExamsByClassId($classId){
+      $qr = "CALL Exam_getListExamsByClassId($classId)";
+      // echo $qr;
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+
+      return $result;
+    }
+
     //lay n exams trong database
     public function getListExams()
     {
