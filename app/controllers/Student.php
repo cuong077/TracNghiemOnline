@@ -10,6 +10,7 @@ class Student extends Controller{
     }
     
 
+
     public function joinExam($exam_id){
 
       // Khi join vào bài thi hệ thống sẽ kiểm tra người này đã làm bài thi này lần nào chưa?
