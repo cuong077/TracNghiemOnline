@@ -63,6 +63,43 @@
 
       if ($result){
 
+          return true;
+
+      }
+
+      return false;
+
+    }
+
+    public function updateScoreExamResult($result_id, $score){
+
+      $qr = "CALL Result_updateResultScore($result_id, $score)";
+      mysqli_next_result($this->con);
+      
+      $result = mysqli_query($this->con, $qr);
+
+      if ($result){
+
+          return true;
+
+      }
+
+      return false;
+
+    }
+
+    
+
+
+    public function getResultWithUserId($user_id){
+
+      $qr = "CALL Result_getResultByUserId($user_id)";
+      mysqli_next_result($this->con);
+
+      $result = mysqli_query($this->con, $qr);
+
+      if ($result){
+
           return $result;
 
       }
@@ -70,6 +107,8 @@
       return false;
 
     }
+
+
 
     //lay n exams trong database
     public function checkExistExamResultOfUser($user_id, $exam_id){

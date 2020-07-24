@@ -34,6 +34,9 @@ class Teacher extends Controller{
 	    ]);
 	}
 
+
+	//Create exam manual
+
 	public function createExamManualStep1(){
 		//load model
 		$grades_model = $this->model("GradeModel");
@@ -131,6 +134,104 @@ class Teacher extends Controller{
 	    }
 	}
 
+	//Create exam with matrix
+
+	public function createExamMatrixStep1(){
+		//load model
+		$grades_model = $this->model("GradeModel");
+		$exam_time_model = $this->model("ExamTimeModel");
+		$subjects_model = $this->model("SubjectModel");
+
+
+		$this->view("simple2", [
+	      "Page"        => "simple2_teacher_create_exam_matrix_step1",
+	      "title"       => "Tạo đề thi",
+	      "grades"		=> $grades_model->getListGrades(),
+	      "exam_times"	=> $exam_time_model->getListExamTime(),
+	      "subjects"	=> $subjects_model->getListSubjects()
+	    ]);
+	}
+
+	public function createExamMatrixStep2(){
+
+	    if(isset($_POST['step1'])){
+
+	    	$grade_id = $this->clear($_POST['gradeId']);
+	    	$subject_id = $this->clear($_POST['subjectId']);
+	    	$exam_name = $this->clear($_POST['exam_name']);
+	    	$exam_num_of_question = $this->clear($_POST['examNumOfQuestion']);
+	    	$exam_time = $this->clear($_POST['durationOfTime']);
+	    	$exam_datetime_start = $this->clear($_POST['datetimeStart']);
+
+	    	if($grade_id == "" || $subject_id == "" || $exam_name == "" || $exam_num_of_question == "" || $exam_time == "" || $exam_datetime_start == ""){
+
+	    		$this->redirect("Teacher/createExamMatrixStep1");
+    			exit;
+
+	    	}
+
+	    	$grade_name = $this->clear($_POST['grade_name']);
+	    	$subject_name = $this->clear($_POST['subject_name']);
+	    	$exam_time_name = $this->clear($_POST['exam_time_name']);
+
+
+	    	//load model 
+	    	$chapter_model = $this->model("ChapterModel");
+	    	$lesson_model = $this->model("LessonModel");
+
+
+	    	$chapter_result = $chapter_model->getListChapterWithGradeSubject($grade_id, $subject_id);
+
+
+	    	$chapters_and_lessons = [];
+
+
+	    	if($chapter_result != null)
+		    	while ($chapter = mysqli_fetch_array($chapter_result)) {
+		    		
+		    		$_chapter = new Chapter();
+		    		$_chapter->chapter_id = $chapter["ChapterId"];
+		    		$_chapter->chapter_name = $chapter["Name"];
+		    		$_chapter->chapter_description = $chapter["Description"];
+
+		    		$lesson_result = $lesson_model->getListLessonWithChapterID($_chapter->chapter_id);
+
+		    		while ($lesson = mysqli_fetch_array($lesson_result)){
+
+		    			$_lesson = new Lesson();
+		    			$_lesson->lesson_id = $lesson["LessonId"];
+		    			$_lesson->lesson_name = $lesson["Name"];
+		    			$_lesson->lesson_description = $lesson["Description"];
+
+		    			$_chapter->list_lesson[] = $_lesson;
+		    		}
+
+		    		mysqli_free_result($lesson_result);
+
+		    		$chapters_and_lessons[] = $_chapter;
+
+		    	}
+
+
+	    	$this->view("simple2", [
+		      "Page"        => "simple2_teacher_create_exam_matrix_step2",
+		      "title"       => "Tạo đề thi",
+		      "chapters_and_lessons" => $chapters_and_lessons,
+		      "grade_name"			=> $grade_name,
+		      "subject_name"		=> $subject_name,
+		      "exam_time_name"		=> $exam_time_name,
+		      "number_of_questions"	=> $exam_num_of_question,
+		      "exam_name"			=> $exam_name,
+		      "exam_datetime_start"	=> $exam_datetime_start,
+		      "exam_time_id"		=> $exam_time
+		      
+		    ]);
+	    
+	    }else{
+	    	$this->redirect("Teacher/createExamManualStep1");
+    		exit;
+	    }
+	}
 
 	//Create questions
 

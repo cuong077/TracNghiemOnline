@@ -57,6 +57,7 @@
                     </td>
                     <td class="text-center"><input type="checkbox" name="joinedClass" id="<?php echo $row["ClassId"];?>" <?php if($row["joined"]=="true"){ echo "checked"; } ?> disabled > </td>
                     <td class="text-center"><?php echo $row["total"]; ?></td>
+
                     <td class="text-center">
                         <?php if($row["joined"]=="true"){ ?>
                             <a href="Student/ListResourceClass/<?php echo $row["ClassId"]?>" class="btn btn-success same-width">Xem</a>    
@@ -67,6 +68,7 @@
                         <?php
                         }?>
                     </td>
+
                 </tr>
                 <?php } ?>
             </tbody>
