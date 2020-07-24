@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="pageTitle">TẠO ĐỀ THI THỦ CÔNG</h2>
+                <h2 class="pageTitle">TẠO ĐỀ THI</h2>
             </div>
         </div>
     </div>

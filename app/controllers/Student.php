@@ -18,20 +18,20 @@ class Student extends Controller{
         // Nếu đã làm xong thì tạo bài thi mới và chuyển sang làm bài thi
         // Nếu chưa làm xong thì chuyển sang trang làm bài tiếp tục
 
-    $userid = $this->getUserId();
+      $userid = $this->getUserId();
 
 
         //Load model
 
-    $examResultModel = $this->model("ExamResultsModel");
+      $examResultModel = $this->model("ExamResultsModel");
 
-    $examModel = $this->model("ExamsModel");
+      $examModel = $this->model("ExamsModel");
 
-    $userAnswerModel = $this->model("UserAnswerModel");
+        $userAnswerModel = $this->model("UserAnswerModel");
 
-    $questionModel = $this->model("QuestionModel");
+        $questionModel = $this->model("QuestionModel");
 
-    $answerModel = $this->model("AnswerModel");
+        $answerModel = $this->model("AnswerModel");
         
 
 
@@ -80,8 +80,7 @@ class Student extends Controller{
         }else{
 
           //đã tham gia và đã làm xong thì cho đi xem kết quả :)))
-            $this->redirect("Student/viewExamResult/" . $examResultID);
-            exit;
+
         }
     }
 
@@ -158,402 +157,22 @@ class Student extends Controller{
             "time_left"             => $timeWork - $timePassed,
             "result_id"           => $result_id
         ]);
+
     }
 
     public function submitExam($result_id){
-
         //Nộp bài
 
         $result_id = $this->clear($result_id);
 
-        //load model
-
         $examResultModel = $this->model("ExamResultsModel");
-
-        $examModel = $this->model("ExamsModel");
-
-        $question_model = $this->model("QuestionModel");
-
-        $answer_model = $this->model("AnswerModel");
-
-        $user_answer_model = $this->model("UserAnswerModel");
-
-        $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
-
-        $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
-
-        $total_answer_right = 0;
-        $total_answer_wrong = 0;
-        $total_question_not_answer = 0;
-        $total_question = count($ArrQuestions);
-
-        foreach ($ArrQuestions as $questions) {
-            
-            if($questions->Is_have_answer_choosed == false){
-                $total_question_not_answer++;
-                continue;
-            }
-
-            $flag = false;
-
-            for($i = 0; $i <= 3; $i++){
-                if($questions->listAnswerOfQuestion[$i]->is_Correct == true && $questions->listAnswerOfQuestion[$i]->is_UserChoose){
-                    $total_answer_right++;
-                    $flag = true;
-                    break;
-                }
-            }
-
-            if($flag == false)
-                $total_answer_wrong++;
-        }
-
         $examResultModel->updateStatusExamResult($result_id, 1);
 
-        $examResultModel->updateScoreExamResult($result_id, round($total_answer_right * (10 / $total_question), 2));
-
-        $this->redirect("Student/viewExamResult/".$result_id);
+        $this->redirect("Examination/viewResultExam/".$result_id);
         exit;
+
     }
 
-    public function viewExamResult($result_id){
-
-        //Load model
-
-        $examResultModel = $this->model("ExamResultsModel");
-
-        $examModel = $this->model("ExamsModel");
-
-        $question_model = $this->model("QuestionModel");
-
-        $answer_model = $this->model("AnswerModel");
-
-        $user_answer_model = $this->model("UserAnswerModel");
-
-
-        $result_id = $this->clear($result_id);
-
-        $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
-
-        $exam = mysqli_fetch_array($examModel->getExam($exam_result["ExamId"]));
-
-        $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
-
-        $total_answer_right = 0;
-        $total_answer_wrong = 0;
-        $total_question_not_answer = 0;
-        $total_question = count($ArrQuestions);
-
-        foreach ($ArrQuestions as $questions) {
-            
-            if($questions->Is_have_answer_choosed == false){
-                $total_question_not_answer++;
-                continue;
-            }
-
-            $flag = false;
-
-            for($i = 0; $i <= 3; $i++){
-                if($questions->listAnswerOfQuestion[$i]->is_Correct == true && $questions->listAnswerOfQuestion[$i]->is_UserChoose){
-                    $total_answer_right++;
-                    $flag = true;
-                    break;
-                }
-            }
-
-            if($flag == false)
-                $total_answer_wrong++;
-        }
-
-
-        $this->view("simple2", [
-            "Page"                  => "simple2_student_view_result_exam",
-            "title"                 => "Xem kết quả",
-            "result_id"             => $result_id,
-            "total_answer_right"    => $total_answer_right,
-            "total_answer_wrong"    => $total_answer_wrong,
-            "total_question_not_answer" =>  $total_question_not_answer,
-            "total_question"        => $total_question,
-            "exam_name"             => $exam["Name"],
-            "exam_description"      => $exam["Description"],
-            "exam_time"             => $exam["TimeName"],
-            "exam_amount_of_question"   => $exam["AmountOfQuestion"]
-        ]);
-    }
-
-    public function viewExamResultAnswer($result_id){
-        //Load model
-
-        $examResultModel = $this->model("ExamResultsModel");
-
-        $examModel = $this->model("ExamsModel");
-
-        $question_model = $this->model("QuestionModel");
-
-        $answer_model = $this->model("AnswerModel");
-
-        $user_answer_model = $this->model("UserAnswerModel");
-
-
-
-        $result_id = $this->clear($result_id);
-
-        $exam_result = mysqli_fetch_array($examResultModel->getExamResult($result_id));
-
-        $exam = mysqli_fetch_array($examModel->getExam($exam_result["ExamId"]));
-
-        $is_completed = (bool)$exam_result["Is_completed"];
-
-
-
-        $time_join_parsed = strtotime($exam_result["TimeJoin"]);
-
-        $time_current_parsed = strtotime(date('Y-m-d H:i:s'));
-
-        $timePassed = (int)($time_current_parsed - $time_join_parsed);
-
-
-
-        $exam = mysqli_fetch_array($examModel->getExam($exam_result["ExamId"]));
-
-        $timeWork = ((int)$exam["Time"]) * 60;
-
-        if(($timeWork - $timePassed) <= 0){
-        //lúc này là hết thời gian
-
-            if($is_completed == false){
-                $this->redirect("Student/submitExam/" . $result_id);
-                exit;
-            }
-        
-        }else if(($timeWork - $timePassed) > 0 && $is_completed == false){
-            $this->redirect("Student/doExam/" . $result_id);
-            exit;
-        }
-
-        $ArrQuestions = $this->getAllQuestionAndAnswerOfUser($question_model, $answer_model, $user_answer_model, $exam_result["ExamId"], $result_id, $this->getUserId());
-
-
-        $this->view("simple2", [
-            "Page"                  => "simple2_student_view_result_answer",
-            "title"                 => "Xem đáp án",
-            "all_question"          => $ArrQuestions,
-            "exam_name"         => $exam["Name"],
-            "result_id"           => $result_id,
-            "exam_time"             => $exam["TimeName"],
-            "total_question"        => count($ArrQuestions),
-            "exam_description"      => $exam["Description"]
-        ]);
-    }
-
-    public function viewListExamJoined(){
-
-        //load model
-
-        $exam_result_model = $this->model("ExamResultsModel");
-
-
-
-        $user_id = $this->getUserId();
-
-
-        $exam_result_with_userid = $exam_result_model->getResultWithUserId($user_id);
-
-        $list_result = [];
-
-        while ($row = mysqli_fetch_array($exam_result_with_userid)){
-            $result = new Result();
-
-            $result->exam_name = $row["exam_name"];
-            $result->class_name = $row["class_name"];
-            $result->time_join = $row["time_join"];
-            $result->time_name = $row["time_name"];
-            $result->score = $row["score"];
-            $result->result_id = $row["result_id"];
-            $result->is_completed = $row["is_completed"];
-            $result->type_name = $row["exam_type_name"];
-
-            $list_result[] = $result;
-
-        }
-
-        $this->view("simple2", [
-            "Page"                           => "simple2_student_view_list_exam_joined",
-            "title"                          => "Lịch sử thi",
-            "menu"                          => "simple2_student_menu",
-            "list_result"                   => $list_result
-        ]);
-    }
-
-
-
-    public function ListClasses(){
-
-        $classModel = $this->model("ClassModel");
-        $userId = $this->getUserId();
-        $classResult = $classModel->getListClassesForStudent($userId);
-        $classes = [];
-
-        $gradeModel = $this->model("GradeModel");
-        $gradeResult = $gradeModel->getListGrades();
-        $grades = [];
-        $userClassModel = $this->model("UserClassModel");
-        $total = 0;
-        
-        while ($row = mysqli_fetch_assoc($classResult)) {
-            $classId = (int)$row["ClassId"];
-            $joinClass = $userClassModel->checkUserJoinClass($userId, $classId);
-            $total = $userClassModel->getTotalUserJoinedClass($classId);
-            $row["total"] = $total;
-
-            if($joinClass == true){
-                $row["joined"] = "true";
-            }
-            else{
-                $row["joined"] = "false";
-            }
-
-            array_push($classes, $row);
-        }
-
-        while ($row = mysqli_fetch_assoc($gradeResult)) {
-        array_push($grades, $row);
-        }
-
-            $this->view("simple2", [
-                "Page"                           => "simple2_student_listclasses",
-                "title"                          => "Danh sách lớp học",
-        "classes"                      => $classes,
-        "grades"                       => $grades,
-                "menu"                       => "simple2_student_menu",
-                "totalUserJoinedClass"           => $total 
-            ]);
-    }
-
-    public function JoinClass($classId){
-        $error = [];
-        $classModel = $this->model("ClassModel");
-        $classResult = $classModel->getClassById($classId);
-        $class = mysqli_fetch_assoc($classResult);
-        $classId = $class["ClassId"];
-        $teacherId = $class["UserId"];
-        $password = $class["Password"];
-
-        $userClassModel = $this->model("UserClassModel");
-        $userId = $this->getUserId();
-        $isRequested = $userClassModel->isRequestJoinClass($userId, $classId);
-        $isShowRequestForm = "true";
-        
-        if($isRequested == true){
-            $isShowRequestForm = "false";
-        }
-
-        // $isShowRequestForm = "false";
-
-        $gradeModel = $this->model("GradeModel");
-        $gradeResult = $gradeModel->getGradeNameWithClassId($classId);
-        $grade = mysqli_fetch_assoc($gradeResult);
-        $gradeName = $grade["Name"];
-        
-        $userModel = $this->model("UserModel");
-        $userResult = $userModel->getUser((int)$teacherId);
-        $user = mysqli_fetch_assoc($userResult);
-        $teacherName = $user["FullName"];
-
-        if(isset($_POST["joinClass"])){
-            // insert info about join class for user.
-            $passwordInput = $_POST["PasswordJoinClass"];
-            if(strtolower($passwordInput) != strtolower($password)){
-                $error["password"] = "Mật khẩu nhập không chính xác.";
-            }
-
-            if($error == []){
-                $userClassResult = $userClassModel->insertUserClass($userId, $classId);
-                // $this->redirect("Student/JoinClass/" + $classId);
-            }
-        }
-
-        $this->view("simple2", [
-            "Page"                           => "simple2_student_joinClass",
-            "title"                          => "Join class",
-            "menu"                       => "simple2_student_menu",
-            "class"                      => $class,
-            "error"                      => $error,
-            "grade"                      => $gradeName,
-            "teacher"                        => $teacherName,
-            "isShowRequestForm"              => $isShowRequestForm
-        ]);
-    }
-
-    public function JoinClassWithId(){
-
-        $isShowRequestForm = true;
-        $error = [];
-        $userModel = $this->model("UserModel");
-        $classModel = $this->model("classModel");
-        $userClassModel = $this->model("UserClassModel");
-
-        if(isset($_POST["joinClass"])){
-            $classId = $_POST["classId"];
-            if(!isset($classId)){
-                $error["classId"] = "Vui lòng nhập id lớp học.";
-            }
-            else{
-                try {
-                    $classId = (int)$classId;
-                    // echo $classId;
-                    $userId = $this->getUserId();
-                    $userResult = $userModel->getUser($userId);
-                    $user = mysqli_fetch_assoc($userResult);
-                    $gradeId = $user["GradeId"];
-                    // var_dump($user);
-                    $classResult = $classModel->getClassById($classId);
-                    if(mysqli_num_rows($classResult) <= 0){
-                        $error["classId"] = "ID lớp học không tồn tại.";
-                    }
-                    else{
-                        $class = mysqli_fetch_assoc($classResult);
-                        $password = $class["Password"];
-
-                        $isCorrectGrade = $classModel->isCorrectGrade($classId,$gradeId);
-                    
-                        if($isCorrectGrade == false){
-                            $error["classId"] = "Vui lòng chọn lớp đúng khối.";
-                        }else{
-                            $isRequested = $userClassModel->isRequestJoinClass($userId, $classId);
-                            $isShowRequestForm = "true";
-                            
-                            if($isRequested == true){
-                                $isShowRequestForm = "false";
-                            }else{
-                                $passwordInput = $_POST["PasswordJoinClass"];
-                                
-                                if(strtolower($passwordInput) != strtolower($password)){
-                                    $error["password"] = "Mật khẩu nhập không chính xác.";
-                                }
-                            }
-                        }
-                    }
-                    
-                } catch (Exception $e) {
-                    $error["classId"] = "Nhập số cho id lớp học.";
-                }
-            }
-
-            if($error == []){
-                $userClassResult = $userClassModel->insertUserClass($userId, $classId);
-            }
-        }
-
-        $this->view("simple2", [
-            "Page"                           => "simple2_student_joinWithId",
-            "title"                          => "Join class with id",
-            "menu"                           => "simple2_student_menu",
-            "error"                          => $error,
-            "isShowRequestForm"              => $isShowRequestForm
-        ]);
-    }
-    
 
 
     public function ListClasses(){
@@ -942,6 +561,7 @@ class Question{
     public $Is_have_answer_choosed = false;
 }
 
+
 class Answer{
 
     public $id;
@@ -960,25 +580,7 @@ class UserAnswer{
     public $is_Correct;
 
     public $is_UserChoose;
-}
 
-class Result{
-
-    public $exam_name;
-
-    public $class_name;
-
-    public $time_join;
-
-    public $time_name;
-
-    public $score;
-
-    public $result_id;
-
-    public $is_completed;
-
-    public $type_name;
 }
 
 ?>

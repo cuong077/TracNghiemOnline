@@ -39,20 +39,13 @@
                         </li>
                         
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Student/JoinClassWithId"> <i
+                            <a href="Student/JoinClasses"> <i
                                 class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lớp đã tham gia</span>
                             </a>
                         </li>
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Student/JoinClassWithId"> <i
                                     class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tham gia lớp với ID</span>
-                            </a>
-                        </li>
-
-
-                        <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Student/viewListExamJoined"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Lịch sử thi</span>
                             </a>
                         </li>
 

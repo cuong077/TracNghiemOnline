@@ -67,7 +67,7 @@ class ClassModel extends DB{
 
     public function isCorrectGrade($classId, $gradeId){ 
         $qr = "CALL Class_isCorrectGrade($classId, $gradeId)";  
-
+        // echo $qr;   
         mysqli_next_result($this->con); 
         $result = mysqli_query($this->con, $qr);    
 
