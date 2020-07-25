@@ -939,7 +939,7 @@ iframe.fancybox-iframe {
 
 .pageTitle {
 	text-align: center;
-	width: 50%;
+	width: 100%;
 	display: inline-block;
 	text-transform: capitalize;
 	border: 1px solid #5c8479;

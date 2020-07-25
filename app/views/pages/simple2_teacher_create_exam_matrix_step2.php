@@ -32,7 +32,7 @@
                 <span class="cpointer chapter-title" onclick="iconClick('#i_<?php echo $key_chapter; ?>', '#li-chapter-<?php echo $key_chapter; ?>', '#chapter_3_1_2')"><?php echo $chapters_and_lesson->chapter_name; ?></span>
 
 
-                <input style="width: 50px;text-align: center;" class="chapter_checkbox" style=""  max="100" type="number" data-id="1" data-title="Mũ và Logarit" name="chapter_<?php echo $chapters_and_lesson->chapter_id; ?>" value="6">
+                <input style="width: 50px;text-align: center;" class="chapter_checkbox" style=""  max="100" type="number" data-id="1" data-title="Mũ và Logarit" name="chapter_<?php echo $chapters_and_lesson->chapter_id; ?>" value="">
 
             </li>
 
@@ -51,7 +51,7 @@
 
                     <li class="list-style-none"> <i id="i_1_6" class="c789icon glyphicon glyphicon-plus chapter-input-3-1-1-icon">&nbsp;</i>
                         <span class="cpointer lession-title"><?php echo $lesson->lesson_name; ?></span>
-                        <input style="width: 50px;text-align: center;" class="" style=""  type="number" data-id="6" data-title="Tính đơn điệu của hàm số khi biết công thức f(x), f'(x)" name="lesson[]" value="<?php echo $lesson->lesson_id; ?>" id="lesson_<?php echo $lesson->lesson_id; ?>">
+                        <input style="width: 50px;text-align: center;" class="" style=""  type="number" data-id="6" data-title="Tính đơn điệu của hàm số khi biết công thức f(x), f'(x)" name="lesson[]" value="" id="lesson_<?php echo $lesson->lesson_id; ?>">
 
                     </li>
 
@@ -82,7 +82,7 @@
 
 
 
-<table style="width: 100%;">
+<table style="width: 100%;margin-bottom: 50px;">
     <tbody>
         <tr>
             <td class="col-lg-12">
@@ -111,10 +111,184 @@
             -- My team code
         */
 
+        
+        
 
         $("#loadQuestion").click(function(){
 
+            var number_of_questions = <?php echo $data["number_of_questions"]; ?>;
+
             $("#questionRegion").empty();
+
+            //chuyển dữ liệu vào biến từ DOM
+
+            var chapters = [];
+            var chapters_dom = $("input[name ^= 'chapter_']");
+
+            for(var i = 0; i < chapters_dom.length; i++){
+
+                var chapter_dom = $(chapters_dom[i]);
+
+                var _chapter = { 
+                    id : parseInt(chapter_dom.attr("name").replace("chapter_", "")),
+                    name : chapter_dom.siblings("span").text(),
+                    num_of_ques : chapter_dom.val(),
+                    list_lesson : [],
+                    is_have_lesson_fill : false
+                }
+
+                var lessons = [];
+                var lessons_dom = chapter_dom.parent("li").next("li").find("input[id ^= 'lesson_']");
+
+                for(var j = 0; j < lessons_dom.length; j++){
+
+                    var lesson_dom = $(lessons_dom[j]);
+                    var _lesson = { 
+                        id : parseInt(lesson_dom.attr("id").replace("lesson_", "")),
+                        name : lesson_dom.siblings("span").text(),
+                        num_of_ques : lesson_dom.val()
+                    }
+                    _chapter.list_lesson.push(_lesson);
+
+                }
+
+                chapters.push(_chapter);
+
+            }
+
+
+
+
+            //Xử lí logic kiểm tra xem người dùng nhập đúng hay không?
+            //1 . Tổng câu hỏi điền phải đúng bằng số câu hỏi của đề
+            //2 . Nếu điền vào bài thì phải điền vào chương sao cho phù hợp
+
+            var total_question_fill = 0;
+
+            for(var i = 0; i < chapters.length; i++){
+
+                var total_question_of_all_lesson_fill = 0;
+
+
+                var total_question_lesson_of_current_chapter = 0;
+
+                for(var j = 0; j < chapters[i].list_lesson.length; j++){
+                    if(chapters[i].list_lesson[j].num_of_ques != "")
+                        total_question_lesson_of_current_chapter += parseInt(chapters[i].list_lesson[j].num_of_ques);
+                }
+
+                if(total_question_lesson_of_current_chapter > 0)
+                    chapters[i].is_have_lesson_fill = true;
+
+                if(chapters[i].num_of_ques == ""){
+                    continue;
+                }
+
+                if(parseInt(chapters[i].num_of_ques) != total_question_lesson_of_current_chapter && total_question_lesson_of_current_chapter != 0){
+                     showAlert({ 
+                        'content': 'Nếu điền số câu hỏi cho bài thì tổng số câu hỏi của bài phải bằng số câu hỏi của chương <span style="color:red;">(' + chapters[i].name + ')</span>'});
+
+                     $("input[name = 'chapter_"+ chapters[i].id +"']").focus();
+                    return;
+                }
+
+
+                total_question_fill += parseInt(chapters[i].num_of_ques);
+
+            }
+
+            if(total_question_fill != number_of_questions){
+                showAlert({'content': 'Số câu hỏi điền vào phải bằng với số câu hỏi của đề.'});
+                return;
+            }
+
+
+            //lọc lại data để truyền lên server lấy câu hỏi
+
+            var data = [];
+
+            for(var i = 0; i < chapters.length; i++){
+
+
+                if(chapters[i].is_have_lesson_fill == true){//is lessons
+
+                    for (var j = 0; j < chapters[i].list_lesson.length; j++) {
+                        if(chapters[i].list_lesson[j].num_of_ques != ""){
+                            var item = {
+
+                                is_chapter : false,
+                                id : chapters[i].list_lesson[j].id,
+                                name : chapters[i].list_lesson[j].name,
+                                limit : parseInt(chapters[i].list_lesson[j].num_of_ques)
+
+                            };
+                            data.push(item);
+
+                        }
+                    }
+
+                }else{ //is chapter 
+
+                    if(chapters[i].num_of_ques != ""){
+
+                        var item = {
+
+                            is_chapter : true,
+                            id : chapters[i].id,
+                            name : chapters[i].name,
+                            limit : parseInt(chapters[i].num_of_ques)
+
+                        };
+
+                        data.push(item);
+
+                    }
+
+                }
+
+                
+            } 
+            
+            //console.log(data);
+
+            $.ajax({
+                url: "<?php echo Config::$base_url; ?>Teacher/getListQuestionMatrix",
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+
+                    $("#overlay").fadeOut(300);　
+
+                    if(result.error == true){
+                        showAlert({'content': result.error_message});
+                        return;
+                    }
+
+                    var data = result.list_question;
+
+                    $("#totalSearch").text(data.length);
+
+                    for (var i = 0; i < data.length; i++) {
+                        createQuestionTemplate(data[i].question_id, data[i].content, data[i].breadcrum, data[i].list_answer[0].content, data[i].list_answer[1].content, data[i].list_answer[2].content, data[i].list_answer[3].content);
+                    }
+
+                    
+                }
+                
+            });
+
+
+            
+
+
+
+
+
+            //console.log(chapters);
+            /*
+
             removeAllRight();
 
             var searchLessonIDs = $("input[name = 'lesson[]']:checked").map(function(){
@@ -126,25 +300,12 @@
                 list_lesson : searchLessonIDs
             };
 
-            $.ajax({
-                url: "<?php echo Config::$base_url; ?>Teacher/getListQuestion",
-                type: 'post',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function (data) {
-                    //console.log(data);
 
-                    $("#totalSearch").text(data.length);
 
-                    for (var i = 0; i < data.length; i++) {
-                        createQuestionTemplate(data[i].question_id, data[i].content, data[i].breadcrum, data[i].list_answer[0].content, data[i].list_answer[1].content, data[i].list_answer[2].content, data[i].list_answer[3].content);
-                    }
+            
+            
 
-                    $("#overlay").fadeOut(300);　
-                }
-                
-            });
+            */
         });
 
 
@@ -155,6 +316,7 @@
             }else{
                 $(this).parent("li").next("li").find("input[type = 'checkbox']").prop('checked', false);
             }
+
         });
 
         $("#createExam").click(function(){
@@ -185,15 +347,15 @@
                 }
                 
             });
-
-
         });
+
+
 
         function createQuestionTemplate(question_id, question_content, breadcrumb, answer_1, answer_2, answer_3, answer_4){
 
             $("#questionRegion").append(`
 
-                <li onclick="addQuestion(`+ question_id +`)" class="li-question" id="li_`+ question_id +`" data-id="`+ question_id +`">
+                <li class="li-question" id="li_`+ question_id +`" data-id="`+ question_id +`">
                         <h4>`+ breadcrumb +`</h4>
                         `+ question_content +`
                         <br>
@@ -215,6 +377,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <input name='questions[]' type="hidden" value='`+ question_id +`' />
                     </li>
                     <li style="text-align: right;">
                         <a href="#"> <i class="glyphicon glyphicon-edit"></i> Chỉnh sửa</a>
@@ -242,335 +405,7 @@
         }
 
 
-        String.prototype.trimEnd = function(c) {
-            if (this.length == 0) return this;
-    
-            c = c ? c : ' ';
-            var i = this.length - 1;
-            for (; i >= 0 && this.charAt(i) == c; i--);
-            return this.substring(0, i + 1);
-        }
-        function empty(input) {
-            return input == '' || input == undefined || input == null;
-        }
-        function preview()
-        {
-            var url = 'localhost/TracNghiemOnline/Home/PreviewQuestion?ids=';
-            var ids = '';
-            $('.SelectedQuestionCSS').each(function(){
-                ids += $(this).val() + ',';
-            });
-            ids.trimEnd(',');
-            url += ids;
-            $('#aPreviewHidden').attr('href',url);
-            $('#aPreviewHidden').click();
-        }
-        var currentPage = 1;
-        var numOfPage = 0;
-        var totalRecords = 0;
-        var pageSize = 50;
-    
-        function getMore(idx)
-        {
-            if (idx == 1) {
-                currentPage = currentPage - 1;
-            } else {
-                currentPage = currentPage + 1;
-            }
-    
-            if (currentPage > 1) {
-                $('#aViewMoreTruoc').show();
-            } else {
-                $('#aViewMoreTruoc').hide();
-            }
-            generateQuestion('localhost/TracNghiemOnline/Api/GenerateQuestionV2', '#classId', '#subjectId', '#chapterId', '#lessionId', '#questionRegion', '#ofme');
-    
-            if (currentPage >= numOfPage) {
-                $('#aViewMore').hide();
-                return;
-            }
-        }
-    
-        function generateQuestion(url, jClassId, jSubjectId, jChapterId, jLessionId, jId, jOfmeId) {
-            var classId = $(jClassId).val();
-            var subjectId = $(jSubjectId).val();
-            var chapterId = $(jChapterId).val();
-            var lessionId = $(jLessionId).val();
-            var ofme = $(jOfmeId).val();
-    
-            var classTitle = $(jClassId + ' option:selected').text();
-            var subjectTitle = $(jSubjectId + ' option:selected').text();
-            var chapterTitle = $(jChapterId + ' option:selected').text();
-            var lessionTitle = $(jLessionId + ' option:selected').text();
-            var title = `${classTitle} > ${subjectTitle} > ${chapterTitle} > ${lessionTitle}`;
-            if (empty(classId)) {
-                showAlert({ 'content': 'Chức năng đang phát triển', callBack: function () { $(jClassId).focus(); } });
-                $(jClassId).focus();
-                return;
-            }
-            if (empty(subjectId)) {
-                showAlert({ 'content': 'Quý Thầy cô vui lòng chọn môn học', callBack: function () { $(jSubjectId).focus(); } });
-                $(jSubjectId).focus();
-                return;
-            }
-            if (empty(chapterId)) {
-                showAlert({ 'content': 'Quý Thầy cô vui lòng chương', callBack: function () { $(jChapterId).focus(); } });
-                $(jChapterId).focus();
-                return;
-            }
-            if (empty(lessionId)) {
-                showAlert({ 'content': 'Quý Thầy cô vui lòng bài', callBack: function () { $(jLessionId).focus(); } });
-                $(jLessionId).focus();
-                return;
-            }
-            var params = {
-                classId: classId,
-                subjectId: subjectId,
-                chapterId: chapterId,
-                lessionId: lessionId,
-                ofme: ofme,
-                pageIndex:currentPage
-            };
-    
-            $.post(url, params, function (datas) {
-    
-                var jItems = datas.data;
-                var html = '';
-                if (datas.RC == 1) {
-    
-                    currentPage = parseInt(datas.currentPage);
-                    numOfPage = parseInt(datas.numOfPage);
-                    totalRecords = parseInt(datas.totalRecords);
-                    pageSize = parseInt(datas.pageSize);
-    
-                    if (totalRecords >= pageSize) {
-                        $('#aViewMore').show();
-                    } else {
-                        $('#aViewMore').hide();
-                    }
-                    if (currentPage >= numOfPage) {
-                        $('#aViewMore').hide();
-                    }
-    
-                    $('#totalSearch').html(totalRecords);
-                    for (i = 0; i < jItems.length; i++) {
-                        var jItem = jItems[i];
-                        var tbl = '<table class="table table-bordered table-responsive">';
-                        tbl += '<tr>';
-                        tbl += '<td class="td-a">' + jItem.A1.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '<td class="td-a">' + jItem.A2.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '<td class="td-a">' + jItem.A3.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '<td class="td-a">' + jItem.A4.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '</tr>';
-                        tbl += '</table>';
-    
-                        html += '<li onclick="addQuestion(' + jItem.Id + ')" class="li-question" id="li_' + jItem.Id + '" data-id="' + jItem.Id + '"><h4>' + title + ' </h4>' + jItem.Content.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '<br>' + tbl + '</li>';
-                        html += '<li style="text-align: right;"><a href="localhost/TracNghiemOnline/tao-de-thi.html?id=' + jItem.Id + '" target="_blank"><i class="glyphicon glyphicon-edit"></i> Chỉnh sửa</a></li>';
-    
-                    }
-    
-                    $(jId).html(html);
-    
-                    refreshMathType();
-    
-                } else {
-                    showAlert({ 'content': datas.RD });
-                }
-    
-                //showAlert({ 'content': html });
-            });
-    
-        }
-        function generateQuestionForEdit(url, id, jId) {
-    
-            if (empty(id)) {
-                showAlert({ 'content': 'Dữ liệu không hợp lệ', callBack: function () { $(jClassId).focus(); } });
-                $(jClassId).focus();
-                return;
-            }
-    
-            var classTitle = $('#classId option:selected').text();
-            var subjectTitle = $('#subjectId option:selected').text();
-            var title = `${classTitle} > ${subjectTitle}`;
-    
-            var params = {
-                id: id
-            };
-    
-            $.post(url, params, function (datas) {
-    
-                var jItems = datas.data;
-                var html = '';
-                if (datas.RC == 1) {
-                    $('#totalSearch').html(jItems.length);
-                    for (i = 0; i < jItems.length; i++) {
-                        var jItem = jItems[i];
-                        var tbl = '<table class="table table-bordered table-responsive">';
-                        tbl += '<tr>';
-                        tbl += '<td class="td-a">' + jItem.A1.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '<td class="td-a">' + jItem.A2.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '<td class="td-a">' + jItem.A3.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '<td class="td-a">' + jItem.A4.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '</td>';
-                        tbl += '</tr>';
-                        
-                        tbl += '</table>';
-    
-                        html += '<li onclick="addQuestion(' + jItem.Id + ')" class="li-question" id="li_' + jItem.Id + '" data-id="' + jItem.Id + '"><h4>' + title + ' </h4>' + jItem.Content.replace(new RegExp("www. w3. org/1998/Math/MathML", "g"), "www.w3.org/1998/Math/MathML") + '<br>' + tbl + '</li>';
-                        html += '<li style="text-align: right;"><a href="localhost/TracNghiemOnline/tao-de-thi.html?id=' + jItem.Id + '" target="_blank"><i class="glyphicon glyphicon-edit"></i> Chỉnh sửa</a></li>';
-                    }
-    
-                    $(jId).html(html);
-                    for (i = 0; i < jItems.length; i++) {
-                        var jItem = jItems[i];
-                        addQuestion(jItem.Id);
-                    }
-    
-                    refreshMathType();
-    
-                } else {
-                    showAlert({ 'content': datas.RD });
-                }
-    
-                //showAlert({ 'content': html });
-            });
-        }
-        function refreshMathType() {
-            var scriptMathJax = document.createElement('script');
-            scriptMathJax.src = 'https://cdn.789.vn/Content/MathJax/MathJax.js?config=TeX-MML-AM_CHTML-full';
-            //scriptMathJax.src = 'localhost/TracNghiemOnline/Content/MathJax/MathJax.js?config=TeX-MML-AM_CHTML-full';
-            document.body.appendChild(scriptMathJax);
-    
-            var mathRefresh = document.getElementById("questionRegion");
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, mathRefresh]);
-        }
-        var totalQuestion = 0;
-        function addQuestion(id) {
-            var item = $('#q_' + id).val();
-            if (!empty(item)) {
-                showAlert({ 'content': 'Câu này đã được chọn, Thầy cô vui lòng chọn câu khác!' });
-                return;
-            }
-            var examNumOfQuestion = $('#examNumOfQuestion').val();
-            if (totalQuestion >= examNumOfQuestion) {
-                showAlert({ 'content': `Tổng số câu đã chọn ${totalQuestion} = tổng số câu của bài thi ${examNumOfQuestion}<br>Để chọn câu này, Thầy cô vui lòng bỏ chọn các câu đã chọn, hoặc thêm tổng câu hỏi cho đề thi`, callBack: function () { $('#examNumOfQuestion').focus(); } });
-                $('#examNumOfQuestion').focus();
-                return;
-            }
-            var html = $('#li_' + id).html();
-            var hidden = `<input type="hidden" id="q_${id}" name="questions[]" value="${id}" class="SelectedQuestionCSS">`;
-            var li = `<li onclick="removeQuestion(${id})" class="li-question" id="li_selected_${id}">${hidden}${html}</li>`;
-            $('#questionRegionSelected').append(li);
-            totalQuestion++;
-            $('#totalSelected').html(totalQuestion);
-            $('#li_' + id).addClass('q-selected');
-    
-            //$('#classId').prop("disabled", true);
-            //$('#subjectId').prop("disabled", true);
-            //$('#ofme').prop("ofme", true);
-            //ennableSave();
-        }
-        function removeQuestion(id) {
-            $('#li_' + id).removeClass('q-selected');
-            $('#li_selected_' + id).remove();
-            totalQuestion--;
-            $('#totalSelected').html(totalQuestion);
-            //ennableSave();
-        }
-        function getChapter(url, class_id, subject_id, jId) {
-            if (empty(subject_id) || subject_id <= 0 || empty(class_id) || class_id <= 0) {
-                //alert('Dữ liệu không hợp lệ: ' + subject_id + '-' + class_id);
-                return;
-            }
-            var uid = 0;
-            var ofme = $('#ofme').val();
-            if(ofme == 1)
-            {
-                uid = 220762;
-            }
-            var params = {
-                action: 'chapter',
-                class_id: class_id,
-                subject_id: subject_id,
-                uid:uid
-            };
-            $.post(url, params, function (datas) {
-                $(jId).html(datas.HTML);
-                currentPage = 1;
-                numOfPage = 0;
-                totalRecords = 0;
-                pageSize = 50;
-                if(220762 != 37153)
-                {
-                    $("#chapterId option[value='167']").remove();
-                }
-            });
-        }
-        function getLesson(url, chapter_id, jId) {
-            if (empty(chapter_id) || chapter_id <= 0) {
-                //showAlert({ content: 'Dữ liệu không hợp lệ' });
-                return;
-            }
-            var uid = 0;
-            var ofme = $('#ofme').val();
-            if(ofme == 1)
-            {
-                uid = 220762;
-            }
-            var params = {
-                action: 'lesson',
-                chapter_id: chapter_id,
-                uid:uid
-            };
-            $.post(url, params, function (datas) {
-                $(jId).html(datas.HTML);
-                currentPage = 1;
-                numOfPage = 0;
-                totalRecords = 0;
-                pageSize = 50;
-            });
-        }
-        function reset1()
-        {
-            $('#classId').val('');
-            $('#subjectId').val('');
-        }
-        function addAllLeftToRight()
-        {
-            totalQuestion = 0;
-            removeAllRight();
-            var examNumOfQuestion = $('#examNumOfQuestion').val();
-            var index = 1;
-            $('#questionRegion li').each(function () {
-                var id = $(this).attr('data-id');
-                if (id != undefined)
-                {
-                    var item = $('#q_' + id).val();
-                    if (empty(item)) {
-                        if (index > examNumOfQuestion) {
-                            return;
-                        } else {
-                            totalQuestion = index;
-                            var html = $('#li_' + id).html();
-                            var hidden = `<input type="hidden" id="q_${id}" name="questions[]" value="${id}" class="SelectedQuestionCSS">`;
-                            var li = `<li onclick="removeQuestion(${id})" class="li-question" id="li_selected_${id}">${hidden}${html}</li>`;
-                            $('#questionRegionSelected').append(li);
-                            $('#totalSelected').html(totalQuestion);
-                            $('#li_' + id).addClass('q-selected');
-                            //ennableSave();
-                            index++;
-                        }
-                    }
-                }
-            });
-        }
-        function removeAllRight()
-        {
-            totalQuestion = 0;
-            $('#totalSelected').html(totalQuestion);
-            $('#questionRegionSelected').html('');
-            $('#questionRegion li').removeClass('q-selected');
-            //ennableSave();
-        }
+       
 </script>
 
 
@@ -665,8 +500,6 @@
         list-style: none;
         padding: 0px;
         margin: 0px;
-        height: 600px;
-        overflow-y: scroll;
         overflow-x: no-display;
     }
 
