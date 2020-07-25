@@ -49,7 +49,6 @@
                                     <th class="col-lg-2 text-center">Tên bài thi</th>
                                     <th class="col-lg-2 text-center">Mô tả</th>
                                     <th class="col-lg-2 text-center">Ngày tạo</th>
-                                    <th class="col-lg-2 text-center">Tình trạng</th>
                                     <th class="col-lg-2 text-center">Thao tác</th>
                                 </tr>
                             </thead>
@@ -70,44 +69,12 @@
                                     <td class="text-center">
                                         <?php echo $exam[3];?>
                                     </td>
-                                    <td class="text-center">
-                                        <?php 
-                                        $isJoined = $exam["isJoined"];
-                                        $isCompleted = (bool)$exam["isCompleted"];
 
-                                        if($isJoined == true){
-                                            if($isCompleted == true){
-                                                echo '</span class="text-success">Đã hoàn thành bài thi.</span>';
-                                            }
-                                            else{
-                                                echo "Tiếp tục làm bài thi";
-                                            }
-                                        }
-                                        else{
-                                            echo "Tham gia bài thi.";
-                                        }
-                                        ?>
-                                    </td>
                                     <td class="text-center">
-                                        <?php 
-                                        $isJoined = $exam["isJoined"];
-                                        $isCompleted = (bool)$exam["isCompleted"];
 
-                                        if($isJoined == true && $isCompleted == true){
-                                            ?>
-                                        <a class="accordion-toggle btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/viewExamResult/<?php echo $exam["ResultId"];?>"> Xem kết quả
-                                        </a>
-                                        <?php
-                                        }
-                                        else{
-                                            ?>
                                         <a class="btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/joinExam/<?php echo $exam[0];?>"> Tham gia thi </a>
+                                            href="Teacher/StatisticalExam/<?php echo $exam[0];?>"> Thống kê </a>
 
-                                        <?php    
-                                        }
-                                        ?>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -178,12 +145,12 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <a class="btn btn-success" style="margin-bottom: 5px;"
-                                            href="Student/viewExamResult/<?php echo $execire["ResultId"];?>"> Xem kết
+                                        <a class="btn btn-success"
+                                            href="Teacher/viewExamResult/<?php echo $execire["ResultId"];?>"> Xem kết
                                             quả
                                         </a>
                                         <a class="btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/joinExam/<?php echo $execire[0];?>"> Tham gia thi </a>
+                                            href="Teacher/joinExam/<?php echo $execire[0];?>"> Tham gia thi </a>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -279,14 +246,14 @@
                                         if($isJoined == true && $isCompleted == true){
                                             ?>
                                         <a class="accordion-toggle btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/viewExamResult/<?php echo $exam["ResultId"];?>"> Xem kết quả
+                                            href="Teacher/viewExamResult/<?php echo $exam["ResultId"];?>"> Xem kết quả
                                         </a>
                                         <?php
                                         }
                                         else{
                                             ?>
                                         <a class="btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/joinExam/<?php echo $exam[0];?>"> Tham gia thi </a>
+                                            href="Teacher/joinExam/<?php echo $exam[0];?>"> Tham gia thi </a>
 
                                         <?php    
                                         }

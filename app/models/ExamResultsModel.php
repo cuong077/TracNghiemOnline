@@ -19,6 +19,48 @@
 
     }
 
+    public function getListScore($examId){
+      $qr = "CALL Result_getListScore($examId)";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+
+      return $result;
+    }
+    
+    public function getAvgScore($examId){
+      $qr = "CALL Result_getAvgScore($examId)";
+      mysqli_next_result($this->con);
+      $result =  mysqli_query($this->con, $qr);
+      $fetch = mysqli_fetch_assoc($result);
+      
+      return $fetch["avg"];
+    }
+
+    public function getPerUpperavgScore($avgScore, $examId){
+      $qr = "CALL Result_getPerUpperavgScore($avgScore, $examId)";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+
+      return $result;
+    }
+
+    public function getUpperAvgOfExam($avgScore, $examId){
+      $qr = "CALL Result_getUpperAvgOfExam($avgScore, $examId)";
+      // echo $qr;
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+
+      return $result;
+    }
+
+    public function getTotalUserOfExam($examId){
+      $qr = "CALL Result_getTotalUserOfExam($examId)";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+
+      return $result;
+    }
+
     public function getExamResult($result_id){
 
       $qr = "CALL Result_getResult($result_id)";

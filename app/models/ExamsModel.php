@@ -18,12 +18,20 @@
       return false;
     }
 
-    public function getListExamsByClassId($classId){
-      $qr = "CALL Exam_getListExamsByClassId($classId)";
+    public function getListExamsByClassIdWith($classId){
+      $qr = "CALL Exam_getListExamsByClassIdWith($classId)";
       // echo $qr;
       mysqli_next_result($this->con);
       $result = mysqli_query($this->con, $qr);
 
+      return $result;
+    }
+
+    public function getListExamsByClassIdWithExamType($classId){
+      $qr = "CALL Class_getListExamsByClassIdWithExamType($classId)";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+      
       return $result;
     }
 

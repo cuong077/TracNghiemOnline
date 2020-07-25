@@ -20,11 +20,11 @@
                 <tr class="text-center">
                     <th class="col-lg-1 text-center">STT</th>
                     <th class="col-lg-3 text-center">Tên lớp học</th>
-                    <th class="col-lg-4 text-center">Mô tả</th>
+                    <th class="col-lg-3 text-center">Mô tả</th>
                     <th class="col-lg-2 text-center">Khối lớp</th>
                     <th class="col-lg-1 text-center">Password</th>
                     <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-1 text-center">Chỉnh sửa</th>
+                    <th class="col-lg-2 text-center">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,8 +56,11 @@
                     <td class="text-center"><?php echo $row["Password"]; ?></td>
                     <td class="text-center"><?php echo $row["total"]; ?></td>
                     <td class="text-center">
-                        <a class='btn btn-success btn-md' href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
+                        <a class="btn btn-success btn-sm" style="margin-bottom: 15px;" href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
                             <span class="glyphicon glyphicon-edit"></span> Sửa
+                        </a>
+                        <a class="btn btn-success btn-sm"  href="Teacher/ListResourceClass/<?php echo $row["ClassId"];?>">
+                            <span class="glyphicon glyphicon-edit"></span> Xem
                         </a>
                     </td>
                 </tr>

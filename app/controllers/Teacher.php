@@ -1207,6 +1207,139 @@ class Teacher extends Controller{
 			"menu"				=> "simple2_teacher_menu"
 		]);
 	}
+
+	public function ListResourceClass($classId){
+        $errors = [];
+        
+        $userClassModel = $this->model("UserClassModel");
+        $examResultModel = $this->model("ExamResultsModel");
+
+        $teacherId = $this->getUserId();
+
+        $examinations = [];
+        $execires = [];
+
+		$examModel = $this->model("ExamsModel");
+		$examResult = $examModel->getListExamsByClassIdWith($classId);
+		// print_r($examResult);
+
+		while($exam = mysqli_fetch_assoc($examResult)){
+			$rowToAdd = [];
+			$examId = $exam["ExamId"];
+			
+			array_push($rowToAdd, $examId);
+			array_push($rowToAdd, $exam["Name"]);
+			array_push($rowToAdd, $exam["Description"]);
+			$cretedDate = new DateTime($exam["CreatedDate"]);
+			$createdDateFormated = $cretedDate->format("m-d-Y");
+			array_push($rowToAdd, $createdDateFormated);
+
+			$isJoined = false;
+			$isCompleted = false;
+
+			$examresultResult = $examResultModel->getExamResultWithID($examId, $studentId);
+		
+			if(mysqli_num_rows($examresultResult) > 0){
+			//kiem tra is_completed
+				$result_fetch = mysqli_fetch_array($examresultResult);
+		
+				$isJoined = true;
+				$isCompleted = (bool)$result_fetch["Is_completed"];
+				
+				$examResultID = $result_fetch["ResultId"];
+				$rowToAdd["ResultId"] = $examResultID;
+			}
+			
+			$examinations["ClassId_" . $classId] = $rowToAdd;
+		}
+
+		$execriResult = $examModel->getListExamsByClassIdWithExamType($classId);
+
+		while($exam = mysqli_fetch_assoc($execriResult)){
+			$rowToAdd = [];
+			$examId = $exam["ExamId"];
+			
+			array_push($rowToAdd, $examId);
+			array_push($rowToAdd, $exam["Name"]);
+			array_push($rowToAdd, $exam["Description"]);
+			$cretedDate = new DateTime($exam["CreatedDate"]);
+			$createdDateFormated = $cretedDate->format("m-d-Y");
+			array_push($rowToAdd, $createdDateFormated);
+
+			$rowToAdd["ResultId"] = $examResultID;
+			$execires["ClassId_" . $classId] = $rowToAdd;
+		}
+
+		// lấy tài liệu ra để thể hiện
+		// $execriResult = $examModel->getListExamsByClassIdWithExamType($classId);
+
+		// while($exam = mysqli_fetch_assoc($execriResult)){
+		//     $rowToAdd = [];
+		//     $examId = $exam["ExamId"];
+			
+		//     array_push($rowToAdd, $examId);
+		//     array_push($rowToAdd, $exam["Name"]);
+		//     array_push($rowToAdd, $exam["Description"]);
+		//     $cretedDate = new DateTime($exam["CreatedDate"]);
+		//     $createdDateFormated = $cretedDate->format("m-d-Y");
+		//     array_push($rowToAdd, $createdDateFormated);
+
+		//     $rowToAdd["ResultId"] = $examResultID;
+		//     $execires["ClassId_" . $classId] = $rowToAdd;
+		// }
+	
+		// var_dump($examinations);
+
+        $this->view("simple2", [
+            "Page"                           => "simple2_teacher_listResourceClass",
+            "title"                          => "Dữ liệu lớp học",
+            "menu"                           => "simple2_teacher_menu",
+            "errors"                         => $errors,
+            "examinations"                   => $examinations,
+            "execires"                       => $execires,
+        ]);   
+	}
+	
+	public function StatisticalExam($examId){
+		$examResultsModel = $this->model("ExamResultsModel");
+		$examResultsResult = $examResultsModel->getListScore($examId);
+		
+		$scores = [];
+
+		while ($score = mysqli_fetch_assoc($examResultsResult)) {
+			array_push($scores, $score["Score"]);
+		}
+
+		$avgScore = $examResultsModel->getAvgScore($examId);
+		// var_dump($avgScore);
+		// $avgScoreResult = mysqli_fetch_assoc($examresultResult);
+		// var_dump($avgScoreResult);
+
+		// $avgScore = $avgScoreResult["avg"];
+
+		$upperAvgResult = mysqli_fetch_assoc($examResultsModel->getUpperAvgOfExam($avgScore, $examId));
+		// var_dump($upperAvgResult);
+		
+		$upperAvg = $upperAvgResult["upper"];
+
+		$totalResult = mysqli_fetch_assoc($examResultsModel->getTotalUserOfExam($examId));
+		$total = $totalResult["total"];
+
+		$perUpperAvg = ((int)$upperAvg*100)/(int)$total;
+		// var_dump($total, $upperAvg, $avgScore, $perUpperAvg);
+
+		$scores = json_encode($scores);
+		// print_r($scores);
+		$this->view("simple2", [
+            "Page"                           => "simple2_teacher_statisticalExam",
+            "title"                          => "Thống kê bài thi",
+            "menu"                           => "simple2_teacher_menu",
+            "errors"                         => $errors,
+            "scores"                         => $scores,
+			"avgScore"                       => $avgScore,
+			"perUpperAvg"					 => $perUpperAvg
+        ]);   
+	}
 	
 }
 
