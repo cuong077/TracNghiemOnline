@@ -57,8 +57,14 @@
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Xem danh sách đề
-                                    thi</span>
+
+                            <a href="Teacher/createExerciseSelection"> <i
+                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo bài tập về nhà</span>
+                            </a>
+                        </li>
+
+                        <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
+                            <a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách đề thi</span>
                             </a>
                         </li>
 
