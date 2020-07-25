@@ -644,6 +644,7 @@ class Student extends Controller{
             if($error == []){
                 $userClassResult = $userClassModel->insertUserClass($userId, $classId);
                 // $this->redirect("Student/JoinClass/" + $classId);
+                $isShowRequestForm = "false";
             }
         }
 

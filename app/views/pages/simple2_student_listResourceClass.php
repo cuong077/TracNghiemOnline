@@ -156,6 +156,7 @@
                                     <th class="col-lg-2 text-center">Tên bài thi</th>
                                     <th class="col-lg-2 text-center">Mô tả</th>
                                     <th class="col-lg-2 text-center">Ngày tạo</th>
+                                    <th class="col-lg-2 text-center">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
