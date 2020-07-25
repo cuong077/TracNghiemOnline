@@ -11,51 +11,52 @@ class Student extends Controller{
     
 
 
+    //Exam
+
     public function joinExam($exam_id){
 
-      // Khi join vào bài thi hệ thống sẽ kiểm tra người này đã làm bài thi này lần nào chưa?
+        // Khi join vào bài thi hệ thống sẽ kiểm tra người này đã làm bài thi này lần nào chưa?
         // Nếu chưa thì tạo mới và chuyển sang trang làm bài thi
         // Nếu có rồi thì kiểm tra là bài thi này đã làm xong chưa?
         // Nếu đã làm xong thì tạo bài thi mới và chuyển sang làm bài thi
         // Nếu chưa làm xong thì chuyển sang trang làm bài tiếp tục
 
-    $userid = $this->getUserId();
+        $userid = $this->getUserId();
 
 
         //Load model
 
-    $examResultModel = $this->model("ExamResultsModel");
+        $examResultModel = $this->model("ExamResultsModel");
 
-    $examModel = $this->model("ExamsModel");
+        $examModel = $this->model("ExamsModel");
 
-    $userAnswerModel = $this->model("UserAnswerModel");
+        $userAnswerModel = $this->model("UserAnswerModel");
 
-    $questionModel = $this->model("QuestionModel");
+        $questionModel = $this->model("QuestionModel");
 
-    $answerModel = $this->model("AnswerModel");
-        
-
-
-      $is_joined = false;
-      $is_completed = false;
+        $answerModel = $this->model("AnswerModel");
+            
 
 
-      $examresult_result = $examResultModel->getExamResultWithID($exam_id, $userid);
+        $is_joined = false;
+        $is_completed = false;
 
 
-      if(mysqli_num_rows($examresult_result) > 0){
-        $result_fetch = mysqli_fetch_array($examresult_result);
+        $examresult_result = $examResultModel->getExamResultWithID($exam_id, $userid);
 
-        $is_joined = true;
-        $is_completed = (bool)$result_fetch["Is_completed"];
-        $examResultID = $result_fetch["ResultId"];
-      }
+
+        if(mysqli_num_rows($examresult_result) > 0){
+            $result_fetch = mysqli_fetch_array($examresult_result);
+
+            $is_joined = true;
+            $is_completed = (bool)$result_fetch["Is_completed"];
+            $examResultID = $result_fetch["ResultId"];
+        }
       
       
-      if($is_joined != true){
+        if($is_joined != true){
 
         //chưa tham gia thì cho tham gia mới từ đầu
-
         $date = date('Y-m-d H:i:s');
         $newExamResultID = $examResultModel->addExamResult($date, $userid, $exam_id, 0);
 
@@ -71,7 +72,7 @@ class Student extends Controller{
 
             exit;
 
-      }else if($is_joined == true && $is_completed != true){
+        }else if($is_joined == true && $is_completed != true){
 
         //đã tham gia nhưng chưa làm xong thì cho làm tiếp
 
@@ -80,7 +81,7 @@ class Student extends Controller{
 
         }else{
 
-          //đã tham gia và đã làm xong thì cho đi xem kết quả :)))
+        //đã tham gia và đã làm xong thì cho đi xem kết quả :)))
             $this->redirect("Student/viewExamResult/" . $examResultID);
             exit;
         }
@@ -216,6 +217,17 @@ class Student extends Controller{
         $this->redirect("Student/viewExamResult/".$result_id);
         exit;
     }
+
+
+
+
+    //Exercise
+
+
+    
+
+
+    //Result
 
     public function viewExamResult($result_id){
 
