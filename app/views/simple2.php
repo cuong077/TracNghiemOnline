@@ -502,6 +502,9 @@
         if (window.location.href.search("Student/doExam") > -1)
             return;
 
+        if (window.location.href.search("Student/doExercise") > -1)
+            return;
+
         $("#overlay").fadeIn(300);
     });
 
