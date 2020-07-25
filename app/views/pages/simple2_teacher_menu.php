@@ -63,10 +63,10 @@
                             </a>
                         </li>
 
-                        <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
+                        <!-- <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách đề thi</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Teacher/ListStudentsRequest"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Duyệt học sinh vào lớp</span>

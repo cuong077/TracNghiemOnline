@@ -30,6 +30,7 @@ class AnswerModel extends DB{
 	public function deleteAnswer($questionId)
 	{
 		$qr = "DELETE FROM answer WHERE id='$questionId'";
+        mysqli_next_result($this->con);
 
 		if (mysqli_query($this->con, $qr)) {
 			return true;

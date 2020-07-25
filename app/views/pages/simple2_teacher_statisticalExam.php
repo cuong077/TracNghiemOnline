@@ -15,10 +15,16 @@
 
 
     <div class="row">
-        <canvas id="lineScores"></canvas>
+        <canvas id="lineScores" style="width:400px;"></canvas>
         <!-- <canvas ></canvas> -->
+        <div class="row">
         <div class="chart-container" style="height:400px; width:400px;">
             <canvas id="pieScores"></canvas>
+        </div>
+        <div class="col-sm-6">
+        <h3>Điểm trung bình bài thi là: <?php echo $data["avgScore"];?></h3>
+        </div>
+        
         </div>
     </div>
 </div>
@@ -132,7 +138,7 @@ $(document).ready(function() {
     let myChart = new Chart(ctxPie, {
         type: 'pie',
         data: {
-            labels: ["Dưới điểm trung bình môn", "Trên điểm trung bình môn"],
+            labels: ["Dưới điểm trung bình bài thi", "Trên điểm trung bình bài thi"],
             datasets: [
             {
                 data: [ <?php echo (int)$data["perUpperAvg"];?>, <?php echo 100 - (int)$data["perUpperAvg"]; ?> ],

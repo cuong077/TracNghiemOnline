@@ -4,6 +4,9 @@
     .ban-tin-789 {
         background-color: #212121;
     }
+    .same-width{
+        width: 80px;
+    }
     </style>
 
     <section id=" text-center" style="margin-bottom:20px;">
@@ -56,11 +59,14 @@
                     <td class="text-center"><?php echo $row["Password"]; ?></td>
                     <td class="text-center"><?php echo $row["total"]; ?></td>
                     <td class="text-center">
-                        <a class="btn btn-success btn-sm" style="margin-bottom: 15px;" href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
+                        <a class="btn btn-success btn-sm same-width" style="margin-bottom: 15px;" href="Teacher/EditClass/<?php echo $row["ClassId"];?>">
                             <span class="glyphicon glyphicon-edit"></span> Sửa
                         </a>
-                        <a class="btn btn-success btn-sm"  href="Teacher/ListResourceClass/<?php echo $row["ClassId"];?>">
-                            <span class="glyphicon glyphicon-edit"></span> Xem
+                        <a class="btn btn-success btn-sm same-width" style="margin-bottom: 15px;" href="Teacher/ListResourceClass/<?php echo $row["ClassId"];?>">
+                            <span class="glyphicon glyphicon-th-list"></span> Xem
+                        </a>
+                        <a class="btn btn-success btn-sm same-width"  href="Teacher/AddExamExecire/<?php echo $row["ClassId"];?>">
+                            <span class="glyphicon glyphicon-plus"></span> Thêm
                         </a>
                     </td>
                 </tr>
@@ -520,19 +526,6 @@ $(document).ready(function() {
 
     // $("tr")
 
-    $("tr").click(function() {
-
-        $rowId = $(this).attr("id");
-        $arr = $rowId.split("Class_");
-        $classId = $arr[1];
-        
-        $arr = $(location).attr("href").split("/");
-        $index = $arr.indexOf("Teacher");
-        $url = $arr.slice(0, $index + 1).join("/") + "/ListStudentsClass/" + $classId;
-        location.replace($url);
-        // console.log($url);
-    });
-
 });
 </script>
 <style>
@@ -622,35 +615,3 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 </script>
-<!-- Your customer chat code -->
-<div class="fb-customerchat" attribution=setup_tool page_id="150549311785593"
-    logged_in_greeting="Xin chào, Trường học thông minh 789.vn có thể giúp gì cho bạn?"
-    logged_out_greeting="Xin chào, Trường học thông minh 789.vn có thể giúp gì cho bạn?"></div>
-<div id="myPopup" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content">...</div>
-    </div>
-</div>
-<div id="ajax-loading" class="modal-backdrop fade in hidden">
-    <img src="https://cdn.789.vn/Content/nganhangdethi/img/loading.gif" />
-    <div>
-        <label>Nhấp double chuột để hủy.</label>
-    </div>
-</div>
-<div class="modal fade" id="tinyPopup" tabindex="-1" role="dialog" aria-labelledby="tinyPopupLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span>
-                </button>
-                <h4 class="modal-title" id="tinyPopupLabel">[Title]</h4>
-            </div>
-            <div class="modal-body" id="tinyPopupBody">[body]</div>
-        </div>
-    </div>
-</div>
-</body>
-
-</html>

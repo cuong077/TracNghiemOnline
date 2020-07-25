@@ -60,6 +60,7 @@
 	public function checkSubjectExistBySubjectName($subjectName, $gradeId){
 		$subjectName = trim($subjectName);
 		$qr = "CALL Subject_CheckExistsSubjectWithSubjectName('$subjectName', $gradeId)";
+		// echo $qr;
 		$result = mysqli_query($this->con, $qr);
 
 		if(mysqli_num_rows($result) > 0){

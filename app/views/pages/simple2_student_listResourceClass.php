@@ -9,7 +9,7 @@
 
     <section id=" text-center" style="margin-bottom:20px;">
         <div class="text-center">
-            <h2 class="pageTitle" style="">Danh sách </h2>
+            <h2 class="pageTitle" style="">Danh sách bài</h2>
         </div>
     </section>
 
@@ -17,7 +17,7 @@
         id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
-    <div class="row" style="margin-left: 30px;">
+    <div class="row" style="margin-left: 0px;">
         <!-- <div > -->
         <?php 
             $examinations = $data["examinations"];
@@ -156,7 +156,6 @@
                                     <th class="col-lg-2 text-center">Tên bài thi</th>
                                     <th class="col-lg-2 text-center">Mô tả</th>
                                     <th class="col-lg-2 text-center">Ngày tạo</th>
-                                    <th class="col-lg-2 text-center">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -211,112 +210,6 @@
             </div><!-- /accordion -->
         </div>
 
-
-        <div class="menu" id="docs">
-            <div class="accordion">
-                <!-- Áreas -->
-                <div class="accordion-group">
-                    <!-- Área -->
-                    <div class="accordion-heading area">
-                        <a class="accordion-toggle text-center" data-toggle="collapse" href="#area3"
-                            style="border-bottom: 1px solid black;">Danh sách tài liệu</a>
-                    </div><!-- /Área -->
-
-                    <div style="padding: 15px;">
-                        <?php if(count($docs) > 0){?>
-                        <table class="table table-bordered table-responsive text-center" id="area3"
-                            style="margin-top: 30px;">
-                            <thead>
-                                <tr class="text-center">
-                                    <th class="col-lg-1 text-center">STT</th>
-                                    <th class="col-lg-2 text-center">Tên bài thi</th>
-                                    <th class="col-lg-2 text-center">Mô tả</th>
-                                    <th class="col-lg-2 text-center">Ngày tạo</th>
-                                    <th class="col-lg-2 text-center">Tình trạng</th>
-                                    <th class="col-lg-2 text-center">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                $index = 0;
-                                foreach($examinations as $exam ){
-                                    // var_dump($exam);
-                                    $index++;
-                                ?>
-
-                                <tr id="Class_<?php echo $exam[0];?>">
-                                    <td class="text-center"><?php echo $index;?></td>
-                                    <td class="text-center">
-                                        <?php echo $exam[1];?>
-                                    </td>
-                                    <td class="text-center"><?php echo $exam[2];?></td>
-                                    <td class="text-center">
-                                        <?php echo $exam[3];?>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php 
-                                        $isJoined = $exam["isJoined"];
-                                        $isCompleted = (bool)$exam["isCompleted"];
-
-                                        if($isJoined == true){
-                                            if($isCompleted == true){
-                                                echo '</span class="text-success">Đã hoàn thành bài thi.</span>';
-                                            }
-                                            else{
-                                                echo "Tiếp tục làm bài thi";
-                                            }
-                                        }
-                                        else{
-                                            echo "Tham gia bài thi.";
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php 
-                                        $isJoined = $exam["isJoined"];
-                                        $isCompleted = (bool)$exam["isCompleted"];
-
-                                        if($isJoined == true && $isCompleted == true){
-                                            ?>
-                                        <a class="accordion-toggle btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/viewExamResult/<?php echo $exam["ResultId"];?>"> Xem kết quả
-                                        </a>
-                                        <?php
-                                        }
-                                        else{
-                                            ?>
-                                        <a class="btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/joinExam/<?php echo $exam[0];?>"> Tham gia thi </a>
-
-                                        <?php    
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                        <?php } else{?>
-                        <!-- show alert 0 examinations -->
-                        <div class="accordion-body collapse" id="area3">
-                            <div class="accordion-inner">
-                                <div class="accordion" id="equipamento1">
-                                    <!-- Equipamentos -->
-
-                                    <div class="accordion-group">
-                                        <div class="accordion-heading equipamento text-center">
-                                            <span class="text text-warning">Không có bài thi nào trong lớp.</span>
-                                        </div><!-- Pontos -->
-
-                                    </div><!-- /Equipamentos -->
-                                </div>
-                            </div>
-                        </div>
-                        <?php }?>
-                    </div>
-                </div>
-            </div><!-- /accordion -->
-        </div>
         <?php   } else{
             ?>
 

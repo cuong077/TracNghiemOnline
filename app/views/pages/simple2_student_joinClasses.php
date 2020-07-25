@@ -27,7 +27,7 @@
                     <th class="col-lg-2 text-center">Khối lớp</th>
                     <th class="col-lg-2 text-center">Giáo viên</th>
                     <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-2 text-center">Hành động</th>
+                    <th class="col-lg-2 text-center">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,7 +55,7 @@
                     <td class="text-center"> <?php echo $class[4]; ?> </td>
                     <td class="text-center"><?php echo $class[5]; ?></td>
                     <td class="text-center">
-                        <a href="Student/viewListExaminationExerciseDocument/<?php echo $class[0]; ?>"
+                        <a href="Student/ListResourceClass/1<?php echo $class[0]; ?>"
                             class="btn btn-success">Xem</a>
                     </td>
                 </tr>

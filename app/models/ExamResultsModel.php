@@ -156,6 +156,8 @@
     public function checkExistExamResultOfUser($user_id, $exam_id){
 
       $qr = "select * from exam_results where user_id = $user_id and exam_id = $exam_id order by id desc limit 1";
+      mysqli_next_result($this->con);
+
       $result = mysqli_query($this->con, $qr);
 
       if(mysqli_num_rows($result) > 0){

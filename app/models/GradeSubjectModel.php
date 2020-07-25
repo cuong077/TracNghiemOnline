@@ -18,6 +18,8 @@ class GradeSubjectModel extends DB
     public function getGradeIdBySubjectId($subjectId){
         $qr = "CALL GradeSubject_GetGradeIdWithSubjectId('$subjectId')";
         // echo $qr;
+        mysqli_next_result($this->con);
+
         $result = mysqli_query($this->con, $qr);
         return $result;
     }
@@ -34,6 +36,8 @@ class GradeSubjectModel extends DB
     public function getSubjectsByGradeId($GradeId){
         $qr = "CALL GradeSubject_GetSubjectsWithGradeID($GradeId)";
         // echo $qr;
+        mysqli_next_result($this->con);
+
         $result = mysqli_query($this->con, $qr);
 
         if(mysqli_num_rows($result) > 0)
@@ -44,7 +48,8 @@ class GradeSubjectModel extends DB
 
     public function updateGradeId($subjectId, $gradeId){
         $qr = "CALL GradeSubject_UpdateGradeIdBySubjectId($subjectId, $gradeId)";
-        
+        mysqli_next_result($this->con);
+
         if(mysqli_query($this->con, $qr)){
             return true;
         }
