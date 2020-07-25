@@ -85,7 +85,7 @@
                       
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <a class="btn btn-default" href="Manager/GetListUser">Quay lại</a>
+                            <a class="btn btn-default" href="Manager/ListUsers">Quay lại</a>
                             <button type="submit" name="UpdateUser" class="btn btn-info pull-right">Cập nhật</button>
                         </div>
                         <!-- /.box-footer -->

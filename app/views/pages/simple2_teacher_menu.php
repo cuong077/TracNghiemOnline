@@ -33,18 +33,18 @@
                         </li>
                         <li class="li-sub-menu list-style-none">
                             <a href="Teacher/createQuestion"> <i
-                                    class="glyphicon glyphicon-folder-open icon-menu"></i><span>Thêm câu hỏi cho bài
+                                    class="glyphicon glyphicon-folder-open icon-menu"></i><span> Thêm câu hỏi cho bài
                                     học</span>
                             </a>
                         </li>
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Teacher/CreateClass"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo lớp</span>
+                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Tạo lớp</span>
                             </a>
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/ListClasses"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách
+                            <a href="Teacher/ListClasses"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Xem danh sách
                                     lớp</span>
                             </a>
                         </li>
@@ -52,35 +52,23 @@
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
                             <a href="Teacher/createExamSelection"> <i
-                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Tạo đề thi</span>
+                                    class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Tạo đề thi</span>
                             </a>
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Xem danh sách đề
+                            <a href="#"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Xem danh sách đề
                                     thi</span>
                             </a>
                         </li>
 
                         <li class="li-sub-menu list-style-none" id="dang-ky-day-kem">
-                            <a href="Teacher/ListStudentsRequest"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span>Duyệt học sinh vào lớp</span>
+                            <a href="Teacher/ListStudentsRequest"> <i class="glyphicon glyphicon-sunglasses icon-menu"></i><span> Duyệt học sinh vào lớp</span>
                             </a>
                         </li>
 
 
-                        <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase">Tài
-                                khoản</span>
-                        </li>
-                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
-                            <a href="Profile/EditProfile"> <i
-                                    class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thông tin tài
-                                    khoản</span>
-                            </a>
-                        </li>
-                        <li class="li-sub-menu list-style-none" id="thong-tin-tai-khoan">
-                            <a href="Profile/ChangePassword"> <i
-                                    class="glyphicon glyphicon-info-sign icon-menu"></i><span>Thay đổi mật khẩu</span>
-                            </a>
+                        <li class="li-sub-menu list-style-none menu-main-item"> <span class="text-uppercase"></span>
                         </li>
                     </ul>
                 </div>

@@ -251,6 +251,9 @@
 
                             <?php }else{ ?>
 
+                            <li><a disabled><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Wellcome 
+                                    <?php echo $_SESSION['username'];?></a></li>
+
                             <?php if ((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 1)) {?>
                             <li><a href="Manager">Quản lý</a></li>
                             <?php  } 
@@ -261,9 +264,13 @@
                                 elseif((isset($_SESSION["permission"]) && (int)$_SESSION["permission"] == 3)) {?>
                             <!-- <li><a href="Student/ListClass">Danh sách lớp học</li> -->
                             <li><a href="Student/ListClasses">Học Sinh</a></li>
-                            
+
                             <?php }?>
-                            
+
+                            <li> </li>
+                            <li><a href="Profile/ChangePassword">Thay đổi mật khẩu</a></li>
+                            <li><a href="Profile/EditProfile">Thông tin cá nhân</a></li>
+
                             <li><a href="Logout">Đăng xuất</a></li>
                             <?php } ?>
 
@@ -444,29 +451,32 @@
         background-color: #0D47A1;
     }
 
-    #button{
-        display:block;
-        margin:20px auto;
-        padding:10px 30px;
-        background-color:#eee;
-        border:solid #ccc 1px;
-      cursor: pointer;
+    #button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 30px;
+        background-color: #eee;
+        border: solid #ccc 1px;
+        cursor: pointer;
     }
-    #overlay{   
+
+    #overlay {
         position: fixed;
         top: 0;
         z-index: 100;
         width: 100%;
-        height:100%;
+        height: 100%;
         display: none;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0, 0, 0, 0.6);
     }
+
     .cv-spinner {
         height: 100%;
         display: flex;
         justify-content: center;
-        align-items: center;  
+        align-items: center;
     }
+
     .spinner {
         width: 40px;
         height: 40px;
@@ -475,23 +485,24 @@
         border-radius: 50%;
         animation: sp-anime 0.8s infinite linear;
     }
+
     @keyframes sp-anime {
-        100% { 
-            transform: rotate(360deg); 
+        100% {
+            transform: rotate(360deg);
         }
     }
-    .is-hide{
-        display:none;
+
+    .is-hide {
+        display: none;
     }
     </style>
     <script>
+    $(document).ajaxSend(function() {
 
-    $(document).ajaxSend(function(){
-
-        if(window.location.href.search("Student/doExam") > -1)
+        if (window.location.href.search("Student/doExam") > -1)
             return;
-        
-        $("#overlay").fadeIn(300);　
+
+        $("#overlay").fadeIn(300);
     });
 
     function showAlert(options) {

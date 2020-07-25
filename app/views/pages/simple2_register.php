@@ -34,7 +34,7 @@ function examNow(subjectId) {
                     </ul>
                 </div> <br>
                 <?php $success = $data["success"];
-                    $success = "test";
+                    // $success = "test";
                     if(isset($success) && $success != ""){
                 ?>
                 <div class="inner text-center">

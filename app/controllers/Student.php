@@ -641,37 +641,95 @@ class Student extends Controller{
         $errors = [];
         
         $userClassModel = $this->model("UserClassModel");
+        $examResultModel = $this->model("ExamResultsModel");
 
         $studentId = $this->getUserId();
-        // var_dump($studentId, $classId);
+
         $joinClass = $userClassModel->checkUserJoinClass($studentId, $classId);
         $examinations = [];
+        $execires = [];
 
         if($joinClass == false){
             $errors["joined"] = "Học sinh chưa tham gia lớp học.";
         }
         else{
             $examModel = $this->model("ExamsModel");
-            $examResult = $examModel->getListExamsByClassId($classId);
+            $examResult = $examModel->getListExamsByClassIdWith($classId);
             // print_r($examResult);
 
             while($exam = mysqli_fetch_assoc($examResult)){
                 $rowToAdd = [];
                 $examId = $exam["ExamId"];
-                var_dump($exam);
+                
+                array_push($rowToAdd, $examId);
                 array_push($rowToAdd, $exam["Name"]);
+                array_push($rowToAdd, $exam["Description"]);
+                $cretedDate = new DateTime($exam["CreatedDate"]);
+                $createdDateFormated = $cretedDate->format("m-d-Y");
+                array_push($rowToAdd, $createdDateFormated);
+
+                $isJoined = false;
+                $isCompleted = false;
+
+                $examresultResult = $examResultModel->getExamResultWithID($examId, $studentId);
+          
+                if(mysqli_num_rows($examresultResult) > 0){
+                //kiem tra is_completed
+                  $result_fetch = mysqli_fetch_array($examresultResult);
+          
+                  $isJoined = true;
+                  $isCompleted = (bool)$result_fetch["Is_completed"];
+                  
+                  $examResultID = $result_fetch["ResultId"];
+                  $rowToAdd["ResultId"] = $examResultID;
+                }
+                
+                $examinations["ClassId_" . $classId] = $rowToAdd;
             }
+
+            $execriResult = $examModel->getListExamsByClassIdWithExamType($classId);
+
+            while($exam = mysqli_fetch_assoc($execriResult)){
+                $rowToAdd = [];
+                $examId = $exam["ExamId"];
+                
+                array_push($rowToAdd, $examId);
+                array_push($rowToAdd, $exam["Name"]);
+                array_push($rowToAdd, $exam["Description"]);
+                $cretedDate = new DateTime($exam["CreatedDate"]);
+                $createdDateFormated = $cretedDate->format("m-d-Y");
+                array_push($rowToAdd, $createdDateFormated);
+
+                $rowToAdd["ResultId"] = $examResultID;
+                $execires["ClassId_" . $classId] = $rowToAdd;
+            }
+
+            // lấy tài liệu ra để thể hiện
+            // $execriResult = $examModel->getListExamsByClassIdWithExamType($classId);
+
+            // while($exam = mysqli_fetch_assoc($execriResult)){
+            //     $rowToAdd = [];
+            //     $examId = $exam["ExamId"];
+                
+            //     array_push($rowToAdd, $examId);
+            //     array_push($rowToAdd, $exam["Name"]);
+            //     array_push($rowToAdd, $exam["Description"]);
+            //     $cretedDate = new DateTime($exam["CreatedDate"]);
+            //     $createdDateFormated = $cretedDate->format("m-d-Y");
+            //     array_push($rowToAdd, $createdDateFormated);
+
+            //     $rowToAdd["ResultId"] = $examResultID;
+            //     $execires["ClassId_" . $classId] = $rowToAdd;
+            // }
         }
-
-
-
-
 
         $this->view("simple2", [
             "Page"                           => "simple2_student_listResourceClass",
             "title"                          => "Dữ liệu lớp học",
             "menu"                           => "simple2_student_menu",
-            "errors"                           => $errors
+            "errors"                         => $errors,
+            "examinations"                   => $examinations,
+            "execires"                       => $execires,
         ]);   
     }
 

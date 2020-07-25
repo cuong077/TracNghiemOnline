@@ -27,7 +27,7 @@
                     <th class="col-lg-2 text-center">Khối lớp</th>
                     <th class="col-lg-1 text-center">Tham gia</th>
                     <th class="col-lg-1 text-center">Sỉ số</th>
-                    <th class="col-lg-1 text-center">Hành động</th>
+                    <th class="col-lg-1 text-center">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
