@@ -388,8 +388,6 @@ class Student extends Controller{
 
 
 
-
-
     public function ListClasses(){
 
         $classModel = $this->model("ClassModel");
@@ -571,7 +569,6 @@ class Student extends Controller{
     }
 
 
-
     //API
 
     public function userAnswerQuestion(){
@@ -675,6 +672,8 @@ class Student extends Controller{
         ]);   
     }
 
+
+    //local func
     private function getAllQuestionOfExam($question_model, $answer_model, $exam_id){
 
         $allQuestionOfExam = $question_model->getAllQuestionOfExam($exam_id);

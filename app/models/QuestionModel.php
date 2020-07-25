@@ -28,6 +28,32 @@ class QuestionModel extends DB{
         return false;
     }
 
+    public function getListQuestionWithLessonRandomLimit($lesson_id, $user_id, $limit){
+        
+        $qr = "CALL Question_getListQuestionWithLessonRandomLimit($lesson_id, $user_id, $limit)";
+        mysqli_next_result($this->con);
+        $result = mysqli_query($this->con, $qr);
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+    public function getListQuestionWithChapterRandomLimit($chapter_id, $user_id, $limit){
+        
+        $qr = "CALL Question_getListQuestionWithChapterRandomLimit($chapter_id, $user_id, $limit)";
+        mysqli_next_result($this->con);
+        $result = mysqli_query($this->con, $qr);
+        if ($result) {
+            return $result;
+        }
+
+        return false;
+    }
+
+
+
     public function getAllQuestionOfExam($exam_id){
 
 		$qr = "CALL Question_getAllQuestionOfExam('$exam_id')";

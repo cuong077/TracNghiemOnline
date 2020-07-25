@@ -580,6 +580,79 @@ class Teacher extends Controller{
 		echo json_encode($list_question);
   	}
 
+  	public function getListQuestionMatrix(){
+
+  		$question_model = $this->model("QuestionModel");
+		$answer_model = $this->model("AnswerModel");
+		$lesson_model = $this->model("LessonModel");
+
+		$json = file_get_contents('php://input');
+
+		$data = json_decode($json);
+
+		$user_id = $this->getUserId();
+
+		$result = new ResultMatrix();
+
+		$result->error = false;
+		$result->error_message = "";
+
+		foreach ($data as $item) {
+			
+			if($item->is_chapter == true){
+				$question_results = $question_model->getListQuestionWithChapterRandomLimit($item->id, $user_id, $item->limit);
+			}else{
+				$question_results = $question_model->getListQuestionWithLessonRandomLimit($item->id, $user_id, $item->limit);
+			}
+
+			if(mysqli_num_rows($question_results) == 0){
+				$result->error = true;
+				$result->error_message = $item->name . " - hiện tại không có câu hỏi .";
+				echo json_encode($result);
+				exit;
+			}
+
+			if(mysqli_num_rows($question_results) < $item->limit){
+				$result->error = true;
+				$result->error_message = $item->name . " - số câu hỏi bạn yêu cầu là lớn hơn với số lượng hiện có .";
+				echo json_encode($result);
+				exit;
+			}
+
+			
+			$question_count = 0;
+
+			while ($_question = mysqli_fetch_array($question_results)) {
+				
+				if($question_count == 0)
+					$breadcrum = $lesson_model->getLessonBreadcrumb($_question["LessonId"]);
+
+				$question = new Question();
+				$question->question_id = $_question["QuestionId"];
+				$question->content = base64_decode($_question["Content"]);
+				$question->breadcrum = $breadcrum;
+
+				$answer_results = $answer_model->getAllAnswerOfQuestion($question->question_id);
+
+				while ($_answer = mysqli_fetch_array($answer_results)) {
+					
+					$answer = new Answer();
+					$answer->content = base64_decode($_answer["Content"]);
+					$answer->is_correct = $_answer["Is_correct"];
+
+					$question->list_answer[] = $answer;
+				}
+
+
+				$result->list_question[] = $question;
+			}
+
+		}
+
+		
+		echo json_encode($result);
+  	}
+
   	public function createExam(){
 
 
@@ -942,6 +1015,16 @@ class Answer{
 	public $is_correct = false;
 
 	public $is_error = true;
+}
+
+
+class ResultMatrix{
+
+	public $error;
+
+	public $error_message;
+
+	public $list_question = [];
 
 }
 
