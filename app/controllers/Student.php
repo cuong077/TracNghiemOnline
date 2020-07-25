@@ -823,8 +823,10 @@ class Student extends Controller{
             $examModel = $this->model("ExamsModel");
             $examResult = $examModel->getListExamsByClassIdWith($classId);
             // print_r($examResult);
-
+            $index = 0;
+            
             while($exam = mysqli_fetch_assoc($examResult)){
+                $index++;
                 $rowToAdd = [];
                 $examId = $exam["ExamId"];
                 
@@ -853,12 +855,13 @@ class Student extends Controller{
                   $rowToAdd["isCompleted"] = $isCompleted;
                 }
                 
-                $examinations["ClassId_" . $classId] = $rowToAdd;
+                $examinations["ClassId_" . $index] = $rowToAdd;
             }
 
             $execriResult = $examModel->getListExamsByClassIdWithExamType($classId);
-
+            $index = 0;
             while($exam = mysqli_fetch_assoc($execriResult)){
+                $index++;
                 $rowToAdd = [];
                 $examId = $exam["ExamId"];
                 
@@ -870,7 +873,7 @@ class Student extends Controller{
                 array_push($rowToAdd, $createdDateFormated);
 
                 $rowToAdd["ResultId"] = $examResultID;
-                $execires["ClassId_" . $classId] = $rowToAdd;
+                $execires["ClassId_" . $index] = $rowToAdd;
             }
 
             // lấy tài liệu ra để thể hiện
