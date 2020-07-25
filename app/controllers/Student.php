@@ -691,6 +691,8 @@ class Student extends Controller{
                   
                   $examResultID = $result_fetch["ResultId"];
                   $rowToAdd["ResultId"] = $examResultID;
+                  $rowToAdd["isJoined"] = $isJoined;
+                  $rowToAdd["isCompleted"] = $isCompleted;
                 }
                 
                 $examinations["ClassId_" . $classId] = $rowToAdd;

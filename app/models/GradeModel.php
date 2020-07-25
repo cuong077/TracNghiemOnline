@@ -7,6 +7,7 @@ class GradeModel extends DB
     public function addGrade($gradeName, $gradeDescription)
     {
         $qr = "CALL Grade_InsertGrade('$gradeName', '$gradeDescription')";
+        mysqli_next_result($this->con);
 
         if (mysqli_query($this->con, $qr)) {
             return true;
@@ -28,6 +29,7 @@ class GradeModel extends DB
     {
 
         $qr = "CALL Grade_DeleteGrade()";
+        mysqli_next_result($this->con);
 
         if (mysqli_query($this->con, $qr)) {
             return true;
@@ -41,6 +43,8 @@ class GradeModel extends DB
     {
         $qr = "CALL Grade_UpdateGrade($gradeId, '$gradeName', '$gradeDescription')";
         // echo $qr;
+        mysqli_next_result($this->con);
+
         if (mysqli_query($this->con, $qr)) {
             return true;
         } 
@@ -62,7 +66,8 @@ class GradeModel extends DB
 
     public function hiddenGrade($gradeId){
         $qr = "CALL Grade_HiddenGrade($gradeId)";
-        
+        mysqli_next_result($this->con);
+
         if(mysqli_query($this->con, $qr)){
             return true;
         }
@@ -82,6 +87,7 @@ class GradeModel extends DB
     public function getGrade($gradeId)
     {
         $qr = "CALL Grade_GetGrade($gradeId)";
+        mysqli_next_result($this->con);
         $result = mysqli_query($this->con, $qr);
 
         return $result;

@@ -94,6 +94,28 @@
         return false;
       }
     }
+
+    public function getListExamsByClassIdWithoutSetClass(){
+      $qr = "CALL Exam_getListExamsByClassIdWithoutSetClass()";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+      return $result;
+    }
+
+    public function getListExamsByClassIdWithExamTypeWithoutSetClass(){
+      $qr = "CALL Exam_getListExamsByClassIdWithExamTypeWithoutSetClass()";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+      
+      return $result;
+    }
+    public function setToClass($examId, $classId){
+      $qr = "CALL Exam_setToClass($examId, $classId)";
+      mysqli_next_result($this->con);
+      $result = mysqli_query($this->con, $qr);
+
+      return $result;
+    }
   }
 
  ?>

@@ -1184,6 +1184,7 @@ class Teacher extends Controller{
 			$rowToAdd = [];
 
 			$studentId = $student["UserId"];
+			// echo $studentId;
 			$dateJoin = $student["DateJoin"];
 			// echo gettype($dateJoin);
 			$phpdate = strtotime( $dateJoin );
@@ -1192,6 +1193,7 @@ class Teacher extends Controller{
 
 			$userResult = $userModel->getUser($studentId);
 			$user = mysqli_fetch_assoc($userResult);
+			// var_dump($user);
 			array_push($rowToAdd, $userId);
 			array_push($rowToAdd, $user["Username"]);
 			array_push($rowToAdd, $user["Email"]);
@@ -1340,7 +1342,70 @@ class Teacher extends Controller{
 			"perUpperAvg"					 => $perUpperAvg
         ]);   
 	}
-	
+
+	public function AddExamExecire($classId){
+		$errors = [];
+        
+        $userClassModel = $this->model("UserClassModel");
+        $examResultModel = $this->model("ExamResultsModel");
+
+        $teacherId = $this->getUserId();
+
+        $examinations = [];
+        $execires = [];
+
+		$examModel = $this->model("ExamsModel");
+		$examResult = $examModel->getListExamsByClassIdWithoutSetClass();
+		// print_r($examResult);
+
+		while($exam = mysqli_fetch_assoc($examResult)){
+			$rowToAdd = [];
+			$examId = $exam["ExamId"];
+			
+			array_push($rowToAdd, $examId);
+			array_push($rowToAdd, $exam["Name"]);
+			array_push($rowToAdd, $exam["Description"]);
+			$cretedDate = new DateTime($exam["CreatedDate"]);
+			$createdDateFormated = $cretedDate->format("m-d-Y");
+			array_push($rowToAdd, $createdDateFormated);
+			array_push($rowToAdd, $classId);
+
+			$examinations["ClassId_" . $classId] = $rowToAdd;
+		}
+
+		$execriResult = $examModel->getListExamsByClassIdWithExamTypeWithoutSetClass();
+
+		while($exam = mysqli_fetch_assoc($execriResult)){
+			$rowToAdd = [];
+			$examId = $exam["ExamId"];
+			
+			array_push($rowToAdd, $examId);
+			array_push($rowToAdd, $exam["Name"]);
+			array_push($rowToAdd, $exam["Description"]);
+			$cretedDate = new DateTime($exam["CreatedDate"]);
+			$createdDateFormated = $cretedDate->format("m-d-Y");
+			array_push($rowToAdd, $createdDateFormated);
+			array_push($rowToAdd, $classId);
+
+			$execires["ClassId_" . $classId] = $rowToAdd;
+		}
+
+        $this->view("simple2", [
+            "Page"                           => "simple2_teacher_addExamExecire",
+            "title"                          => "Dữ liệu lớp học",
+            "menu"                           => "simple2_teacher_menu",
+            "errors"                         => $errors,
+            "examinations"                   => $examinations,
+            "execires"                       => $execires,
+        ]);  
+	}
+
+	public function AddExam($examId, $classId){
+		$examModel = $this->model("ExamsModel");
+		$examResult = $examModel->setToClass($examId, $classId);
+
+		$this->redirect("Teacher/AddExamExecire/".$classId);
+	}
 }
 
 

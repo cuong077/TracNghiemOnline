@@ -17,7 +17,7 @@
         id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
-    <div class="row" style="margin-left: 30px;">
+    <div class="row" style="margin-left: 0px;">
         <!-- <div > -->
         <?php 
             $examinations = $data["examinations"];
@@ -156,7 +156,6 @@
                                     <th class="col-lg-2 text-center">Tên bài thi</th>
                                     <th class="col-lg-2 text-center">Mô tả</th>
                                     <th class="col-lg-2 text-center">Ngày tạo</th>
-                                    <th class="col-lg-2 text-center">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>

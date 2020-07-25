@@ -62,7 +62,7 @@
 			$password = md5($password);
 
 			$qr = "CALL User_CheckUsernameAndPasswordIsCorrect('$email', '$password')";
-
+			mysqli_next_result($this->con);
 			
 			$result = mysqli_query($this->con, $qr);
 			
@@ -105,7 +105,7 @@
 		public function deleteUser($email)
 		{
 			$qr = "DELETE FROM users WHERE email='$email'";
-
+			mysqli_next_result($this->con);
 			if (mysqli_query($this->con, $qr)) {
 				return true;
 			}
@@ -118,6 +118,7 @@
 		public function changePermission($permissionId, $userId)
 		{
 			$qr = "UPDATE user SET RoleId='$permissionId' WHERE UserId='$userId'";
+			mysqli_next_result($this->con);
 			if (mysqli_query($this->con, $qr)) {
 				return true;
 			}
@@ -130,7 +131,7 @@
 		public function updateUserInformation($fullname, $username, $role_id, $userId)
 		{
 			$qr = "UPDATE user SET FullName='$fullname', Username='$username', RoleId=$role_id WHERE UserId=$userId";
-			
+			mysqli_next_result($this->con);
 			if (mysqli_query($this->con, $qr)) {
 				return true;
 			}
@@ -142,6 +143,7 @@
 		public function getListUsersWithoutCurrentUser($currentUserId){
 			$qr = "CALL User_GetUserWithoutCurrentUser($currentUserId)";
 			//echo $qr;
+			mysqli_next_result($this->con);
 			$result = mysqli_query($this->con, $qr);
 			if (mysqli_num_rows($result) > 0) {
 				return $result;
@@ -152,6 +154,7 @@
 
 		public function getUser($userId){
 			$qr = "CALL User_GetUserById('$userId')";
+			mysqli_next_result($this->con);
 			$result = mysqli_query($this->con, $qr);
 			
 			if (mysqli_num_rows($result) > 0) {
@@ -163,6 +166,7 @@
 
 		public function activeUser($userId){
 			$qr = "CALL User_UpdateActive(true, '$userId')";
+			mysqli_next_result($this->con);
 			if(mysqli_query($this->con, $qr)){
 				return true;
 			}
@@ -172,6 +176,7 @@
 
 		public function blockUser($userId){
 			$qr = "CALL User_UpdateActive(false, '$userId')";
+			mysqli_next_result($this->con);
 			if(mysqli_query($this->con, $qr)){
 				return true;
 			}
