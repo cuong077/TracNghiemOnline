@@ -55,7 +55,7 @@
                     <td class="text-center"> <?php echo $class[4]; ?> </td>
                     <td class="text-center"><?php echo $class[5]; ?></td>
                     <td class="text-center">
-                        <a href="Student/ListResourceClass/1<?php echo $class[0]; ?>"
+                        <a href="Student/ListResourceClass/<?php echo $class[0]; ?>"
                             class="btn btn-success">Xem</a>
                     </td>
                 </tr>

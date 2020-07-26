@@ -5,7 +5,7 @@
             </div>
         </div>
 </section>
-<form method="post" action="<?php echo Config::$base_url; ?>Teacher/createQuestion">
+<form method="post" action="<?php echo Config::$base_url; ?>Teacher/createQuestion" id="frm_create_ques">
     <section id="content">
         <div class="row">
             <div class="col-md-12">
@@ -112,12 +112,13 @@
         </div>
     </section>
 
-<input type="submit" name="complete_add" class="btn btn-primary cssPreview" value="Thêm vào bài">
+<input type="hidden" name="complete_add" class="btn btn-primary cssPreview" value="Thêm vào bài">
 
 <input type="hidden" name="number_of_questions" value="<?php if(isset($data["back_number_of_questions"])){ echo $data["back_number_of_questions"]; }else{ echo "0"; }; ?>">
 </form>
 
 <button class="btn btn-primary cssPreview" id="add_question">Thêm 1 câu hỏi</button>
+<button class="btn btn-primary cssPreview" onclick="$('#frm_create_ques').submit();">Thêm vào bài</button>
 
 
 <script type="text/javascript">

@@ -51,7 +51,7 @@
                                 <?php 
                                 $index = 0;
                                 foreach($examinations as $exam ){
-                                    var_dump($exam);
+                                    //var_dump($exam);
                                     $index++;
                                 ?>
 

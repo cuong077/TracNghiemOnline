@@ -92,7 +92,7 @@
 			mysqli_next_result($this->con);
 
 			$qr = "CALL User_InsertUser('$username', '$password', '$email', '$fullname', $role_id, '$phoneNumber', '$birthday', $gradeSelect);";
-			// echo $qr;
+			echo $qr;
 			// exit;
 			if(mysqli_query($this->con, $qr)){
 				return true;
