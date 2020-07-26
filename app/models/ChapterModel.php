@@ -43,7 +43,7 @@
 		public function addChapter($chapterName, $gradeSubjectId, $chapterDescription){
 			$qr = "CALL Chapter_InsertChapter('$chapterName', $gradeSubjectId, '$chapterDescription')";
 			mysqli_next_result($this->con);
-			echo $qr;
+			// echo $qr;
 
 			$result = mysqli_query($this->con, $qr);
 			$chapterId = mysqli_fetch_assoc($result)["ChapterId"];

@@ -87,7 +87,7 @@
 		}
 
 		//Thêm user mới với quyền mặc định là 3 (student)
-		public function addUser($username, $password, $email, $fullname, $role_id = 3, $phoneNumber, $birthday, $gradeSelect){
+		public function addUser($username, $password, $email, $fullname, $role_id = 3, $phoneNumber, $birthday, $gradeSelect=0){
 			$password = md5($password);
 			mysqli_next_result($this->con);
 

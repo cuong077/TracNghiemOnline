@@ -183,7 +183,7 @@
                                             quả
                                         </a>
                                         <a class="btn btn-success" data-parent="#servico1-1-1"
-                                            href="Student/joinExam/<?php echo $execire[0];?>"> Tham gia thi </a>
+                                            href="Student/joinExercise/<?php echo $execire[0];?>"> Tham gia thi </a>
                                     </td>
                                 </tr>
                                 <?php } ?>
