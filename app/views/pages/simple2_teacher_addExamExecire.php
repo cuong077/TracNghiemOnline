@@ -139,9 +139,10 @@
                                     <td class="text-center">
                                         <?php echo $execire[3];?>
                                     </td>
+                                    <?php //echo $exam;?>
                                     <td class="text-center">
                                         <a class="btn btn-success" data-parent="#servico1-1-1"
-                                            href="Teacher/AddExam/<?php echo $exam[0];?>/<?php echo $exam[4];?>"> Thêm
+                                            href="Teacher/AddExam/<?php echo $execire[0];?>/<?php echo $execire[4];?>"> Thêm
                                             vào lớp </a>
 
                                     </td>

@@ -56,6 +56,7 @@
     public function getTotalUserOfExam($examId){
       $qr = "CALL Result_getTotalUserOfExam($examId)";
       mysqli_next_result($this->con);
+      echo $qr;
       $result = mysqli_query($this->con, $qr);
 
       return $result;

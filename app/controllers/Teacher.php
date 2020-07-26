@@ -1332,6 +1332,9 @@ class Teacher extends Controller{
 		$total = $totalResult["total"];
 
 		//$perUpperAvg = ((float)$upperAvg*100)/(float)$total;
+		echo $upperAvg;
+		echo $total;
+		echo (float)($upperAvg)/(float)$total*100;
 		$perUpperAvg = 50;
 		
 		// var_dump($total, $upperAvg, $avgScore, $perUpperAvg);
@@ -1365,7 +1368,10 @@ class Teacher extends Controller{
 		$examResult = $examModel->getListExamsByClassIdWithoutSetClass();
 		// print_r($examResult);
 
+		$index = 0;
+
 		while($exam = mysqli_fetch_assoc($examResult)){
+			$index++;
 			$rowToAdd = [];
 			$examId = $exam["ExamId"];
 			
@@ -1377,12 +1383,14 @@ class Teacher extends Controller{
 			array_push($rowToAdd, $createdDateFormated);
 			array_push($rowToAdd, $classId);
 
-			$examinations["ClassId_" . $classId] = $rowToAdd;
+			$examinations["ClassId_" . $index] = $rowToAdd;
 		}
 
 		$execriResult = $examModel->getListExamsByClassIdWithExamTypeWithoutSetClass();
 
+		$index = 0;
 		while($exam = mysqli_fetch_assoc($execriResult)){
+			$index++;
 			$rowToAdd = [];
 			$examId = $exam["ExamId"];
 			
@@ -1394,7 +1402,7 @@ class Teacher extends Controller{
 			array_push($rowToAdd, $createdDateFormated);
 			array_push($rowToAdd, $classId);
 
-			$execires["ClassId_" . $classId] = $rowToAdd;
+			$execires["ClassId_" . $index] = $rowToAdd;
 		}
 
         $this->view("simple2", [
