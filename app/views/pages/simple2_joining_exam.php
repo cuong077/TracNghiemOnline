@@ -94,7 +94,7 @@
                                 <div class="pricing-terms">
                                         <h6>Bài thi:  <span id=""><?php echo $data["exam_name"]; ?></span></h6>
                                     <h6>Thời gian làm bài: <span id="">50 phút</span></h6>
-                                    <h6>Tổng số câu hỏi: <span id="">36 câu</span></h6>
+                                    <h6>Tổng số câu hỏi: <span id=""><?php echo count($data["all_question"]); ?> câu</span></h6>
                                 </div>
                                 <div class="pricing-heading class-image" class_id="2">
                                     <h3 class="class-text" style="padding-top:3px;">
@@ -190,7 +190,7 @@
                 
                 alert("Hết giờ");
 
-                window.location="<?php echo Config::$base_url . 'Examination/submitExam/' . $data['result_id']; ?>";
+                window.location="<?php echo Config::$base_url . 'Student/submitExam/' . $data['result_id']; ?>";
             }
             }, 1000);
 
