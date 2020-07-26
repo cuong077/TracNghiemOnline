@@ -65,8 +65,11 @@
                         <a class="btn btn-success btn-sm same-width" style="margin-bottom: 15px;" href="Teacher/ListResourceClass/<?php echo $row["ClassId"];?>">
                             <span class="glyphicon glyphicon-th-list"></span> Xem
                         </a>
-                        <a class="btn btn-success btn-sm same-width"  href="Teacher/AddExamExecire/<?php echo $row["ClassId"];?>">
+                        <a  style="margin-bottom: 15px;" class="btn btn-success btn-sm same-width"  href="Teacher/AddExamExecire/<?php echo $row["ClassId"];?>">
                             <span class="glyphicon glyphicon-plus"></span> Thêm
+                        </a>
+                        <a class="btn btn-success btn-sm same-width"  href="Teacher/ListStudentsClass/<?php echo $row["ClassId"];?>">
+                            <span class="glyphicon glyphicon-plus"></span> Danh sách
                         </a>
                     </td>
                 </tr>

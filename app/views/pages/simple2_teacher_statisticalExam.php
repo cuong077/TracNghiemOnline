@@ -1,3 +1,4 @@
+<?php echo (int)$data["perUpperAvg"];?>
 <div id="wrapper" class="menu-wrapper">
     <!-- start header -->
     <style>
@@ -134,7 +135,7 @@ $(document).ready(function() {
         }
     });
     let ctxPie = $("#pieScores");
- 
+    <?php //echo (int)$data["perUpperAvg"];?>
     let myChart = new Chart(ctxPie, {
         type: 'pie',
         data: {

@@ -1331,8 +1331,11 @@ class Teacher extends Controller{
 		$totalResult = mysqli_fetch_assoc($examResultsModel->getTotalUserOfExam($examId));
 		$total = $totalResult["total"];
 
-		$perUpperAvg = ((int)$upperAvg*100)/(int)$total;
+		//$perUpperAvg = ((float)$upperAvg*100)/(float)$total;
+		$perUpperAvg = 50;
+		
 		// var_dump($total, $upperAvg, $avgScore, $perUpperAvg);
+		// var_dump($);
 
 		$scores = json_encode($scores);
 		// print_r($scores);
